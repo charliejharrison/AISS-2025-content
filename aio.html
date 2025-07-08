@@ -243,19 +243,7 @@
 <div class="accordion accordion-flush" id="accordionFlush2">
   <div class="accordion-item">
     <div class="accordion-header" id="flush-heading2">
-        <a href="introduction.html">1. Using RMarkdown</a>
-    </div>
-<!--/div.accordion-header-->
-
-  </div>
-<!--/div.accordion-item-->
-</div>
-<!--/div.accordion-flush-->
-
-<div class="accordion accordion-flush" id="accordionFlush3">
-  <div class="accordion-item">
-    <div class="accordion-header" id="flush-heading3">
-        <a href="02-data-exploration.html">2. 02 Data Exploration</a>
+        <a href="02-data-exploration-and-preprocessing.html">1. Data exploration and Preprocessing</a>
     </div>
 <!--/div.accordion-header-->
 
@@ -318,14 +306,19 @@
     <main id="main-content" class="main-content"><div class="container lesson-content">
         
         
-<section id="aio-introduction"><p>Content from <a href="introduction.html">Using RMarkdown</a></p>
+<section id="aio-02-data-exploration-and-preprocessing"><p>Content from <a href="02-data-exploration-and-preprocessing.html">Data exploration and Preprocessing</a></p>
 <hr>
-<p>Last updated on 2025-07-06 |
+<p>Last updated on 2025-07-08 |
 
-        <a href="https://github.com/charliejharrison/AISS-2025-content/edit/main/episodes/introduction.Rmd" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
+        <a href="https://github.com/charliejharrison/AISS-2025-content/edit/main/episodes/02-data-exploration-and-preprocessing.Rmd" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 <div class="text-end">
           <button role="button" aria-pressed="false" tabindex="0" id="expand-code" class="pull-right" data-expand="Expand All Solutions " data-collapse="Collapse All Solutions "> Expand All Solutions <i aria-hidden="true" data-feather="plus"></i></button>
         </div>
+<div class="codewrapper">
+<h3 class="code-label">ERROR<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="error" tabindex="0"><code>Error in use_condaenv("AISS-2025"): Unable to locate conda environment 'AISS-2025'.</code></pre>
+</div>
 <div class="overview card">
 <h2 class="card-header">Overview</h2>
 <div class="row g-0">
@@ -334,8 +327,12 @@
 <div class="inner">
 <h3 class="card-title">Questions</h3>
 <ul>
-<li>How do you write a lesson using R Markdown and
-<a href="https://carpentries.github.io/sandpaper/" class="external-link">sandpaper</a>?</li>
+<li>How can I read in data to Pandas?</li>
+<li>How can I access specific sections of my data?</li>
+<li>How does Pandas store data in rows and columns?</li>
+<li>How can I clean up messy data?</li>
+<li>How can I learn more about missing values, distributions and
+structures in my data?</li>
 </ul>
 </div>
 </div>
@@ -345,9 +342,13 @@
 <div class="inner bordered">
 <h3 class="card-title">Objectives</h3>
 <ul>
-<li>Explain how to use markdown with the new lesson template</li>
-<li>Demonstrate how to include pieces of code, figures, and nested
-challenge blocks</li>
+<li>Know the difference between a Series and a Dataframe</li>
+<li>Know how to use <code>loc[]</code> to access data</li>
+<li>Know how to apply basic data cleaning operations</li>
+<li>Know how to use some more sophisticated Pandas functions to explore
+and manipulate data</li>
+<li>Know some techniques for preparing your data for machine
+learning</li>
 </ul>
 </div>
 </div>
@@ -357,66 +358,349 @@ challenge blocks</li>
 <section><h2 class="section-heading" id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
 </h2>
 <hr class="half-width">
-<p>This is a lesson created via The Carpentries Workbench. It is written
-in <a href="https://pandoc.org/MANUAL.txt" class="external-link">Pandoc-flavored Markdown</a>
-for static files and <a href="https://rmarkdown.rstudio.com/" class="external-link">R
-Markdown</a> for dynamic files that can render code into output. Please
-refer to the <a href="https://carpentries.github.io/sandpaper-docs/" class="external-link">Introduction to The
-Carpentries Workbench</a> for full documentation.</p>
-<p>What you need to know is that there are three sections required for a
-valid Carpentries lesson template:</p>
-<ol style="list-style-type: decimal">
-<li>
-<code>questions</code> are displayed at the beginning of the episode
-to prime the learner for the content.</li>
-<li>
-<code>objectives</code> are the learning objectives for an episode
-displayed with the questions.</li>
-<li>
-<code>keypoints</code> are displayed at the end of the episode to
-reinforce the objectives.</li>
-</ol>
-<div id="challenge-1-can-you-do-it" class="callout challenge">
+<p>You’ve seen briefly how to use Pandas to read in a data file when we
+looked at the Penguin data. Real-world datasets are often - usually -
+nearly always? - quite messy; so much so that data scientists spend the
+majority of their time organising and cleaning data <a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a>.</p>
+<p>We’re going to work with a real dataset from an annual salary survey
+from the website <a href="https://www.askamanager.org/2025/04/how-much-money-do-you-make-8.html" class="external-link">askamanager.org</a>.
+Have a look at the website and browse the questions, then read in the <a href="data/AAM_salary_survey_2025_responses.csv">data file</a>.</p>
+<div class="codewrapper sourceCode" id="cb2">
+<h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span></code></pre>
+</div>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code>ModuleNotFoundError: No module named 'pandas'</code></pre>
+</div>
+<div class="codewrapper sourceCode" id="cb4">
+<h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="co"># Read the raw salary-survey responses</span></span>
+<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a>survey_path <span class="op">=</span> <span class="st">"data/AAM_salary_survey_2025_responses.csv"</span></span>
+<span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a>survey_data <span class="op">=</span> pd.read_csv(survey_path)</span></code></pre>
+</div>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code>NameError: name 'pd' is not defined</code></pre>
+</div>
+<p>A DataFrame contains labelled data. Each row and each column has a
+label. The labels are stored in an index.</p>
+<div class="codewrapper sourceCode" id="cb6">
+<h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a><span class="co"># print the column labels</span></span>
+<span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a><span class="bu">print</span>(survey_data.columns)</span></code></pre>
+</div>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code>NameError: name 'survey_data' is not defined</code></pre>
+</div>
+<div class="codewrapper sourceCode" id="cb8">
+<h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a><span class="co"># Show the first few lines</span></span>
+<span id="cb8-2"><a href="#cb8-2" tabindex="-1"></a>survey_data.head()</span></code></pre>
+</div>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code>NameError: name 'survey_data' is not defined</code></pre>
+</div>
+<p>A DataFrame can contain a mix of data types.</p>
+<p>We can see that there’s lots of interesting data in there. Here’s a
+small list of questions we might want to ask: - What’s the distribution
+of total income across all jobs? - Do unionised jobs earn more or less
+than non-unionised? - Does salary go up with age, years of experience,
+and education level? - Do people earning additional income tend to have
+higher base salaries?</p>
+<p>We’ll work through these, learning some more Pandas and data
+manipulation skills along the way.</p>
+</section><section><h2 class="section-heading" id="use-dataframe-dtypes-to-show-the-datatypes-of-each-column">Use <code>DataFrame.dtypes</code> to show the datatypes of each
+column<a class="anchor" aria-label="anchor" href="#use-dataframe-dtypes-to-show-the-datatypes-of-each-column"></a>
+</h2>
+<hr class="half-width">
+<p>Each column in a DataFrame is a Series. Series contain labelled data
+too, but a Series can only contain a single data type.</p>
+<div class="codewrapper sourceCode" id="cb10">
+<h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" tabindex="-1"></a><span class="co"># List the column headings and their inferred dtypes</span></span>
+<span id="cb10-2"><a href="#cb10-2" tabindex="-1"></a>survey_data.dtypes</span></code></pre>
+</div>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code>NameError: name 'survey_data' is not defined</code></pre>
+</div>
+<p>Pandas will try to work out what this should be, but sometimes does a
+bad job. When it has a mixture of strings and numbers, it picks the most
+generic type possible, which is <code>object</code>.</p>
+</section><section><h2 class="section-heading" id="select-a-value-by-its-index-label-using-loc">Select a value by its index label using <code>loc[]</code>
+<a class="anchor" aria-label="anchor" href="#select-a-value-by-its-index-label-using-loc"></a>
+</h2>
+<hr class="half-width">
+<p>Note that the list of datatypes above is itself a Series! The index
+labels are the column headings from <code>survey_results</code>, and the
+values are the data types. We can pull out a single value with a label
+from this series using the function <code>loc[]</code></p>
+<div class="codewrapper sourceCode" id="cb12">
+<h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" tabindex="-1"></a>survey_data.dtypes.loc[<span class="st">"Age"</span>]</span></code></pre>
+</div>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code>NameError: name 'survey_data' is not defined</code></pre>
+</div>
+<p>Notice the square brackets!</p>
+<div id="callout1" class="callout">
+<div class="callout-square">
+<i class="callout-icon" data-feather="bell"></i>
+</div>
+<div class="callout-inner">
+<h3 class="callout-title">Callout</h3>
+<div class="callout-content">
+<p>The <code>loc[]</code> function is really useful, and confusing, and
+we’ll see more of it later. For now, remember that it takes square
+brackets, and it lets you access data by its <em>label</em>.</p>
+</div>
+</div>
+</div>
+</section><section><h2 class="section-heading" id="select-a-column-from-a-dataframe-with-column-name">Select a column from a DataFrame with
+<code>["Column name"]</code>
+<a class="anchor" aria-label="anchor" href="#select-a-column-from-a-dataframe-with-column-name"></a>
+</h2>
+<hr class="half-width">
+<p>You can select a column with square brackets containing the column
+name.</p>
+<div class="codewrapper sourceCode" id="cb14">
+<h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" tabindex="-1"></a>survey_data[<span class="st">"Industry"</span>]</span></code></pre>
+</div>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code>NameError: name 'survey_data' is not defined</code></pre>
+</div>
+<p>This is really a shortcut for</p>
+<div class="codewrapper sourceCode" id="cb16">
+<h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" tabindex="-1"></a>survey_data.loc[:, <span class="st">"Industry"</span>]</span></code></pre>
+</div>
+<p>Used on a DataFrame, <code>loc[]</code> takes two arguments - the
+first one is the rows you want and the second one is the columns. Just
+like with lists, you can slice with <code>start:stop</code>, and missing
+out either one uses the endpoints.</p>
+</section><section><h2 class="section-heading" id="cast-a-column-to-a-different-data-type-with-astype">Cast a column to a different data type with
+<code>astype()</code>
+<a class="anchor" aria-label="anchor" href="#cast-a-column-to-a-different-data-type-with-astype"></a>
+</h2>
+<hr class="half-width">
+<p>You can change the data type of a column by selecting the column and
+calling <code>astype()</code>, with the desired type as an argument.</p>
+<div class="codewrapper sourceCode" id="cb17">
+<h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" tabindex="-1"></a>survey_data[<span class="st">"Industry"</span>].astype(<span class="st">"string"</span>)</span></code></pre>
+</div>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code>NameError: name 'survey_data' is not defined</code></pre>
+</div>
+<p>This doesn’t modify the original, it makes a copy, so we haven’t yet
+saved the result. What if we want to change the data types of all the
+columns that contain <code>objects</code> to strings? (I have a hunch
+this might come in handy later…) We <em>could</em> do this manually, but
+I’m lazy, so let’s get the computer do the work.</p>
+<p>You can change multiple columns at once by calling
+<code>astype()</code> on the DataFrame and passing in a dictionary that
+maps column names to data types. Here’s one way to build this
+dictionary:</p>
+<div class="codewrapper sourceCode" id="cb19">
+<h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" tabindex="-1"></a>dtypes_dict <span class="op">=</span> {}</span>
+<span id="cb19-2"><a href="#cb19-2" tabindex="-1"></a></span>
+<span id="cb19-3"><a href="#cb19-3" tabindex="-1"></a><span class="co"># loop through the columns with dtype object and add them to a dictionary</span></span>
+<span id="cb19-4"><a href="#cb19-4" tabindex="-1"></a><span class="cf">for</span> column_name <span class="kw">in</span> survey_data.dtypes[survey_data.dtypes <span class="op">==</span> <span class="bu">object</span>].index:</span>
+<span id="cb19-5"><a href="#cb19-5" tabindex="-1"></a>  dtypes_dict[column_name] <span class="op">=</span> <span class="st">"string"</span></span></code></pre>
+</div>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code>NameError: name 'survey_data' is not defined</code></pre>
+</div>
+<div class="codewrapper sourceCode" id="cb21">
+<h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" tabindex="-1"></a>  </span>
+<span id="cb21-2"><a href="#cb21-2" tabindex="-1"></a>dtypes_dict</span></code></pre>
+</div>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code><span><span class="op">{</span><span class="op">}</span></span></code></pre>
+</div>
+<p>Now let’s use that to set the data types in our DataFrame. Remember
+that we need to save the results.</p>
+<div class="codewrapper sourceCode" id="cb23">
+<h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" tabindex="-1"></a>survey_data <span class="op">=</span> survey_data.astype(dtypes_dict)</span></code></pre>
+</div>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code>NameError: name 'survey_data' is not defined</code></pre>
+</div>
+<div class="codewrapper sourceCode" id="cb25">
+<h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" tabindex="-1"></a>survey_data.dtypes</span></code></pre>
+</div>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code>NameError: name 'survey_data' is not defined</code></pre>
+</div>
+<div id="challenge1" class="callout challenge">
 <div class="callout-square">
 <i class="callout-icon" data-feather="zap"></i>
 </div>
-<div id="challenge-1-can-you-do-it" class="callout-inner">
-<h3 class="callout-title">Challenge 1: Can you do it?</h3>
+<div class="callout-inner">
+<h3 class="callout-title">Challenge</h3>
 <div class="callout-content">
-<p>What is the output of this command?</p>
-<div class="codewrapper sourceCode" id="cb1">
-<h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
-</h3>
-<pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">paste</span><span class="op">(</span><span class="st">"This"</span>, <span class="st">"new"</span>, <span class="st">"lesson"</span>, <span class="st">"looks"</span>, <span class="st">"good"</span><span class="op">)</span></span></code></pre>
-</div>
+<p>Describe the key variables in this survey: - Which columns are
+<em>categorical</em> (nominal)? - Which are <em>ordinal</em> (have an
+inherent order)? - Which are <em>numeric</em> (continuous or
+discrete)?</p>
 </div>
 </div>
 </div>
 <div id="accordionSolution1" class="accordion challenge-accordion accordion-flush">
 <div class="accordion-item">
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
-  <h4 class="accordion-header" id="headingSolution1"> Output </h4>
+  <h4 class="accordion-header" id="headingSolution1"> Show me the solution </h4>
 </button>
 <div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
 <div class="accordion-body">
+<p>Numeric: - Annual salary - Additional monetary compensation</p>
+<p>Categorical: - Industry - Functional area of job - Job title - Remote
+or on-site? - Country - State - City/region - Currency and Currency -
+other</p>
+<p>Ordinal: - Age - Years of experience - Years in field - Highest level
+of education</p>
+<p>Note that numeric variables that are grouped into bins are ordinal
+when the bins are of different sizes!</p>
+<p>Also highest level of education could be considered categorical,
+because it’s not easy to sort every value.</p>
+</div>
+</div>
+</div>
+</div>
+</section><section><h2 class="section-heading" id="find-missing-values-with-isna">Find missing values with <code>isna()</code>
+<a class="anchor" aria-label="anchor" href="#find-missing-values-with-isna"></a>
+</h2>
+<hr class="half-width">
+<p>Do any of the columns have missing values? We can find them, count
+them up in each column, and sort the results as follows:</p>
+<div class="codewrapper sourceCode" id="cb27">
+<h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" tabindex="-1"></a><span class="co"># Count missing values per column</span></span>
+<span id="cb27-2"><a href="#cb27-2" tabindex="-1"></a>survey_data.isna().<span class="bu">sum</span>().sort_values(ascending<span class="op">=</span><span class="va">False</span>)</span></code></pre>
+</div>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="output" tabindex="0"><code>[1] "This new lesson looks good"</code></pre>
+<pre class="output" tabindex="0"><code>NameError: name 'survey_data' is not defined</code></pre>
+</div>
+<p>Lots of the columns have missing values - even some columns that are
+required in the survey, like <code>Job title</code>. What’s doing on
+here?</p>
+<div id="callout2" class="callout">
+<div class="callout-square">
+<i class="callout-icon" data-feather="bell"></i>
+</div>
+<div class="callout-inner">
+<h3 class="callout-title">Callout</h3>
+<div class="callout-content">
+<p>Pandas <code>read_csv()</code> function does a lot of work under the
+hood. From the documentation:</p>
+<blockquote>
+<p>By default the following values are interpreted as NaN: “ “, “#N/A”,
+“#N/A N/A”, “#NA”, “-1.#IND”, “-1.#QNAN”, “-NaN”, “-nan”, “1.#IND”,
+“1.#QNAN”, “<na>”, “N/A”, “NA”, “NULL”, “NaN”, “None”, “n/a”, “nan”,
+“null “.</na></p>
+</blockquote>
 </div>
 </div>
 </div>
+<p>We also have the answer to our earlier question about the data type
+of <code>Additional monetary compensation</code>. It contains
+<code>NaN</code> values, which Pandas treats as a <code>float64</code>,
+forcing the whole column to be float64.</p>
+<div id="how-we-should-treat-missing-values-depends-on-the-analysis-we-want-to-do." class="callout">
+<div class="callout-square">
+<i class="callout-icon" data-feather="bell"></i>
+</div>
+<div id="how-we-should-treat-missing-values-depends-on-the-analysis-we-want-to-do." class="callout-inner">
+<h3 class="callout-title">How we should treat missing values depends on the analysis we want to do.</h3>
+<div class="callout-content">
+
 </div>
 </div>
-<div id="challenge-2-how-do-you-nest-solutions-within-challenge-blocks" class="callout challenge">
+</div>
+<p>How should we deal with the missing values? In some cases the missing
+data is irrelevant. Each column needs to be considered differently. For
+example: - we don’t need <code>Currency - other</code> if there is a
+value in the <code>Currency</code> column - we don’t care about
+<code>State</code> unless we’re only looking at the US - We can safely
+assume that a missing value in
+<code>Additional monetary compensation</code> means £0 - if we want to
+know whether <code>Unionized?</code> makes a difference to earnings, a
+row with no value there is useless to us</p>
+<p>Pandas has some useful functions for this.</p>
+</section><section><h2 class="section-heading" id="use-fillna-to-fill-missing-values-in-a-column">Use <code>fillna()</code> to fill missing values in a column<a class="anchor" aria-label="anchor" href="#use-fillna-to-fill-missing-values-in-a-column"></a>
+</h2>
+<hr class="half-width">
+<p>With <code>Additional monetary compensation</code> we can replace
+missing values with 0. We can also change the type to be
+<code>int64</code></p>
+<div class="codewrapper sourceCode" id="cb29">
+<h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" tabindex="-1"></a>survey_data[<span class="st">"Additional monetary compensation"</span>] <span class="op">=</span> survey_data[<span class="st">"Additional monetary compensation"</span>].fillna(<span class="dv">0</span>).astype(<span class="st">"int"</span>)</span></code></pre>
+</div>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code>NameError: name 'survey_data' is not defined</code></pre>
+</div>
+</section><section><h2 class="section-heading" id="use-dropna-on-a-dataframe-to-remove-rows-or-columns-with-missing-values">Use <code>dropna()</code> on a DataFrame to remove rows or columns
+with missing values<a class="anchor" aria-label="anchor" href="#use-dropna-on-a-dataframe-to-remove-rows-or-columns-with-missing-values"></a>
+</h2>
+<hr class="half-width">
+<div id="challenge2" class="callout challenge">
 <div class="callout-square">
 <i class="callout-icon" data-feather="zap"></i>
 </div>
-<div id="challenge-2-how-do-you-nest-solutions-within-challenge-blocks" class="callout-inner">
-<h3 class="callout-title">Challenge 2: how do you nest solutions within challenge blocks?</h3>
+<div class="callout-inner">
+<h3 class="callout-title">Challenge</h3>
 <div class="callout-content">
-
+<p>Pandas has a useful function, <code>dropna()</code>. Use the docs
+pages (by running <code>help(survey_data.dropna)</code> or typing
+<code>survey_data.drop_na(</code> and Shift+Tab) to find how to drop
+rows that have missing values in the <code>Unionized?</code> column.</p>
 </div>
 </div>
 </div>
@@ -427,225 +711,1520 @@ reinforce the objectives.</li>
 </button>
 <div id="collapseSolution2" class="accordion-collapse collapse" data-bs-parent="#accordionSolution2" aria-labelledby="headingSolution2">
 <div class="accordion-body">
-<p>You can add a line with at least three colons and a
-<code>solution</code> tag.</p>
-</div>
-</div>
-</div>
-</div>
-</section><section><h2 class="section-heading" id="figures">Figures<a class="anchor" aria-label="anchor" href="#figures"></a>
-</h2>
-<hr class="half-width">
-<p>You can also include figures generated from R Markdown:</p>
-<div class="codewrapper sourceCode" id="cb3">
-<h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+<div class="codewrapper sourceCode" id="cb31">
+<h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">pie</span><span class="op">(</span></span>
-<span>  <span class="fu">c</span><span class="op">(</span>Sky <span class="op">=</span> <span class="fl">78</span>, <span class="st">"Sunny side of pyramid"</span> <span class="op">=</span> <span class="fl">17</span>, <span class="st">"Shady side of pyramid"</span> <span class="op">=</span> <span class="fl">5</span><span class="op">)</span>, </span>
-<span>  init.angle <span class="op">=</span> <span class="fl">315</span>, </span>
-<span>  col <span class="op">=</span> <span class="fu">c</span><span class="op">(</span><span class="st">"deepskyblue"</span>, <span class="st">"yellow"</span>, <span class="st">"yellow3"</span><span class="op">)</span>, </span>
-<span>  border <span class="op">=</span> <span class="cn">FALSE</span></span>
-<span><span class="op">)</span></span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" tabindex="-1"></a>survey_data <span class="op">=</span> survey_data.dropna(subset<span class="op">=</span>[<span class="st">"Unionized?"</span>], axis<span class="op">=</span><span class="st">"rows"</span>)</span></code></pre>
 </div>
-<figure style="text-align: center"><img src="fig/introduction-rendered-pyramid-1.png" alt="pie chart illusion of a pyramid" class="figure mx-auto d-block"><figcaption>
-Sun arise each and every morning
-</figcaption></figure><p>Or you can use standard markdown for static figures with the
-following syntax:</p>
-<p><code>![optional caption that appears below the figure](figure url){alt='alt text for accessibility purposes'}</code></p>
-<figure><img src="https://raw.githubusercontent.com/carpentries/logo/master/Badge_Carpentries.svg" alt="Blue Carpentries hex person logo with no text." class="figure mx-auto d-block"><div class="figcaption">You belong in The Carpentries!</div>
-</figure><div id="callout1" class="callout">
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code>NameError: name 'survey_data' is not defined</code></pre>
+</div>
+<p>Note that <code>axis="rows"</code> (or <code>"index"</code>, or
+<code>0</code>) is the default, so we don’t strictly need to include
+it.</p>
+</div>
+</div>
+</div>
+</div>
+<div id="callout4" class="callout">
 <div class="callout-square">
 <i class="callout-icon" data-feather="bell"></i>
 </div>
 <div class="callout-inner">
 <h3 class="callout-title">Callout</h3>
 <div class="callout-content">
-<p>Callout sections can highlight information.</p>
-<p>They are sometimes used to emphasise particularly important points
-but are also used in some lessons to present “asides”: content that is
-not central to the narrative of the lesson, e.g. by providing the answer
-to a commonly-asked question.</p>
+<p>Does dropping <code>NA</code>s disproportionately affect any subgroup
+(e.g., a particular country)? Consider whether that matters for your
+analysis.</p>
 </div>
 </div>
 </div>
-</section><section><h2 class="section-heading" id="math">Math<a class="anchor" aria-label="anchor" href="#math"></a>
+</section><section><h2 class="section-heading" id="use-value_counts-to-count-occurrences-of-categorical-variables">Use <code>value_counts</code> to count occurrences of categorical
+variables<a class="anchor" aria-label="anchor" href="#use-value_counts-to-count-occurrences-of-categorical-variables"></a>
 </h2>
 <hr class="half-width">
-<p>One of our episodes contains <span class="math inline">\(\LaTeX\)</span> equations when describing how to
-create dynamic reports with {knitr}, so we now use mathjax to describe
-this:</p>
-<p><code>$\alpha = \dfrac{1}{(1 - \beta)^2}$</code> becomes: <span class="math inline">\(\alpha = \dfrac{1}{(1 - \beta)^2}\)</span></p>
-<p>Cool, right?</p>
-<div id="keypoints1" class="callout keypoints">
-<div class="callout-square">
-<i class="callout-icon" data-feather="key"></i>
-</div>
-<div class="callout-inner">
-<h3 class="callout-title">Key Points</h3>
-<div class="callout-content">
-<ul>
-<li>Use <code>.md</code> files for episodes when you want static
-content</li>
-<li>Use <code>.Rmd</code> files for episodes when you need to generate
-output</li>
-<li>Run <code>sandpaper::check_lesson()</code> to identify any issues
-with your lesson</li>
-<li>Run <code>sandpaper::build_lesson()</code> to preview your lesson
-locally</li>
-</ul>
-</div>
-</div>
-</div>
-<!--
-Place links that you need to refer to multiple times across pages here. Delete
-any links that you are not going to use.
- -->
-</section></section><section id="aio-02-data-exploration"><p>Content from <a href="02-data-exploration.html">02 Data Exploration</a></p>
-<hr>
-<p>Last updated on 2025-07-06 |
-
-        <a href="https://github.com/charliejharrison/AISS-2025-content/edit/main/episodes/02-data-exploration.Rmd" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
-<div class="text-end">
-          <button role="button" aria-pressed="false" tabindex="0" id="expand-code" class="pull-right" data-expand="Expand All Solutions " data-collapse="Collapse All Solutions "> Expand All Solutions <i aria-hidden="true" data-feather="plus"></i></button>
-        </div>
-<div class="overview card">
-<h2 class="card-header">Overview</h2>
-<div class="row g-0">
-<div class="col-md-4">
-<div class="card-body">
-<div class="inner">
-<h3 class="card-title">Questions</h3>
-<ul>
-<li>What is <code>pandas</code> and why should I use it?</li>
-<li>What are some of the ways I can access data?</li>
-</ul>
-</div>
-</div>
-</div>
-<div class="col-md-8">
-<div class="card-body">
-<div class="inner bordered">
-<h3 class="card-title">Objectives</h3>
-<ul>
-<li>Know the difference between Series and DataFrames</li>
-<li>Uselabel- and position-based indexing with <code>loc</code> and
-<code>iloc</code>
-</li>
-</ul>
-</div>
-</div>
-</div>
-</div>
-</div>
-<section><h2 class="section-heading" id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
-</h2>
-<hr class="half-width">
-<p>This is a lesson created via The Carpentries Workbench. It is written
-in <a href="https://pandoc.org/MANUAL.html" class="external-link">Pandoc-flavored Markdown</a>
-for static files (with extension <code>.md</code>) and <a href="https://rmarkdown.rstudio.com/" class="external-link">R Markdown</a> for dynamic files
-that can render code into output (with extension <code>.Rmd</code>).
-Please refer to the <a href="https://carpentries.github.io/sandpaper-docs/" class="external-link">Introduction to The
-Carpentries Workbench</a> for full documentation.</p>
-<p>What you need to know is that there are three sections required for a
-valid Carpentries lesson template:</p>
-<ol style="list-style-type: decimal">
-<li>
-<code>questions</code> are displayed at the beginning of the episode
-to prime the learner for the content.</li>
-<li>
-<code>objectives</code> are the learning objectives for an episode
-displayed with the questions.</li>
-<li>
-<code>keypoints</code> are displayed at the end of the episode to
-reinforce the objectives.</li>
-</ol>
-<div id="challenge-1-can-you-do-it" class="callout challenge">
-<div class="callout-square">
-<i class="callout-icon" data-feather="zap"></i>
-</div>
-<div id="challenge-1-can-you-do-it" class="callout-inner">
-<h3 class="callout-title">Challenge 1: Can you do it?</h3>
-<div class="callout-content">
-<p>What is the output of this command?</p>
-<div class="codewrapper sourceCode" id="cb1">
-<h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+<p>Let’s get a sense of where the data is coming from. This is an
+American website, in English, so the top results shouldn’t be a
+surprise:</p>
+<div class="codewrapper sourceCode" id="cb33">
+<h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">paste</span><span class="op">(</span><span class="st">"This"</span>, <span class="st">"new"</span>, <span class="st">"lesson"</span>, <span class="st">"looks"</span>, <span class="st">"good"</span><span class="op">)</span></span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1" tabindex="-1"></a>survey_data[<span class="st">"Country"</span>].value_counts().head()</span></code></pre>
 </div>
-</div>
-</div>
-</div>
-<div id="accordionSolution1" class="accordion challenge-accordion accordion-flush">
-<div class="accordion-item">
-<button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
-  <h4 class="accordion-header" id="headingSolution1"> Output </h4>
-</button>
-<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
-<div class="accordion-body">
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="output" tabindex="0"><code>[1] "This new lesson looks good"</code></pre>
+<pre class="output" tabindex="0"><code>NameError: name 'survey_data' is not defined</code></pre>
 </div>
+<p>What about the age column?</p>
+<div class="codewrapper sourceCode" id="cb35">
+<h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb35-1"><a href="#cb35-1" tabindex="-1"></a>survey_data[<span class="st">"Age"</span>].value_counts()</span></code></pre>
 </div>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code>NameError: name 'survey_data' is not defined</code></pre>
 </div>
+<p>We want to know how income is distributed, but the income figures are
+in different currencies, and some people have additional income on top
+of their salaries, so we can’t compare directly. We’ll need to create a
+new feature from our existing data. Let’s see what currencies we’ve
+got.</p>
+<div class="codewrapper sourceCode" id="cb37">
+<h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb37-1"><a href="#cb37-1" tabindex="-1"></a>survey_data[<span class="st">"Currency"</span>].value_counts()</span></code></pre>
 </div>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code>NameError: name 'survey_data' is not defined</code></pre>
 </div>
-<div id="challenge-2-how-do-you-nest-solutions-within-challenge-blocks" class="callout challenge">
+<p><code>Currency</code> uses three letter codes. We can work with that
+to convert everyone’s earnings to the same currency using exchange rate
+data.</p>
+<p>But first, notice that we have 36 “Other”. Wouldn’t it be nice to see
+what those are?</p>
+</section><section><h2 class="section-heading" id="use-loc-with-boolean-masking-to-select-values-according-to-logical-rules">Use <code>loc[]</code> with boolean masking to select values
+according to logical rules<a class="anchor" aria-label="anchor" href="#use-loc-with-boolean-masking-to-select-values-according-to-logical-rules"></a>
+</h2>
+<hr class="half-width">
+<p>As well as labels, we can use <code>loc[]</code> to access data based
+on logical conditions. This is called boolean indexing or masking. First
+we create a mask:</p>
+<div class="codewrapper sourceCode" id="cb39">
+<h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb39-1"><a href="#cb39-1" tabindex="-1"></a>survey_data[<span class="st">"Currency"</span>] <span class="op">==</span> <span class="st">"Other"</span></span></code></pre>
+</div>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code>NameError: name 'survey_data' is not defined</code></pre>
+</div>
+<p>This is a Series of booleans with the same index as
+<code>survey_data</code>, containing True where the
+<code>Currency</code> column contains “Other” and False everywhere
+else.</p>
+<p>Then we pass that mask into <code>loc[]</code> to tell it which rows
+we want:</p>
+<div class="codewrapper sourceCode" id="cb41">
+<h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb41-1"><a href="#cb41-1" tabindex="-1"></a>survey_data.loc[survey_data[<span class="st">"Currency"</span>] <span class="op">==</span> <span class="st">"Other"</span>]</span></code></pre>
+</div>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code>NameError: name 'survey_data' is not defined</code></pre>
+</div>
+<p>But we’re really only interested in one column -
+<code>Currency - other</code>. We can pass that into <code>loc</code> as
+well to just get a Series containing the elements of interest, and then
+count the values like before:</p>
+<div class="codewrapper sourceCode" id="cb43">
+<h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb43-1"><a href="#cb43-1" tabindex="-1"></a>survey_data.loc[survey_data[<span class="st">"Currency"</span>] <span class="op">==</span> <span class="st">"Other"</span>, <span class="st">"Currency - other"</span>].value_counts()</span></code></pre>
+</div>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code>NameError: name 'survey_data' is not defined</code></pre>
+</div>
+<p>There aren’t many of each - 6 Singaporean Dollars, 5 Norwegian
+Kroners, 2 UAE Dirhams, etc. At this point we have to make a decision
+about how much we care about this fairly small number of values. We
+could decide it’s not worth the effort, but we’re going to be thorough
+and clean up these values, even though it’s a bit fiddly, because it’s a
+great chance to practice some more Pandas skills!</p>
+<p>Let’s tidy up the <code>Currency</code> column. The three letter
+codes in our <code>Currency - other</code> column look valid, so let’s
+copy them straight over to <code>Currency</code>.</p>
+<p>This is going to take a few steps: - find the rows where the length
+of the <code>Currency - other</code> field is 3 - capitalise them, to
+catch that pesky Swiss Franc (Sfr) - copy them to the
+<code>Currency</code> column in the same rows</p>
+</section><section><h2 class="section-heading" id="pandas-can-run-str-functions-on-string-columns">Pandas can run <code>str</code> functions on string columns<a class="anchor" aria-label="anchor" href="#pandas-can-run-str-functions-on-string-columns"></a>
+</h2>
+<hr class="half-width">
+<p>Finding the length of a string can be done efficiently with Pandas
+<code>str</code> package. To make a Series containing all the
+lengths:</p>
+<div class="codewrapper sourceCode" id="cb45">
+<h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb45-1"><a href="#cb45-1" tabindex="-1"></a>other_currency_len <span class="op">=</span> survey_data[<span class="st">"Currency - other"</span>].<span class="bu">str</span>.<span class="bu">len</span>()</span></code></pre>
+</div>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code>NameError: name 'survey_data' is not defined</code></pre>
+</div>
+<p>We can turn <code>curr_lengths</code> into a boolean mask like
+this:</p>
+<div class="codewrapper sourceCode" id="cb47">
+<h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb47-1"><a href="#cb47-1" tabindex="-1"></a>other_currency_len <span class="op">==</span> <span class="dv">3</span></span></code></pre>
+</div>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code>NameError: name 'other_currency_len' is not defined</code></pre>
+</div>
+<div id="challenge3" class="callout challenge">
 <div class="callout-square">
 <i class="callout-icon" data-feather="zap"></i>
 </div>
-<div id="challenge-2-how-do-you-nest-solutions-within-challenge-blocks" class="callout-inner">
-<h3 class="callout-title">Challenge 2: how do you nest solutions within challenge blocks?</h3>
+<div class="callout-inner">
+<h3 class="callout-title">Challenge</h3>
 <div class="callout-content">
-
+<p>Use boolean masking to find the values for <code>Currency</code>
+corresponding to answers to <code>Currency - other</code> that are
+exactly 3 characters long.</p>
+<p>As a simple but incomplete sanity check, we know they should all be
+“Other”!</p>
 </div>
 </div>
 </div>
-<div id="accordionSolution2" class="accordion challenge-accordion accordion-flush">
+<div id="accordionSolution3" class="accordion challenge-accordion accordion-flush">
 <div class="accordion-item">
-<button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution2" aria-expanded="false" aria-controls="collapseSolution2">
-  <h4 class="accordion-header" id="headingSolution2"> Show me the solution </h4>
+<button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution3" aria-expanded="false" aria-controls="collapseSolution3">
+  <h4 class="accordion-header" id="headingSolution3"> Show me the solution </h4>
 </button>
-<div id="collapseSolution2" class="accordion-collapse collapse" aria-labelledby="headingSolution2" data-bs-parent="#accordionSolution2">
+<div id="collapseSolution3" class="accordion-collapse collapse" data-bs-parent="#accordionSolution3" aria-labelledby="headingSolution3">
 <div class="accordion-body">
-<p>You can add a line with at least three colons and a
-<code>solution</code> tag.</p>
-</div>
-</div>
-</div>
-</div>
-</section><section><h2 class="section-heading" id="figures">Figures<a class="anchor" aria-label="anchor" href="#figures"></a>
-</h2>
-<hr class="half-width">
-<p>You can include figures generated from R Markdown:</p>
-<div class="codewrapper sourceCode" id="cb3">
-<h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+<div class="codewrapper sourceCode" id="cb49">
+<h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">pie</span><span class="op">(</span></span>
-<span>  <span class="fu">c</span><span class="op">(</span>Sky <span class="op">=</span> <span class="fl">78</span>, <span class="st">"Sunny side of pyramid"</span> <span class="op">=</span> <span class="fl">17</span>, <span class="st">"Shady side of pyramid"</span> <span class="op">=</span> <span class="fl">5</span><span class="op">)</span>, </span>
-<span>  init.angle <span class="op">=</span> <span class="fl">315</span>, </span>
-<span>  col <span class="op">=</span> <span class="fu">c</span><span class="op">(</span><span class="st">"deepskyblue"</span>, <span class="st">"yellow"</span>, <span class="st">"yellow3"</span><span class="op">)</span>, </span>
-<span>  border <span class="op">=</span> <span class="cn">FALSE</span></span>
-<span><span class="op">)</span></span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb49-1"><a href="#cb49-1" tabindex="-1"></a>survey_data.loc[other_currency_len <span class="op">==</span> <span class="dv">3</span>, <span class="st">"Currency"</span>]</span></code></pre>
 </div>
-<figure style="text-align: center"><img src="fig/02-data-exploration-rendered-pyramid-1.png" alt="pie chart illusion of a pyramid" class="figure mx-auto d-block"><figcaption>
-Sun arise each and every morning
-</figcaption></figure><p>Or you can use pandoc markdown for static figures with the following
-syntax:</p>
-<p><code>![optional caption that appears below the figure](figure url){alt='alt text for accessibility purposes'}</code></p>
-<figure><img src="https://raw.githubusercontent.com/carpentries/logo/master/Badge_Carpentries.svg" alt="Blue Carpentries hex person logo with no text." class="figure mx-auto d-block"><div class="figcaption">You belong in The Carpentries!</div>
-</figure></section><section><h2 class="section-heading" id="math">Math<a class="anchor" aria-label="anchor" href="#math"></a>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code>NameError: name 'survey_data' is not defined</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="challenge4" class="callout challenge">
+<div class="callout-square">
+<i class="callout-icon" data-feather="zap"></i>
+</div>
+<div class="callout-inner">
+<h3 class="callout-title">Challenge<em> (continued)</em>
+</h3>
+<div class="callout-content">
+<p>Can you figure out, or guess, how to make those elements all upper
+case?</p>
+</div>
+</div>
+</div>
+<div id="accordionSolution4" class="accordion challenge-accordion accordion-flush">
+<div class="accordion-item">
+<button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution4" aria-expanded="false" aria-controls="collapseSolution4">
+  <h4 class="accordion-header" id="headingSolution4"> Show me the solution </h4>
+</button>
+<div id="collapseSolution4" class="accordion-collapse collapse" data-bs-parent="#accordionSolution4" aria-labelledby="headingSolution4">
+<div class="accordion-body">
+<p>Use the function <code>str.upper()</code>:</p>
+<div class="codewrapper sourceCode" id="cb51">
+<h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb51-1"><a href="#cb51-1" tabindex="-1"></a>survey_data.loc[other_currency_len <span class="op">==</span> <span class="dv">3</span>, <span class="st">"Currency - other"</span>].<span class="bu">str</span>.upper()</span></code></pre>
+</div>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code>NameError: name 'survey_data' is not defined</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="challenge5" class="callout challenge">
+<div class="callout-square">
+<i class="callout-icon" data-feather="zap"></i>
+</div>
+<div class="callout-inner">
+<h3 class="callout-title">Challenge<em> (continued)</em>
+</h3>
+<div class="callout-content">
+<p>Finally, use those values to replace the original values in the
+<code>Currency</code> column.</p>
+</div>
+</div>
+</div>
+<div id="accordionSolution5" class="accordion challenge-accordion accordion-flush">
+<div class="accordion-item">
+<button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution5" aria-expanded="false" aria-controls="collapseSolution5">
+  <h4 class="accordion-header" id="headingSolution5"> Show me the solution </h4>
+</button>
+<div id="collapseSolution5" class="accordion-collapse collapse" data-bs-parent="#accordionSolution5" aria-labelledby="headingSolution5">
+<div class="accordion-body">
+<p>We have to make sure that we add the modified values to the right
+column:</p>
+<div class="codewrapper sourceCode" id="cb53">
+<h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb53-1"><a href="#cb53-1" tabindex="-1"></a>survey_data.loc[other_currency_len <span class="op">==</span> <span class="dv">3</span>, <span class="st">"Currency"</span>] <span class="op">=</span> survey_data.loc[other_currency_len <span class="op">==</span> <span class="dv">3</span>, <span class="st">"Currency - other"</span>].<span class="bu">str</span>.upper()</span></code></pre>
+</div>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code>NameError: name 'survey_data' is not defined</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<p>If we did those last few steps correctly, we should have far fewer
+“Other” values:</p>
+<div class="codewrapper sourceCode" id="cb55">
+<h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb55-1"><a href="#cb55-1" tabindex="-1"></a>survey_data.loc[survey_data[<span class="st">"Currency"</span>] <span class="op">==</span> <span class="st">"Other"</span>, <span class="st">"Currency - other"</span>].value_counts()</span></code></pre>
+</div>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code>NameError: name 'survey_data' is not defined</code></pre>
+</div>
+<p>Good. The last few we’ll have to do manually. Let’s assume that
+“Rupees” also refers to Indian rupees (and not Mauritius, Nepal,
+Pakistan, Sri Lanka, or any of the other countries with a currency
+called Rupees).</p>
+<div id="challenge6" class="callout challenge">
+<div class="callout-square">
+<i class="callout-icon" data-feather="zap"></i>
+</div>
+<div class="callout-inner">
+<h3 class="callout-title">Challenge</h3>
+<div class="callout-content">
+<p>Can you use what you’ve learned so far to fix the remaining values in
+the <code>Currency</code> column, based on the answers in the
+<code>Currency - other</code> column?</p>
+</div>
+</div>
+</div>
+<div id="accordionHint1" class="accordion challenge-accordion accordion-flush">
+<div class="accordion-item">
+<button class="accordion-button hint-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseHint1" aria-expanded="false" aria-controls="collapseHint1">
+  <h4 class="accordion-header" id="headingHint1"> Give me a hint </h4>
+</button>
+<div id="collapseHint1" class="accordion-collapse collapse" data-bs-parent="#accordionHint1" aria-labelledby="headingHint1">
+<div class="accordion-body">
+<p>You need to locate a single value, and set it to the desired value.
+First think about how to find the row you’re interested in. Then which
+column you want. Then pass both into <code>loc[]</code></p>
+</div>
+</div>
+</div>
+</div>
+<div id="accordionSolution6" class="accordion challenge-accordion accordion-flush">
+<div class="accordion-item">
+<button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution6" aria-expanded="false" aria-controls="collapseSolution6">
+  <h4 class="accordion-header" id="headingSolution6"> Show me the solution </h4>
+</button>
+<div id="collapseSolution6" class="accordion-collapse collapse" data-bs-parent="#accordionSolution6" aria-labelledby="headingSolution6">
+<div class="accordion-body">
+<p>Here’s the first one:</p>
+<div class="codewrapper sourceCode" id="cb57">
+<h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb57-1"><a href="#cb57-1" tabindex="-1"></a>survey_data.loc[survey_data[<span class="st">"Currency - other"</span>] <span class="op">==</span> <span class="st">"DKK (danish crowns)"</span>, <span class="st">"Currency"</span>] <span class="op">=</span> <span class="st">"DKK"</span></span></code></pre>
+</div>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code>NameError: name 'survey_data' is not defined</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="accordionSolution7" class="accordion challenge-accordion accordion-flush">
+<div class="accordion-item">
+<button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution7" aria-expanded="false" aria-controls="collapseSolution7">
+  <h4 class="accordion-header" id="headingSolution7"> Show me the solution </h4>
+</button>
+<div id="collapseSolution7" class="accordion-collapse collapse" data-bs-parent="#accordionSolution7" aria-labelledby="headingSolution7">
+<div class="accordion-body">
+<p>Here are the other two:</p>
+<div class="codewrapper sourceCode" id="cb59">
+<h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb59-1"><a href="#cb59-1" tabindex="-1"></a>survey_data.loc[survey_data[<span class="st">"Currency - other"</span>] <span class="op">==</span> <span class="st">"INR Indian Rupee"</span>, <span class="st">"Currency"</span>] <span class="op">=</span> <span class="st">"INR"</span></span></code></pre>
+</div>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code>NameError: name 'survey_data' is not defined</code></pre>
+</div>
+<div class="codewrapper sourceCode" id="cb61">
+<h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb61-1"><a href="#cb61-1" tabindex="-1"></a>survey_data.loc[survey_data[<span class="st">"Currency - other"</span>] <span class="op">==</span> <span class="st">"Rupees"</span>, <span class="st">"Currency"</span>] <span class="op">=</span> <span class="st">"INR"</span></span></code></pre>
+</div>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code>NameError: name 'survey_data' is not defined</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<p>OK, time to do the conversions. The U.K. government publishes average
+annual GBP exchange rates on its website. You can find the data from
+March 2025 in the file <code>data/average_csv_2025-3.csv</code>.</p>
+<div class="codewrapper sourceCode" id="cb63">
+<h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb63-1"><a href="#cb63-1" tabindex="-1"></a><span class="co"># Read the FX-rate file (average 2025 exchange rates)</span></span>
+<span id="cb63-2"><a href="#cb63-2" tabindex="-1"></a>gbp_conversions <span class="op">=</span> pd.read_csv(<span class="st">"data/average_csv_2025-3.csv"</span>, index_col<span class="op">=</span><span class="st">"Country"</span>)</span></code></pre>
+</div>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code>NameError: name 'pd' is not defined</code></pre>
+</div>
+<div class="codewrapper sourceCode" id="cb65">
+<h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb65-1"><a href="#cb65-1" tabindex="-1"></a>gbp_conversions.head()</span></code></pre>
+</div>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code>NameError: name 'gbp_conversions' is not defined</code></pre>
+</div>
+<div class="codewrapper sourceCode" id="cb67">
+<h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb67-1"><a href="#cb67-1" tabindex="-1"></a>gbp_conversions.columns</span></code></pre>
+</div>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code>NameError: name 'gbp_conversions' is not defined</code></pre>
+</div>
+<p>Let’s get this ready to map values from any currency into GBP: -
+we’re only interested in two columns: <code>Currency Code</code> and
+<code>Sterling value of Currency Unit £</code> - we can give these
+shorter names to save ourselves some typing - we want to look up values
+using the currency code, so we should set that as the index, and then
+it’s only one column that we’re interested in</p>
+<div class="codewrapper sourceCode" id="cb69">
+<h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb69-1"><a href="#cb69-1" tabindex="-1"></a>gbp_map <span class="op">=</span> gbp_conversions.loc[:, [<span class="st">"Currency Code"</span>, <span class="st">"Sterling value of Currency Unit £"</span>]]</span></code></pre>
+</div>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code>NameError: name 'gbp_conversions' is not defined</code></pre>
+</div>
+<div class="codewrapper sourceCode" id="cb71">
+<h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb71-1"><a href="#cb71-1" tabindex="-1"></a>gbp_map <span class="op">=</span> gbp_map.rename(columns<span class="op">=</span>{<span class="st">"Currency Code"</span>: <span class="st">"Currency"</span>, <span class="st">"Sterling value of Currency Unit £"</span>: <span class="st">"Exchange rate"</span>})</span></code></pre>
+</div>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code>NameError: name 'gbp_map' is not defined</code></pre>
+</div>
+<div class="codewrapper sourceCode" id="cb73">
+<h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb73-1"><a href="#cb73-1" tabindex="-1"></a>gbp_map <span class="op">=</span> gbp_map.set_index(<span class="st">"Currency"</span>)[<span class="st">"Exchange rate"</span>]</span></code></pre>
+</div>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code>NameError: name 'gbp_map' is not defined</code></pre>
+</div>
+<div class="codewrapper sourceCode" id="cb75">
+<h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb75-1"><a href="#cb75-1" tabindex="-1"></a>gbp_map</span></code></pre>
+</div>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code>NameError: name 'gbp_map' is not defined</code></pre>
+</div>
+</section><section><h2 class="section-heading" id="check-which-values-occur-in-a-series-with-isin">Check which values occur in a Series with <code>isin()</code>
+<a class="anchor" aria-label="anchor" href="#check-which-values-occur-in-a-series-with-isin"></a>
 </h2>
 <hr class="half-width">
-<p>One of our episodes contains <span class="math inline">\(\LaTeX\)</span> equations when describing how to
-create dynamic reports with {knitr}, so we now use mathjax to describe
-this:</p>
-<p><code>$\alpha = \dfrac{1}{(1 - \beta)^2}$</code> becomes: <span class="math inline">\(\alpha = \dfrac{1}{(1 - \beta)^2}\)</span></p>
-<p>Cool, right?</p>
+<p>Let’s check that all our currency codes appear in the exchange rate
+data.</p>
+<div class="codewrapper sourceCode" id="cb77">
+<h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb77-1"><a href="#cb77-1" tabindex="-1"></a>survey_data[<span class="st">"Currency"</span>].isin(gbp_map.index).mean()</span></code></pre>
+</div>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code>NameError: name 'survey_data' is not defined</code></pre>
+</div>
+<p>Only 95%! Let’s find the ones that are missing. We’ll need to use a
+logical operator for negation, <code>~</code>. This turns True to False
+and False to True.</p>
+<div class="codewrapper sourceCode" id="cb79">
+<h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb79-1"><a href="#cb79-1" tabindex="-1"></a>survey_data.loc[<span class="op">~</span>survey_data[<span class="st">"Currency"</span>].isin(gbp_map.index), <span class="st">"Currency"</span>].value_counts()</span></code></pre>
+</div>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code>NameError: name 'survey_data' is not defined</code></pre>
+</div>
+<p>That makes sense! The U.K. Government data doesn’t include a GBP-GBP
+exchange rate (we can probably work that one out in our heads).</p>
+<p>Let’s add it manually to make our calculations easier</p>
+<div class="codewrapper sourceCode" id="cb81">
+<h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb81-1"><a href="#cb81-1" tabindex="-1"></a>gbp_map.loc[<span class="st">"GBP"</span>] <span class="op">=</span> <span class="dv">1</span></span></code></pre>
+</div>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code>NameError: name 'gbp_map' is not defined</code></pre>
+</div>
+<p>We can use these conversions to put every salary in GBP. We’ll also
+need to add any additional compensation to get the total.</p>
+</section><section><h2 class="section-heading" id="use-map-to-efficiently-apply-a-function-to-every-element">Use <code>map()</code> to efficiently apply a function to every
+element<a class="anchor" aria-label="anchor" href="#use-map-to-efficiently-apply-a-function-to-every-element"></a>
+</h2>
+<hr class="half-width">
+<p>First let’s convert the salary and additional compensation columns.
+We can try to use <code>gbp_map</code> to get the exchange rates based
+on currency codes</p>
+<div class="codewrapper sourceCode" id="cb83">
+<h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb83-1"><a href="#cb83-1" tabindex="-1"></a>survey_data[<span class="st">"Currency"</span>].<span class="bu">map</span>(gbp_map)</span></code></pre>
+</div>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code>NameError: name 'survey_data' is not defined</code></pre>
+</div>
+<p>Uh oh! There’s a problem. Can you guess what’s happened here? It’s
+not obvious, but the error message gives a clue.</p>
+<div id="accordionSpoiler1" class="accordion spoiler-accordion accordion-flush">
+<div class="accordion-item">
+<button class="accordion-button spoiler-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSpoiler1" aria-expanded="false" aria-controls="collapseSpoiler1">
+  <h3 class="accordion-header" id="headingSpoiler1">  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="eye"></i></div> Show details </h3>
+</button>
+<div id="collapseSpoiler1" class="accordion-collapse collapse" data-bs-parent="#accordionSpoiler1" aria-labelledby="headingSpoiler1">
+<div class="accordion-body">
+<p>The exchange rates data contains some duplicate currencies, because
+some countries use the same currency (e.g. Bhutan uses INR). That means
+we have some duplciate values in the index, and Pandas doesn’t know
+which one we want - it doesn’t matter to Pandas that they’re the
+same!</p>
+<p>You can check this with</p>
+<div class="codewrapper sourceCode" id="cb85">
+<h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb85-1"><a href="#cb85-1" tabindex="-1"></a>gbp_map.index.value_counts()</span></code></pre>
+</div>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code>NameError: name 'gbp_map' is not defined</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section><section><h2 class="section-heading" id="remove-duplicate-values-with-drop_duplicates-or-duplicated">Remove duplicate values with <code>drop_duplicates()</code> or
+<code>duplicated()</code>
+<a class="anchor" aria-label="anchor" href="#remove-duplicate-values-with-drop_duplicates-or-duplicated"></a>
+</h2>
+<hr class="half-width">
+<p>As usual Pandas has a function that can help us here:
+<code>drop_duplicates()</code>. We need to remove duplicates from the
+<em>index</em>, not the values - otherwise we’d be removing currencies
+with the same rate, not necessarily the same code.</p>
+<p>We could use <code>drop_duplicates()</code> on the index, but we have
+no good way to map that back to the values. We can also use the
+<code>duplicated()</code> function on the index to find labels that are
+duplicated, and then use that to filter the DataFrame.</p>
+<div class="codewrapper sourceCode" id="cb87">
+<h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb87-1"><a href="#cb87-1" tabindex="-1"></a>gbp_map <span class="op">=</span> gbp_map[<span class="op">~</span>gbp_map.index.duplicated(keep<span class="op">=</span><span class="st">'first'</span>)]</span></code></pre>
+</div>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code>NameError: name 'gbp_map' is not defined</code></pre>
+</div>
+<p>There’s that negation operator again. We want to include labels that
+aren’t duplicated, so we use <code>~</code> to negate the boolean mask
+returned by <code>duplicated()</code>. We also told duplicated to ignore
+the first occurrence of each label with <code>keep='first'</code>.</p>
+<div class="codewrapper sourceCode" id="cb89">
+<h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb89-1"><a href="#cb89-1" tabindex="-1"></a>gbp_map.index.value_counts()</span></code></pre>
+</div>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code>NameError: name 'gbp_map' is not defined</code></pre>
+</div>
+<p>That’s better!</p>
+<p>Now we can use <code>map()</code> to convert the currency values to
+GBP:</p>
+<div class="codewrapper sourceCode" id="cb91">
+<h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb91-1"><a href="#cb91-1" tabindex="-1"></a>survey_data[<span class="st">"Currency"</span>].<span class="bu">map</span>(gbp_map)</span></code></pre>
+</div>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code>NameError: name 'survey_data' is not defined</code></pre>
+</div>
+<p>We can add new columns to our DataFrame containing the converted
+amounts. When we’re adding columns we should use <code>loc[]</code>:</p>
+<div class="codewrapper sourceCode" id="cb93">
+<h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb93-1"><a href="#cb93-1" tabindex="-1"></a>survey_data.loc[:, <span class="st">"Annual salary GBP"</span>] <span class="op">=</span> survey_data[<span class="st">"Annual salary"</span>] <span class="op">*</span> survey_data[<span class="st">"Currency"</span>].<span class="bu">map</span>(gbp_map)</span></code></pre>
+</div>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code>NameError: name 'survey_data' is not defined</code></pre>
+</div>
+<div class="codewrapper sourceCode" id="cb95">
+<h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb95-1"><a href="#cb95-1" tabindex="-1"></a>survey_data.loc[:, <span class="st">"Additional monetary compensation GBP"</span>] <span class="op">=</span> survey_data[<span class="st">"Additional monetary compensation"</span>] <span class="op">*</span> survey_data.loc[:, <span class="st">"Currency"</span>].<span class="bu">map</span>(gbp_map)</span></code></pre>
+</div>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code>NameError: name 'survey_data' is not defined</code></pre>
+</div>
+<div class="codewrapper sourceCode" id="cb97">
+<h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb97-1"><a href="#cb97-1" tabindex="-1"></a>survey_data.loc[:, <span class="st">"Total GBP"</span>] <span class="op">=</span> survey_data[<span class="st">"Annual salary GBP"</span>] <span class="op">+</span> survey_data[<span class="st">"Additional monetary compensation GBP"</span>]</span></code></pre>
+</div>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code>NameError: name 'survey_data' is not defined</code></pre>
+</div>
+<p>Now we’re finally ready to plot the distribution we’re interested in:
+a histogram of total compensation in GBP.</p>
+<div class="codewrapper sourceCode" id="cb99">
+<h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb99-1"><a href="#cb99-1" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span></code></pre>
+</div>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code>ModuleNotFoundError: No module named 'matplotlib'</code></pre>
+</div>
+<div class="codewrapper sourceCode" id="cb101">
+<h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb101-1"><a href="#cb101-1" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">8</span>,<span class="dv">5</span>))</span></code></pre>
+</div>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code>NameError: name 'plt' is not defined</code></pre>
+</div>
+<div class="codewrapper sourceCode" id="cb103">
+<h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb103-1"><a href="#cb103-1" tabindex="-1"></a>plt.hist(survey_data[<span class="st">"Total GBP"</span>], bins<span class="op">=</span><span class="dv">50</span>, edgecolor<span class="op">=</span><span class="st">'black'</span>)</span></code></pre>
+</div>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code>NameError: name 'plt' is not defined</code></pre>
+</div>
+<div class="codewrapper sourceCode" id="cb105">
+<h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb105-1"><a href="#cb105-1" tabindex="-1"></a>plt.show()</span></code></pre>
+</div>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code>NameError: name 'plt' is not defined</code></pre>
+</div>
+<p>Ah. Looks like almost all the values are condensed into a single
+band, but the axis range is huge, because someone claims to earn around
+£800 million.</p>
+<p>Let’s have a quick look at the stats. Explore the values with
+describe:</p>
+<div class="codewrapper sourceCode" id="cb107">
+<h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb107-1"><a href="#cb107-1" tabindex="-1"></a>survey_data[<span class="st">"Total GBP"</span>].describe()</span></code></pre>
+</div>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code>NameError: name 'survey_data' is not defined</code></pre>
+</div>
+<div id="challenge7" class="callout challenge">
+<div class="callout-square">
+<i class="callout-icon" data-feather="zap"></i>
+</div>
+<div class="callout-inner">
+<h3 class="callout-title">Challenge</h3>
+<div class="callout-content">
+<p>Can you pull out the row containing the maximum value of
+<code>Total GBP</code> and print it as a column?</p>
+</div>
+</div>
+</div>
+<div id="accordionHint2" class="accordion challenge-accordion accordion-flush">
+<div class="accordion-item">
+<button class="accordion-button hint-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseHint2" aria-expanded="false" aria-controls="collapseHint2">
+  <h4 class="accordion-header" id="headingHint2"> Give me a hint </h4>
+</button>
+<div id="collapseHint2" class="accordion-collapse collapse" data-bs-parent="#accordionHint2" aria-labelledby="headingHint2">
+<div class="accordion-body">
+<p>You can use <code>survey_data["Total GBP"].max()</code> to find the
+maximum value, and then use <code>loc[]</code> to select the row with
+that value.</p>
+</div>
+</div>
+</div>
+</div>
+<div id="accordionHint3" class="accordion challenge-accordion accordion-flush">
+<div class="accordion-item">
+<button class="accordion-button hint-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseHint3" aria-expanded="false" aria-controls="collapseHint3">
+  <h4 class="accordion-header" id="headingHint3"> Give me a hint </h4>
+</button>
+<div id="collapseHint3" class="accordion-collapse collapse" data-bs-parent="#accordionHint3" aria-labelledby="headingHint3">
+<div class="accordion-body">
+<p>Use <code>T</code> to flip the orientation from a row to a column</p>
+</div>
+</div>
+</div>
+</div>
+<div id="accordionSolution8" class="accordion challenge-accordion accordion-flush">
+<div class="accordion-item">
+<button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution8" aria-expanded="false" aria-controls="collapseSolution8">
+  <h4 class="accordion-header" id="headingSolution8"> Show me the solution </h4>
+</button>
+<div id="collapseSolution8" class="accordion-collapse collapse" data-bs-parent="#accordionSolution8" aria-labelledby="headingSolution8">
+<div class="accordion-body">
+<div class="codewrapper sourceCode" id="cb109">
+<h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb109-1"><a href="#cb109-1" tabindex="-1"></a>survey_data.loc[survey_data[<span class="st">"Total GBP"</span>] <span class="op">==</span> survey_data[<span class="st">"Total GBP"</span>].<span class="bu">max</span>()].T</span></code></pre>
+</div>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code>NameError: name 'survey_data' is not defined</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section><section><h2 class="section-heading" id="remove-outliers">Remove outliers<a class="anchor" aria-label="anchor" href="#remove-outliers"></a>
+</h2>
+<hr class="half-width">
+<p>A property and construction program manager for a hospitality and
+events company on a salary of $1 billion seems unlikely to me. How does
+it compare to the next few largest values?</p>
+<div class="codewrapper sourceCode" id="cb111">
+<h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb111-1"><a href="#cb111-1" tabindex="-1"></a><span class="co"># get the highest five values in Total GBP</span></span>
+<span id="cb111-2"><a href="#cb111-2" tabindex="-1"></a>survey_data.sort_values(<span class="st">"Total GBP"</span>, ascending<span class="op">=</span><span class="va">False</span>).head(<span class="dv">15</span>)</span></code></pre>
+</div>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code>NameError: name 'survey_data' is not defined</code></pre>
+</div>
+<p>The max is more than 10 times the next largest value. I think we can
+safely delete at least the largest row, and maybe anything else over,
+say, £1 million.</p>
+<div class="codewrapper sourceCode" id="cb113">
+<h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb113-1"><a href="#cb113-1" tabindex="-1"></a>survey_data <span class="op">=</span> survey_data[survey_data[<span class="st">"Total GBP"</span>] <span class="op">&lt;</span> <span class="fl">1e6</span>]</span></code></pre>
+</div>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code>NameError: name 'survey_data' is not defined</code></pre>
+</div>
+<div id="callout5" class="callout">
+<div class="callout-square">
+<i class="callout-icon" data-feather="bell"></i>
+</div>
+<div class="callout-inner">
+<h3 class="callout-title">Callout</h3>
+<div class="callout-content">
+<p>Survey data, particularly when collected online, is notoriously
+noisy. Some people are stupid, some peopel make mistakes, and some just
+like to mess with surveys. As a results, there is usually a reasonable
+percentage of responses that can’t be trusted. If you’re lucky, these
+are obvious.</p>
+<p>This is sometimes know as the “Lizardman Factor” or “Lizardman’s
+constant”, named after a 2012 survey that found that 4% of people
+believed that shape-shifting reptilian people have taken on human form
+and now control our world.</p>
+</div>
+</div>
+</div>
+<p>Let’s check the distribution again, now that we’ve removed the
+outliers:</p>
+<div class="codewrapper sourceCode" id="cb115">
+<h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb115-1"><a href="#cb115-1" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">8</span>,<span class="dv">5</span>))</span></code></pre>
+</div>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code>NameError: name 'plt' is not defined</code></pre>
+</div>
+<div class="codewrapper sourceCode" id="cb117">
+<h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb117-1"><a href="#cb117-1" tabindex="-1"></a>plt.hist(survey_data[<span class="st">"Total GBP"</span>], bins<span class="op">=</span><span class="dv">50</span>, edgecolor<span class="op">=</span><span class="st">'black'</span>)</span></code></pre>
+</div>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code>NameError: name 'plt' is not defined</code></pre>
+</div>
+<div class="codewrapper sourceCode" id="cb119">
+<h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb119-1"><a href="#cb119-1" tabindex="-1"></a>plt.show()</span></code></pre>
+</div>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code>NameError: name 'plt' is not defined</code></pre>
+</div>
+<p>That’s better! We can see a more reasonable distribution of salaries,
+with a long thiin tail towards the top end.</p>
+</section><section><h2 class="section-heading" id="compare-salaries-by-country-using-groupby">Compare salaries by country using <code>groupby()</code>
+<a class="anchor" aria-label="anchor" href="#compare-salaries-by-country-using-groupby"></a>
+</h2>
+<hr class="half-width">
+<p>Let’s look at the average salary by country. We’ll use
+<code>groupby()</code> to group the data by country, and then calculate
+the mean of the total compensation for each group.</p>
+<div class="codewrapper sourceCode" id="cb121">
+<h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb121-1"><a href="#cb121-1" tabindex="-1"></a>country_salary <span class="op">=</span> survey_data.groupby(<span class="st">"Country"</span>)[<span class="st">"Total GBP"</span>].mean().sort_values(ascending<span class="op">=</span><span class="va">False</span>)</span></code></pre>
+</div>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code>NameError: name 'survey_data' is not defined</code></pre>
+</div>
+<div class="codewrapper sourceCode" id="cb123">
+<h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb123-1"><a href="#cb123-1" tabindex="-1"></a>country_salary</span></code></pre>
+</div>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code>NameError: name 'country_salary' is not defined</code></pre>
+</div>
+<p>We can plot this as a bar chart to make it easier to see the
+differences:</p>
+<div class="codewrapper sourceCode" id="cb125">
+<h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb125-1"><a href="#cb125-1" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">10</span>,<span class="dv">10</span>), layout<span class="op">=</span><span class="st">"constrained"</span>)</span></code></pre>
+</div>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code>NameError: name 'plt' is not defined</code></pre>
+</div>
+<div class="codewrapper sourceCode" id="cb127">
+<h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb127-1"><a href="#cb127-1" tabindex="-1"></a>country_salary.plot(kind<span class="op">=</span><span class="st">'barh'</span>)</span></code></pre>
+</div>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code>NameError: name 'country_salary' is not defined</code></pre>
+</div>
+<div class="codewrapper sourceCode" id="cb129">
+<h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb129-1"><a href="#cb129-1" tabindex="-1"></a>plt.yticks(fontsize<span class="op">=</span><span class="dv">4</span>)</span></code></pre>
+</div>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code>NameError: name 'plt' is not defined</code></pre>
+</div>
+<div class="codewrapper sourceCode" id="cb131">
+<h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb131-1"><a href="#cb131-1" tabindex="-1"></a>plt.layout()</span></code></pre>
+</div>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code>NameError: name 'plt' is not defined</code></pre>
+</div>
+<div class="codewrapper sourceCode" id="cb133">
+<h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb133-1"><a href="#cb133-1" tabindex="-1"></a>plt.show()</span></code></pre>
+</div>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code>NameError: name 'plt' is not defined</code></pre>
+</div>
+<p>We can see that a lot of the countries have been entered manually, so
+the data is messy. We won’t clean these up now. Note that in a rigorous
+analysis you would want to normalise for cost of living,
+purchasing-power parity (PPP), and so on.</p>
+</section><section><h2 class="section-heading" id="use-groupby-to-perform-calculations-on-groups-of-data">Use <code>groupby()</code> to perform calculations on groups of
+data<a class="anchor" aria-label="anchor" href="#use-groupby-to-perform-calculations-on-groups-of-data"></a>
+</h2>
+<hr class="half-width">
+<p>Let’s move onto our next question: - Do unionised jobs earn more or
+less than non-unionised?</p>
+<div class="codewrapper sourceCode" id="cb135">
+<h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb135-1"><a href="#cb135-1" tabindex="-1"></a>union_salary <span class="op">=</span> survey_data.groupby(<span class="st">"Unionized?"</span>)[<span class="st">"Total GBP"</span>].mean()</span></code></pre>
+</div>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code>NameError: name 'survey_data' is not defined</code></pre>
+</div>
+<div class="codewrapper sourceCode" id="cb137">
+<h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb137-1"><a href="#cb137-1" tabindex="-1"></a>union_salary</span></code></pre>
+</div>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code>NameError: name 'union_salary' is not defined</code></pre>
+</div>
+<p>At first glance, the unionised jobs earn less Let’s look in more
+detail with a box plot.</p>
+<div class="codewrapper sourceCode" id="cb139">
+<h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb139-1"><a href="#cb139-1" tabindex="-1"></a><span class="co"># plot a box-and-whisker diagram of the total compensation by union status</span></span>
+<span id="cb139-2"><a href="#cb139-2" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">6</span>,<span class="dv">4</span>))</span></code></pre>
+</div>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code>NameError: name 'plt' is not defined</code></pre>
+</div>
+<div class="codewrapper sourceCode" id="cb141">
+<h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb141-1"><a href="#cb141-1" tabindex="-1"></a>survey_data.boxplot(</span>
+<span id="cb141-2"><a href="#cb141-2" tabindex="-1"></a>  by<span class="op">=</span><span class="st">"Unionized?"</span>,</span>
+<span id="cb141-3"><a href="#cb141-3" tabindex="-1"></a>  column<span class="op">=</span><span class="st">"Total GBP"</span>,</span>
+<span id="cb141-4"><a href="#cb141-4" tabindex="-1"></a>)</span></code></pre>
+</div>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code>NameError: name 'survey_data' is not defined</code></pre>
+</div>
+<div class="codewrapper sourceCode" id="cb143">
+<h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb143-1"><a href="#cb143-1" tabindex="-1"></a>plt.show()</span></code></pre>
+</div>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code>NameError: name 'plt' is not defined</code></pre>
+</div>
+<p>That seems to hold up. We could run some statistical tests to figure
+out for sure, but let’s move on.</p>
+</section><section><h2 class="section-heading" id="use-ordinalencoder-for-features-that-have-an-implicit-order">Use <code>OrdinalEncoder()</code> for features that have an implicit
+order<a class="anchor" aria-label="anchor" href="#use-ordinalencoder-for-features-that-have-an-implicit-order"></a>
+</h2>
+<hr class="half-width">
+<p>Our next question was: - Does salary go up with age, years of
+experience, and education level?</p>
+<p>Salary is a numeric variable, but age, years of experience, and
+education level are all categorical variables with an implicit order. We
+can use the <code>OrdinalEncoder</code> from scikit-learn to convert
+these into numeric values that we can use in our analysis.</p>
+<p>OrdinalEncoder is slightly more complicated than the LabelEncoder we
+saw on Day 1. We want to specify the order of our categories to respect
+the underlying order, so we have to manually define the categories based
+on what we know about the data:</p>
+<div class="codewrapper sourceCode" id="cb145">
+<h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb145-1"><a href="#cb145-1" tabindex="-1"></a>ordinal_cols <span class="op">=</span> [<span class="st">"Age"</span>, <span class="st">"Years of experience"</span>, <span class="st">"Years in field"</span>, <span class="st">"Highest level of education"</span>]</span>
+<span id="cb145-2"><a href="#cb145-2" tabindex="-1"></a><span class="cf">for</span> col <span class="kw">in</span> ordinal_cols:</span>
+<span id="cb145-3"><a href="#cb145-3" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>col<span class="sc">}</span><span class="ss">:</span><span class="ch">\n</span><span class="sc">{</span>survey_data[col]<span class="sc">.</span>value_counts()<span class="sc">}</span><span class="ch">\n</span><span class="ss">"</span>)</span></code></pre>
+</div>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code>NameError: name 'survey_data' is not defined</code></pre>
+</div>
+<ul>
+<li>The categories for the two “Years…” columns are the same.</li>
+<li>The Education columns accepts free text, so it has lots of rare
+answers as well as the 7 default options. Let’s ignore all but the top
+7</li>
+</ul>
+<div class="codewrapper sourceCode" id="cb147">
+<h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb147-1"><a href="#cb147-1" tabindex="-1"></a>age_category <span class="op">=</span> [<span class="st">"under 18"</span>, <span class="st">"18-24"</span>, <span class="st">"25-34"</span>, <span class="st">"35-44"</span>, <span class="st">"45-54"</span>, <span class="st">"55-64"</span>, <span class="st">"65 or over"</span>]</span>
+<span id="cb147-2"><a href="#cb147-2" tabindex="-1"></a></span>
+<span id="cb147-3"><a href="#cb147-3" tabindex="-1"></a>experience_category <span class="op">=</span> [</span>
+<span id="cb147-4"><a href="#cb147-4" tabindex="-1"></a>    <span class="st">"1 year or less"</span>, </span>
+<span id="cb147-5"><a href="#cb147-5" tabindex="-1"></a>    <span class="st">"2-4 years"</span>, </span>
+<span id="cb147-6"><a href="#cb147-6" tabindex="-1"></a>    <span class="st">"5-7 years"</span>, </span>
+<span id="cb147-7"><a href="#cb147-7" tabindex="-1"></a>    <span class="st">"8-10 years"</span>, </span>
+<span id="cb147-8"><a href="#cb147-8" tabindex="-1"></a>    <span class="st">"11-20 years"</span>, </span>
+<span id="cb147-9"><a href="#cb147-9" tabindex="-1"></a>    <span class="st">"21-30 years"</span>, </span>
+<span id="cb147-10"><a href="#cb147-10" tabindex="-1"></a>    <span class="st">"31-40 years"</span>, </span>
+<span id="cb147-11"><a href="#cb147-11" tabindex="-1"></a>    <span class="st">"41 years or more"</span>,</span>
+<span id="cb147-12"><a href="#cb147-12" tabindex="-1"></a>]</span>
+<span id="cb147-13"><a href="#cb147-13" tabindex="-1"></a></span>
+<span id="cb147-14"><a href="#cb147-14" tabindex="-1"></a>education_category <span class="op">=</span> [</span>
+<span id="cb147-15"><a href="#cb147-15" tabindex="-1"></a>    <span class="st">"Less than secondary"</span>,</span>
+<span id="cb147-16"><a href="#cb147-16" tabindex="-1"></a>    <span class="st">"High school / secondary"</span>,</span>
+<span id="cb147-17"><a href="#cb147-17" tabindex="-1"></a>    <span class="st">"Some college"</span>,</span>
+<span id="cb147-18"><a href="#cb147-18" tabindex="-1"></a>    <span class="st">"Bachelor's degree"</span>,</span>
+<span id="cb147-19"><a href="#cb147-19" tabindex="-1"></a>    <span class="st">"Master's degree"</span>,</span>
+<span id="cb147-20"><a href="#cb147-20" tabindex="-1"></a>    <span class="st">"Professional degree (JD, MD, etc.)"</span>,</span>
+<span id="cb147-21"><a href="#cb147-21" tabindex="-1"></a>    <span class="st">"Doctorate"</span>,</span>
+<span id="cb147-22"><a href="#cb147-22" tabindex="-1"></a>]</span></code></pre>
+</div>
+<p>We can then create an OrdinalEncoder with these categories:</p>
+<div class="codewrapper sourceCode" id="cb148">
+<h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb148-1"><a href="#cb148-1" tabindex="-1"></a><span class="im">from</span> sklearn.preprocessing <span class="im">import</span> OrdinalEncoder</span></code></pre>
+</div>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code>ModuleNotFoundError: No module named 'sklearn'</code></pre>
+</div>
+<div class="codewrapper sourceCode" id="cb150">
+<h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb150-1"><a href="#cb150-1" tabindex="-1"></a>ordinal_encoder <span class="op">=</span> OrdinalEncoder(categories<span class="op">=</span>[age_category, experience_category, experience_category, education_category])</span></code></pre>
+</div>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code>NameError: name 'OrdinalEncoder' is not defined</code></pre>
+</div>
+<p>Now we can use this encoder to transform the ordinal columns in our
+DataFrame. We’ll apply it to the columns <code>age</code>,
+<code>years_experience</code>, and
+<code>highest_level_of_education</code>, and save this data in a new
+dataframe. We’ll also add the numeric data columns. And let’s not forget
+to ignore the rows that contain the less common education answers!</p>
+<div class="codewrapper sourceCode" id="cb152">
+<h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb152-1"><a href="#cb152-1" tabindex="-1"></a>ordinal_cols <span class="op">=</span> [<span class="st">"Age"</span>, <span class="st">"Years of experience"</span>, <span class="st">"Years in field"</span>, <span class="st">"Highest level of education"</span>]</span>
+<span id="cb152-2"><a href="#cb152-2" tabindex="-1"></a></span>
+<span id="cb152-3"><a href="#cb152-3" tabindex="-1"></a>survey_data_standard_education <span class="op">=</span> survey_data[survey_data[<span class="st">"Highest level of education"</span>].isin(education_category)]</span></code></pre>
+</div>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code>NameError: name 'survey_data' is not defined</code></pre>
+</div>
+<div class="codewrapper sourceCode" id="cb154">
+<h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb154-1"><a href="#cb154-1" tabindex="-1"></a>survey_data_encoded <span class="op">=</span> survey_data_standard_education[[<span class="st">"Annual salary GBP"</span>, <span class="st">"Additional monetary compensation GBP"</span>, <span class="st">"Total GBP"</span>]].copy()</span></code></pre>
+</div>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code>NameError: name 'survey_data_standard_education' is not defined</code></pre>
+</div>
+<div class="codewrapper sourceCode" id="cb156">
+<h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb156-1"><a href="#cb156-1" tabindex="-1"></a>survey_data_encoded[ordinal_cols] <span class="op">=</span> ordinal_encoder.fit_transform(survey_data_standard_education[ordinal_cols])</span></code></pre>
+</div>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code>NameError: name 'ordinal_encoder' is not defined</code></pre>
+</div>
+</section><section><h2 class="section-heading" id="calculate-correlations-with-dataframe-corr">Calculate correlations with <code>DataFrame.corr()</code>
+<a class="anchor" aria-label="anchor" href="#calculate-correlations-with-dataframe-corr"></a>
+</h2>
+<hr class="half-width">
+<p>Let’s calculate the correlations and see the relationships between
+these variables. We can calculate the correlation matrix with
+<code>corr()</code>, and visualise the results in a heatmap with
+<code>imshow()</code>:</p>
+<div class="codewrapper sourceCode" id="cb158">
+<h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb158-1"><a href="#cb158-1" tabindex="-1"></a><span class="co"># Calculate the correlation matrix</span></span>
+<span id="cb158-2"><a href="#cb158-2" tabindex="-1"></a>correlation_matrix <span class="op">=</span> survey_data_encoded.corr()</span></code></pre>
+</div>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code>NameError: name 'survey_data_encoded' is not defined</code></pre>
+</div>
+<div class="codewrapper sourceCode" id="cb160">
+<h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb160-1"><a href="#cb160-1" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">8</span>), layout<span class="op">=</span><span class="st">"constrained"</span>)</span></code></pre>
+</div>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code>NameError: name 'plt' is not defined</code></pre>
+</div>
+<div class="codewrapper sourceCode" id="cb162">
+<h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb162-1"><a href="#cb162-1" tabindex="-1"></a>heatmap <span class="op">=</span> ax.imshow(correlation_matrix, cmap<span class="op">=</span><span class="st">'coolwarm'</span>)</span></code></pre>
+</div>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code>NameError: name 'ax' is not defined</code></pre>
+</div>
+<div class="codewrapper sourceCode" id="cb164">
+<h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb164-1"><a href="#cb164-1" tabindex="-1"></a>ax.set_xticks(<span class="bu">range</span>(<span class="bu">len</span>(correlation_matrix.columns)))</span></code></pre>
+</div>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code>NameError: name 'ax' is not defined</code></pre>
+</div>
+<div class="codewrapper sourceCode" id="cb166">
+<h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb166-1"><a href="#cb166-1" tabindex="-1"></a>ax.set_yticks(<span class="bu">range</span>(<span class="bu">len</span>(correlation_matrix.columns)))</span></code></pre>
+</div>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code>NameError: name 'ax' is not defined</code></pre>
+</div>
+<div class="codewrapper sourceCode" id="cb168">
+<h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb168-1"><a href="#cb168-1" tabindex="-1"></a>ax.set_xticklabels(correlation_matrix.columns, rotation<span class="op">=</span><span class="dv">45</span>, ha<span class="op">=</span><span class="st">'right'</span>)</span></code></pre>
+</div>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code>NameError: name 'ax' is not defined</code></pre>
+</div>
+<div class="codewrapper sourceCode" id="cb170">
+<h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb170-1"><a href="#cb170-1" tabindex="-1"></a>ax.set_yticklabels(correlation_matrix.columns)</span></code></pre>
+</div>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code>NameError: name 'ax' is not defined</code></pre>
+</div>
+<div class="codewrapper sourceCode" id="cb172">
+<h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb172-1"><a href="#cb172-1" tabindex="-1"></a>fig.colorbar(heatmap, ax<span class="op">=</span>ax, orientation<span class="op">=</span><span class="st">'vertical'</span>, label<span class="op">=</span><span class="st">'Correlation Coefficient'</span>)</span></code></pre>
+</div>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code>NameError: name 'fig' is not defined</code></pre>
+</div>
+<div class="codewrapper sourceCode" id="cb174">
+<h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb174-1"><a href="#cb174-1" tabindex="-1"></a>plt.show()</span></code></pre>
+</div>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code>NameError: name 'plt' is not defined</code></pre>
+</div>
+<p>This shows some interesting patterns. What do you notice?</p>
+<div id="accordionSpoiler2" class="accordion spoiler-accordion accordion-flush">
+<div class="accordion-item">
+<button class="accordion-button spoiler-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSpoiler2" aria-expanded="false" aria-controls="collapseSpoiler2">
+  <h3 class="accordion-header" id="headingSpoiler2">  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="eye"></i></div> Show details </h3>
+</button>
+<div id="collapseSpoiler2" class="accordion-collapse collapse" data-bs-parent="#accordionSpoiler2" aria-labelledby="headingSpoiler2">
+<div class="accordion-body">
+<ul>
+<li>The strongest correlation is between <code>Annual salary GBP</code>
+and <code>Total GBP</code>
+</li>
+<li>
+<code>Additional monetary compensation GBP</code> is correlated with
+<code>Total GBP</code>, but its contribution is weaker than the
+salary</li>
+<li>
+<code>Annual salary</code> and
+<code>Additional monetary compensation GBP</code> are at best weakly
+correlated with each other</li>
+<li>The time fields, Age, Years of experience, and Years in field, form
+a cluster</li>
+<li>There appears to be no relationship between any of the time factors
+and the compensation factors</li>
+<li>Education level is not correlated with anything</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<p>Now let’s plot the relationships between these variables.</p>
+<div class="codewrapper sourceCode" id="cb176">
+<h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb176-1"><a href="#cb176-1" tabindex="-1"></a><span class="co"># Use matplotlib to plot Total compensation GBP against the other columns in survey_data_encoded</span></span>
+<span id="cb176-2"><a href="#cb176-2" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span></code></pre>
+</div>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code>ModuleNotFoundError: No module named 'matplotlib'</code></pre>
+</div>
+<div class="codewrapper sourceCode" id="cb178">
+<h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb178-1"><a href="#cb178-1" tabindex="-1"></a>fig, axs <span class="op">=</span> plt.subplots(<span class="dv">2</span>, <span class="dv">3</span>, figsize<span class="op">=</span>(<span class="dv">20</span>, <span class="dv">10</span>), layout<span class="op">=</span><span class="st">"constrained"</span>)</span></code></pre>
+</div>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code>NameError: name 'plt' is not defined</code></pre>
+</div>
+<div class="codewrapper sourceCode" id="cb180">
+<h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb180-1"><a href="#cb180-1" tabindex="-1"></a><span class="kw">def</span> scatter_plot(ax, x_col, y_col, title):</span>
+<span id="cb180-2"><a href="#cb180-2" tabindex="-1"></a>    ax.scatter(survey_data_encoded[x_col], survey_data_encoded[y_col], alpha<span class="op">=</span><span class="fl">0.5</span>)</span>
+<span id="cb180-3"><a href="#cb180-3" tabindex="-1"></a>    ax.set_xlabel(x_col.replace(<span class="st">"_"</span>, <span class="st">" "</span>).title())</span>
+<span id="cb180-4"><a href="#cb180-4" tabindex="-1"></a>    ax.set_ylabel(y_col.replace(<span class="st">"_"</span>, <span class="st">" "</span>).title())</span>
+<span id="cb180-5"><a href="#cb180-5" tabindex="-1"></a>    ax.set_title(title)</span>
+<span id="cb180-6"><a href="#cb180-6" tabindex="-1"></a>    </span>
+<span id="cb180-7"><a href="#cb180-7" tabindex="-1"></a>scatter_plot(axs[<span class="dv">0</span>, <span class="dv">0</span>], <span class="st">"Age"</span>, <span class="st">"Total GBP"</span>, <span class="st">"Total compensation vs. Age"</span>)</span></code></pre>
+</div>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code>NameError: name 'axs' is not defined</code></pre>
+</div>
+<div class="codewrapper sourceCode" id="cb182">
+<h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb182-1"><a href="#cb182-1" tabindex="-1"></a>scatter_plot(axs[<span class="dv">0</span>, <span class="dv">1</span>], <span class="st">"Years of experience"</span>, <span class="st">"Total GBP"</span>, <span class="st">"Total compensation vs. Years of experience"</span>)</span></code></pre>
+</div>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code>NameError: name 'axs' is not defined</code></pre>
+</div>
+<div class="codewrapper sourceCode" id="cb184">
+<h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb184-1"><a href="#cb184-1" tabindex="-1"></a>scatter_plot(axs[<span class="dv">0</span>, <span class="dv">2</span>], <span class="st">"Years in field"</span>, <span class="st">"Total GBP"</span>, <span class="st">"Total compensation vs. Years in field"</span>)</span></code></pre>
+</div>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code>NameError: name 'axs' is not defined</code></pre>
+</div>
+<div class="codewrapper sourceCode" id="cb186">
+<h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb186-1"><a href="#cb186-1" tabindex="-1"></a>scatter_plot(axs[<span class="dv">1</span>, <span class="dv">0</span>], <span class="st">"Highest level of education"</span>, <span class="st">"Total GBP"</span>, <span class="st">"Total compensation vs. Education level"</span>)</span></code></pre>
+</div>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code>NameError: name 'axs' is not defined</code></pre>
+</div>
+<div class="codewrapper sourceCode" id="cb188">
+<h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb188-1"><a href="#cb188-1" tabindex="-1"></a>scatter_plot(axs[<span class="dv">1</span>, <span class="dv">1</span>], <span class="st">"Additional monetary compensation GBP"</span>, <span class="st">"Annual salary GBP"</span>, <span class="st">"Additional compensation vs. Annual salary"</span>)</span></code></pre>
+</div>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code>NameError: name 'axs' is not defined</code></pre>
+</div>
+<div class="codewrapper sourceCode" id="cb190">
+<h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb190-1"><a href="#cb190-1" tabindex="-1"></a>scatter_plot(axs[<span class="dv">1</span>, <span class="dv">2</span>], <span class="st">"Additional monetary compensation GBP"</span>, <span class="st">"Total GBP"</span>, <span class="st">"Total compensation vs. Annual salary"</span>)</span></code></pre>
+</div>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code>NameError: name 'axs' is not defined</code></pre>
+</div>
+<div class="codewrapper sourceCode" id="cb192">
+<h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb192-1"><a href="#cb192-1" tabindex="-1"></a>plt.show()</span></code></pre>
+</div>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code>NameError: name 'plt' is not defined</code></pre>
+</div>
+<p>Looking again at the relationship between salary and additional
+income, we can see that there is more structure than we might have
+thought at first. It looks like there are two trends: people with the
+highest incomes are less likely to have additional income; and as
+additional income goes up, salary increases slightly. We can’t tell any
+of this from the correlation alone.</p>
+<div id="callout6" class="callout">
+<div class="callout-square">
+<i class="callout-icon" data-feather="bell"></i>
+</div>
+<div class="callout-inner">
+<h3 class="callout-title">Callout</h3>
+<div class="callout-content">
+<p>Correlations and summary statistics are useful and powerful, but they
+can be misleading.</p>
+<p>This is Anscombe’s quartet, a set of four datasets that have
+identical mean, variance, correlation and regression, but resoundingly
+varied structure.</p>
+<p><img src="fig/Anscombes_quartet_3.svg" alt="Correlation can be misleading" class="figure">{alt=‘Image of Anscombe’s quartet,
+showing four datasets with the same correlation but very different
+structures’} Attribution: Schutz(label using subscripts): Avenue -
+Anscombe.svg, CC BY-SA 3.0, <a href="https://commons.wikimedia.org/w/index.php?curid=9838454" class="external-link uri">https://commons.wikimedia.org/w/index.php?curid=9838454</a></p>
+<figure><img src="fig/datasaurus_dozen.png" alt="Image of the Datasaurus Dozen, a set of 12 datasets with the same summary statistics but very, very different structures!" class="figure mx-auto d-block"><div class="figcaption">And this is the Datasaurus Dozen!</div>
+</figure>
+</div>
+</div>
+</div>
+</section><section><h2 class="section-heading" id="use-pca-to-visualise-more-complex-structures">Use PCA to visualise more complex structures<a class="anchor" aria-label="anchor" href="#use-pca-to-visualise-more-complex-structures"></a>
+</h2>
+<hr class="half-width">
+<p>Principal-components analysis (PCA) lets us project many variables
+onto a 2-D plane while preserving as much variance as possible.</p>
+<div class="codewrapper sourceCode" id="cb194">
+<h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb194-1"><a href="#cb194-1" tabindex="-1"></a><span class="im">from</span> sklearn.preprocessing <span class="im">import</span> StandardScaler</span></code></pre>
+</div>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code>ModuleNotFoundError: No module named 'sklearn'</code></pre>
+</div>
+<div class="codewrapper sourceCode" id="cb196">
+<h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb196-1"><a href="#cb196-1" tabindex="-1"></a><span class="im">from</span> sklearn.decomposition <span class="im">import</span> PCA</span></code></pre>
+</div>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code>ModuleNotFoundError: No module named 'sklearn'</code></pre>
+</div>
+<div class="codewrapper sourceCode" id="cb198">
+<h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb198-1"><a href="#cb198-1" tabindex="-1"></a>features <span class="op">=</span> [</span>
+<span id="cb198-2"><a href="#cb198-2" tabindex="-1"></a>    <span class="st">"Age"</span>,</span>
+<span id="cb198-3"><a href="#cb198-3" tabindex="-1"></a>    <span class="st">"Years of experience"</span>,</span>
+<span id="cb198-4"><a href="#cb198-4" tabindex="-1"></a>    <span class="st">"Years in field"</span>,</span>
+<span id="cb198-5"><a href="#cb198-5" tabindex="-1"></a>    <span class="st">"Highest level of education"</span>,</span>
+<span id="cb198-6"><a href="#cb198-6" tabindex="-1"></a>    <span class="st">"Total GBP"</span>,</span>
+<span id="cb198-7"><a href="#cb198-7" tabindex="-1"></a>]</span>
+<span id="cb198-8"><a href="#cb198-8" tabindex="-1"></a></span>
+<span id="cb198-9"><a href="#cb198-9" tabindex="-1"></a>X <span class="op">=</span> survey_data_encoded[features]</span></code></pre>
+</div>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code>NameError: name 'survey_data_encoded' is not defined</code></pre>
+</div>
+<div class="codewrapper sourceCode" id="cb200">
+<h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb200-1"><a href="#cb200-1" tabindex="-1"></a>X_scaled <span class="op">=</span> StandardScaler().fit_transform(X)</span></code></pre>
+</div>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code>NameError: name 'StandardScaler' is not defined</code></pre>
+</div>
+<div class="codewrapper sourceCode" id="cb202">
+<h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb202-1"><a href="#cb202-1" tabindex="-1"></a><span class="co"># PCA</span></span>
+<span id="cb202-2"><a href="#cb202-2" tabindex="-1"></a>pca <span class="op">=</span> PCA(n_components<span class="op">=</span><span class="dv">2</span>)</span></code></pre>
+</div>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code>NameError: name 'PCA' is not defined</code></pre>
+</div>
+<div class="codewrapper sourceCode" id="cb204">
+<h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb204-1"><a href="#cb204-1" tabindex="-1"></a>components <span class="op">=</span> pca.fit_transform(X_scaled)</span></code></pre>
+</div>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code>NameError: name 'pca' is not defined</code></pre>
+</div>
+<div class="codewrapper sourceCode" id="cb206">
+<h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb206-1"><a href="#cb206-1" tabindex="-1"></a><span class="co"># Plot</span></span>
+<span id="cb206-2"><a href="#cb206-2" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">6</span>,<span class="dv">5</span>))</span></code></pre>
+</div>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code>NameError: name 'plt' is not defined</code></pre>
+</div>
+<div class="codewrapper sourceCode" id="cb208">
+<h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb208-1"><a href="#cb208-1" tabindex="-1"></a>scatter <span class="op">=</span> plt.scatter(</span>
+<span id="cb208-2"><a href="#cb208-2" tabindex="-1"></a>    components[:,<span class="dv">0</span>], components[:,<span class="dv">1</span>],</span>
+<span id="cb208-3"><a href="#cb208-3" tabindex="-1"></a>    c<span class="op">=</span>survey_data_encoded[<span class="st">"Total GBP"</span>], cmap<span class="op">=</span><span class="st">"viridis"</span>, alpha<span class="op">=</span><span class="fl">0.5</span></span>
+<span id="cb208-4"><a href="#cb208-4" tabindex="-1"></a>)</span></code></pre>
+</div>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code>NameError: name 'plt' is not defined</code></pre>
+</div>
+<div class="codewrapper sourceCode" id="cb210">
+<h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb210-1"><a href="#cb210-1" tabindex="-1"></a>plt.colorbar(scatter, label<span class="op">=</span><span class="st">"Compensation (GBP)"</span>)</span></code></pre>
+</div>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code>NameError: name 'plt' is not defined</code></pre>
+</div>
+<div class="codewrapper sourceCode" id="cb212">
+<h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb212-1"><a href="#cb212-1" tabindex="-1"></a>plt.xlabel(<span class="st">"PC 1 ("</span> <span class="op">+</span> <span class="bu">str</span>(<span class="bu">round</span>(pca.explained_variance_ratio_[<span class="dv">0</span>]<span class="op">*</span><span class="dv">100</span>,<span class="dv">1</span>)) <span class="op">+</span> <span class="st">"% var)"</span>)</span></code></pre>
+</div>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code>NameError: name 'plt' is not defined</code></pre>
+</div>
+<div class="codewrapper sourceCode" id="cb214">
+<h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb214-1"><a href="#cb214-1" tabindex="-1"></a>plt.ylabel(<span class="st">"PC 2 ("</span> <span class="op">+</span> <span class="bu">str</span>(<span class="bu">round</span>(pca.explained_variance_ratio_[<span class="dv">1</span>]<span class="op">*</span><span class="dv">100</span>,<span class="dv">1</span>)) <span class="op">+</span> <span class="st">"% var)"</span>)</span></code></pre>
+</div>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code>NameError: name 'plt' is not defined</code></pre>
+</div>
+<div class="codewrapper sourceCode" id="cb216">
+<h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb216-1"><a href="#cb216-1" tabindex="-1"></a>plt.title(<span class="st">"PCA of salary &amp; ordinal variables"</span>)</span></code></pre>
+</div>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code>NameError: name 'plt' is not defined</code></pre>
+</div>
+<div class="codewrapper sourceCode" id="cb218">
+<h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb218-1"><a href="#cb218-1" tabindex="-1"></a>plt.tight_layout()</span></code></pre>
+</div>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code>NameError: name 'plt' is not defined</code></pre>
+</div>
+<div class="codewrapper sourceCode" id="cb220">
+<h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb220-1"><a href="#cb220-1" tabindex="-1"></a>plt.show()</span></code></pre>
+</div>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code>NameError: name 'plt' is not defined</code></pre>
+</div>
+<p>This plot shows the first two principal components of the data, with
+points coloured by total compensation. The axes represent the directions
+of maximum variance in the data.</p>
+<p>We can try to understand what those directions are like this:</p>
+<div class="codewrapper sourceCode" id="cb222">
+<h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb222-1"><a href="#cb222-1" tabindex="-1"></a>pca.components_</span></code></pre>
+</div>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code>NameError: name 'pca' is not defined</code></pre>
+</div>
+<p>The first component consists mostly of the time-based factors. The
+second component contains stronger contributions from education and
+total compensation.</p>
 <div id="keypoints1" class="callout keypoints">
 <div class="callout-square">
 <i class="callout-icon" data-feather="key"></i>
@@ -654,24 +2233,34 @@ this:</p>
 <h3 class="callout-title">Key Points</h3>
 <div class="callout-content">
 <ul>
-<li>A <code>Series</code> is a one-dimensional array-like object</li>
-<li>A <code>DataFrame</code> is a two-dimensional array-like object</li>
-<li>Data in a <code>Series</code> or <code>DataFrame</code> is labelled.
-The labels are are stored in an index</li>
-<li>Data can be accesssed via its label using <code>loc</code>, or via
-its position using <code>iloc</code>
-</li>
-<li>Use boolean indexing for more complicated conditions</li>
-<li>Missing values are represented by <code>&lt;NA&gt;</code>
-</li>
+<li>Pandas is a powerful library for data manipulation and
+analysis.</li>
+<li>DataFrames are two-dimensional, labelled data containers that can
+contain mixed data types</li>
+<li>Series are one-dimensional, labelled data containers that can only
+contain a single data type</li>
 <li>
-<code>DataFrame</code> indexing goes <code>[row, column]</code>
-</li>
-<li>
-<code>pandas</code> provides two main data structures: Series and
-DataFrames</li>
-<li>Take a slice of data using a colon <code>:</code>
-</li>
+<code>loc[]</code> can be used to select combinations of rows and
+columns from a DataFrame</li>
+<li>Use <code>loc[]</code> to access data by label, or use boolean
+masking to select data based on logical conditions</li>
+<li>Use <code>astype()</code> to change the data type of a column</li>
+<li>Use <code>isna()</code> to find missing values, and
+<code>fillna()</code> to fill them</li>
+<li>Use <code>dropna()</code> to remove rows or columns with missing
+values</li>
+<li>Use <code>value_counts()</code> to count occurrences of categorical
+variables</li>
+<li>Use <code>groupby()</code> to perform calculations on groups of
+data</li>
+<li>Use <code>map()</code> to apply a function to every element in a
+Series</li>
+<li>Use <code>OrdinalEncoder()</code> to convert categorical variables
+with an implicit order into numeric values</li>
+<li>Use <code>corr()</code> to calculate correlations between variables
+- but don’t rely on correlations alone!</li>
+<li>Use PCA to visualise complex structures in high-dimensional
+data</li>
 </ul>
 </div>
 </div>
@@ -680,7 +2269,14 @@ DataFrames</li>
 Place links that you need to refer to multiple times across pages here. Delete
 any links that you are not going to use.
  -->
-</section></section>
+</section><div class="footnotes footnotes-end-of-document">
+<hr>
+<ol>
+<li id="fn1"><p><a href="https://www.forbes.com/sites/gilpress/2016/03/23/data-preparation-most-time-consuming-least-enjoyable-data-science-task-survey-says/" class="external-link">Cleaning
+Big Data: Most Time-Consuming, Least Enjoyable Data Science Task, Survey
+Says. Forbes, 2016</a><a href="#fnref1" class="footnote-back">↩︎</a></p></li>
+</ol>
+</div></section>
 </div>
     </main>
 </div>

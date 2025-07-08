@@ -243,19 +243,7 @@
 <div class="accordion accordion-flush" id="accordionFlush2">
   <div class="accordion-item">
     <div class="accordion-header" id="flush-heading2">
-        <a href="introduction.html">1. Using RMarkdown</a>
-    </div>
-<!--/div.accordion-header-->
-
-  </div>
-<!--/div.accordion-item-->
-</div>
-<!--/div.accordion-flush-->
-
-<div class="accordion accordion-flush" id="accordionFlush3">
-  <div class="accordion-item">
-    <div class="accordion-header" id="flush-heading3">
-        <a href="02-data-exploration.html">2. 02 Data Exploration</a>
+        <a href="02-data-exploration-and-preprocessing.html">1. Data exploration and Preprocessing</a>
     </div>
 <!--/div.accordion-header-->
 
@@ -318,38 +306,37 @@
     <main id="main-content" class="main-content"><div class="container lesson-content">
         
         
-<section id="introduction"><h2 class="section-heading"><a href="introduction.html">Using RMarkdown</a></h2>
+<section id="02-data-exploration-and-preprocessing"><h2 class="section-heading"><a href="02-data-exploration-and-preprocessing.html">Data exploration and Preprocessing</a></h2>
 <hr class="half-width">
 <ul>
-<li>Use <code>.md</code> files for episodes when you want static
-content</li>
-<li>Use <code>.Rmd</code> files for episodes when you need to generate
-output</li>
-<li>Run <code>sandpaper::check_lesson()</code> to identify any issues
-with your lesson</li>
-<li>Run <code>sandpaper::build_lesson()</code> to preview your lesson
-locally</li>
-</ul></section><section id="02-data-exploration"><h2 class="section-heading"><a href="02-data-exploration.html">02 Data Exploration</a></h2>
-<hr class="half-width">
-<ul>
-<li>A <code>Series</code> is a one-dimensional array-like object</li>
-<li>A <code>DataFrame</code> is a two-dimensional array-like object</li>
-<li>Data in a <code>Series</code> or <code>DataFrame</code> is labelled.
-The labels are are stored in an index</li>
-<li>Data can be accesssed via its label using <code>loc</code>, or via
-its position using <code>iloc</code>
-</li>
-<li>Use boolean indexing for more complicated conditions</li>
-<li>Missing values are represented by <code>&lt;NA&gt;</code>
-</li>
+<li>Pandas is a powerful library for data manipulation and
+analysis.</li>
+<li>DataFrames are two-dimensional, labelled data containers that can
+contain mixed data types</li>
+<li>Series are one-dimensional, labelled data containers that can only
+contain a single data type</li>
 <li>
-<code>DataFrame</code> indexing goes <code>[row, column]</code>
-</li>
-<li>
-<code>pandas</code> provides two main data structures: Series and
-DataFrames</li>
-<li>Take a slice of data using a colon <code>:</code>
-</li>
+<code>loc[]</code> can be used to select combinations of rows and
+columns from a DataFrame</li>
+<li>Use <code>loc[]</code> to access data by label, or use boolean
+masking to select data based on logical conditions</li>
+<li>Use <code>astype()</code> to change the data type of a column</li>
+<li>Use <code>isna()</code> to find missing values, and
+<code>fillna()</code> to fill them</li>
+<li>Use <code>dropna()</code> to remove rows or columns with missing
+values</li>
+<li>Use <code>value_counts()</code> to count occurrences of categorical
+variables</li>
+<li>Use <code>groupby()</code> to perform calculations on groups of
+data</li>
+<li>Use <code>map()</code> to apply a function to every element in a
+Series</li>
+<li>Use <code>OrdinalEncoder()</code> to convert categorical variables
+with an implicit order into numeric values</li>
+<li>Use <code>corr()</code> to calculate correlations between variables
+- but don’t rely on correlations alone!</li>
+<li>Use PCA to visualise complex structures in high-dimensional
+data</li>
 </ul></section>
 </div>
     </main>
