@@ -64,18 +64,20 @@ contact: 'chh146@aber.ac.uk'
 # - another-learner.md
 
 # Order of episodes in your lesson
-episodes: 
-- introduction.Rmd
-- 02-data-exploration.Rmd
+episodes:
+- 02-data-exploration-and-preprocessing.Rmd
+
+# - 02-data-exploration.Rmd
+# - 03-preprocessing.Rmd
 
 # Information for Learners
-learners: 
+learners:
 
 # Information for Instructors
-instructors: 
+instructors:
 
 # Learner Profiles
-profiles: 
+profiles:
 
 # Customisation ---------------------------------------------
 #

@@ -1,0 +1,818 @@
+---
+title: Data exploration and Preprocessing
+teaching: 100
+exercises: 20
+---
+
+```{r libraries, warning=FALSE, message=FALSE, echo=FALSE}
+library(reticulate)
+use_condaenv("AISS-2025")
+```
+
+:::::::::::::::::::::::::::::::::::::: questions 
+
+- How can I read in data to Pandas?
+- How can I access specific sections of my data?
+- How does Pandas store data in rows and columns?
+- How can I clean up messy data?
+- How can I learn more about missing values, distributions and structures in my data? 
+
+::::::::::::::::::::::::::::::::::::::::::::::::
+
+::::::::::::::::::::::::::::::::::::: objectives
+
+- Know the difference between a Series and a Dataframe
+- Know how to use `loc[]` to access data
+- Know how to apply basic data cleaning operations
+- Know how to use some more sophisticated Pandas functions to explore and  manipulate data
+- Know some techniques for preparing your data for machine learning
+
+::::::::::::::::::::::::::::::::::::::::::::::::
+
+## Introduction
+
+You've seen briefly how to use Pandas to read in a data file when we looked at the Penguin data. Real-world datasets are often - usually - nearly always? - quite messy; so much so that data scientists spend the majority of their time organising and cleaning data [^1]. 
+
+[^1]: [Cleaning Big Data: Most Time-Consuming, Least Enjoyable Data Science Task, Survey Says. Forbes, 2016](https://www.forbes.com/sites/gilpress/2016/03/23/data-preparation-most-time-consuming-least-enjoyable-data-science-task-survey-says/)
+
+We’re going to work with a real dataset from an annual salary survey from the website [askamanager.org](https://www.askamanager.org/2025/04/how-much-money-do-you-make-8.html). Have a look at the website and browse the questions, then read in the [data file](data/AAM_salary_survey_2025_responses.csv).
+
+```{python}
+import pandas as pd
+
+# Read the raw salary-survey responses
+survey_path = "data/AAM_salary_survey_2025_responses.csv"
+survey_data = pd.read_csv(survey_path)
+```
+
+A DataFrame contains labelled data. Each row and each column has a label. The labels are stored in an index.
+
+```{python}
+# print the column labels
+print(survey_data.columns)
+
+# Show the first few lines
+survey_data.head()
+```
+A DataFrame can contain a mix of data types.
+
+We can see that there's lots of interesting data in there. Here's a small list of questions we might want to ask:
+- What's the distribution of total income across all jobs? 
+- Do unionised jobs earn more or less than non-unionised?
+- Does salary go up with age, years of experience, and education level? 
+- Do people earning additional income tend to have higher base salaries?
+
+We'll work through these, learning some more Pandas and data manipulation skills along the way.
+
+## Use `DataFrame.dtypes` to show the datatypes of each column
+
+Each column in a DataFrame is a Series. Series contain labelled data too, but a Series can only contain a single data type.
+
+```{python}
+# List the column headings and their inferred dtypes
+survey_data.dtypes
+```
+
+Pandas will try to work out what this should be, but sometimes does a bad job. When it has a mixture of strings and numbers, it picks the most generic type possible, which is `object`. 
+
+## Select a value by its index label using `loc[]`
+
+Note that the list of datatypes above is itself a Series! The index labels are the column headings from `survey_results`, and the values are the data types. We can pull out a single value with a label from this series using the function `loc[]`
+
+```{python}
+survey_data.dtypes.loc["Age"]
+```
+
+Notice the square brackets!
+
+::: callout
+
+The `loc[]` function is really useful, and confusing, and we'll see more of it later. For now, remember that it takes square brackets, and it lets you access data by its *label*.
+
+::::::
+
+## Select a column from a DataFrame with `["Column name"]`
+
+You can select a column with square brackets containing the column name.
+
+```{python}
+survey_data["Industry"]
+```
+
+This is really a shortcut for 
+
+```{python, results=FALSE}
+survey_data.loc[:, "Industry"]
+```
+
+Used on a DataFrame, `loc[]` takes two arguments - the first one is the rows you want and the second one is the columns. Just like with lists, you can slice with `start:stop`, and missing out either one uses the endpoints.
+
+## Cast a column to a different data type with `astype()`
+
+You can change the data type of a column by selecting the column and calling `astype()`, with the desired type as an argument. 
+
+```{python}
+survey_data["Industry"].astype("string")
+```
+
+This doesn't modify the original, it makes a copy, so we haven't yet saved the result. What if we want to change the data types of all the columns that contain `objects` to strings? (I have a hunch this might come in handy later...) We _could_ do this manually, but I'm lazy, so let's get the computer do the work. 
+
+You can change multiple columns at once by calling `astype()` on the DataFrame and passing in a dictionary that maps column names to data types. Here's one way to build this dictionary:
+
+```{python}
+dtypes_dict = {}
+
+# loop through the columns with dtype object and add them to a dictionary
+for column_name in survey_data.dtypes[survey_data.dtypes == object].index:
+  dtypes_dict[column_name] = "string"
+  
+dtypes_dict
+```
+
+Now let's use that to set the data types in our DataFrame. Remember that we need to save the results.
+
+```{python}
+survey_data = survey_data.astype(dtypes_dict)
+
+survey_data.dtypes
+```
+
+:::::: challenge
+
+Describe the key variables in this survey:
+	-	Which columns are *categorical* (nominal)?
+	-	Which are *ordinal* (have an inherent order)?
+	- Which are *numeric* (continuous or discrete)?
+
+::: solution
+
+Numeric:
+- Annual salary
+- Additional monetary compensation
+
+Categorical:
+- Industry
+- Functional area of job
+- Job title
+- Remote or on-site?
+- Country
+- State
+- City/region
+- Currency and Currency - other
+
+Ordinal:
+  - Age
+  - Years of experience
+  - Years in field
+  - Highest level of education
+
+Note that numeric variables that are grouped into bins are ordinal when the bins are of different sizes!
+
+Also highest level of education could be considered categorical, because it's not easy to sort every value.
+
+::::::
+
+::::::::
+
+## Find missing values with `isna()`
+
+Do any of the columns have missing values? We can find them, count them up in each column, and sort the results as follows:
+
+```{python}
+# Count missing values per column
+survey_data.isna().sum().sort_values(ascending=False)
+```
+
+Lots of the columns have missing values - even some columns that are required in the survey, like `Job title`. What's doing on here? 
+
+::: callout
+
+Pandas `read_csv()` function does a lot of work under the hood. From the documentation:
+
+> By default the following values are interpreted as NaN: “ “, “#N/A”, “#N/A N/A”, “#NA”, “-1.#IND”, “-1.#QNAN”, “-NaN”, “-nan”, “1.#IND”, “1.#QNAN”, “<NA>”, “N/A”, “NA”, “NULL”, “NaN”, “None”, “n/a”, “nan”, “null “.
+
+::::::
+
+We also have the answer to our earlier question about the data type of `Additional monetary compensation`. It contains `NaN` values, which Pandas treats as a `float64`, forcing the whole column to be float64.
+
+::: callout 
+
+### How we should treat missing values depends on the analysis we want to do. 
+
+:::
+
+How should we deal with the missing values? In some cases the missing data is irrelevant. Each column needs to be considered differently. For example: 
+- we don't need `Currency - other` if there is a value in the `Currency` column
+- we don't care about `State` unless we're only looking at the US
+- We can safely assume that a missing value in `Additional monetary compensation` means £0
+- if we want to know whether `Unionized?` makes a difference to earnings, a row with no value there is useless to us
+
+Pandas has some useful functions for this.
+
+## Use `fillna()` to fill missing values in a column
+
+With `Additional monetary compensation` we can replace missing values with 0. We can also change the type to be `int64`
+
+```{python}
+survey_data["Additional monetary compensation"] = survey_data["Additional monetary compensation"].fillna(0).astype("int")
+```
+
+## Use `dropna()` on a DataFrame to remove rows or columns with missing values
+
+:::::: challenge
+
+Pandas has a useful function, `dropna()`. Use the docs pages (by running `help(survey_data.dropna)` or typing `survey_data.drop_na(` and Shift+Tab) to find how to drop rows that have missing values in the `Unionized?` column.
+
+::: solution
+
+```{python}
+survey_data = survey_data.dropna(subset=["Unionized?"], axis="rows")
+```
+
+Note that `axis="rows"` (or `"index"`, or `0`) is the default, so we don't strictly need to include it.
+
+::::::
+
+::::::::
+
+::: callout
+
+Does dropping `NA`s disproportionately affect any subgroup (e.g., a particular country)? Consider whether that matters for your analysis.
+
+::::::
+
+## Use `value_counts` to count occurrences of categorical variables
+
+Let's get a sense of where the data is coming from. This is an American website, in English, so the top results shouldn't be a surprise:
+
+```{python}
+survey_data["Country"].value_counts().head()
+```
+
+What about the age column?
+
+```{python}
+survey_data["Age"].value_counts()
+```
+
+We want to know how income is distributed, but the income figures are in different currencies, and some people have additional income on top of their salaries, so we can't compare directly. We'll need to create a new feature from our existing data. Let's see what currencies we've got.
+
+```{python}
+survey_data["Currency"].value_counts()
+```
+
+`Currency` uses three letter codes. We can work with that to convert everyone’s earnings to the same currency using exchange rate data.
+
+But first, notice that we have 36 "Other". Wouldn't it be nice to see what those are?
+
+## Use `loc[]` with boolean masking to select values according to logical rules
+
+As well as labels, we can use `loc[]` to access data based on logical conditions. This is called boolean indexing or masking. First we create a mask:
+
+```{python}
+survey_data["Currency"] == "Other"
+```
+
+This is a Series of booleans with the same index as `survey_data`, containing True where the `Currency` column contains "Other" and False everywhere else. 
+
+Then we pass that mask into `loc[]` to tell it which rows we want:
+
+```{python}
+survey_data.loc[survey_data["Currency"] == "Other"]
+```
+
+But we're really only interested in one column - `Currency - other`. We can pass that into `loc` as well to just get a Series containing the elements of interest, and then count the values like before:
+
+```{python}
+survey_data.loc[survey_data["Currency"] == "Other", "Currency - other"].value_counts()
+```
+
+There aren't many of each - 6 Singaporean Dollars, 5 Norwegian Kroners, 2 UAE Dirhams, etc. At this point we have to make a decision about how much we care about this fairly small number of values. We could decide it's not worth the effort, but we're going to be thorough and clean up these values, even though it's a bit fiddly, because it's a great chance to practice some more Pandas skills!
+
+Let's tidy up the `Currency` column. The three letter codes in our `Currency - other` column look valid, so let's copy them straight over to `Currency`. 
+
+This is going to take a few steps: 
+- find the rows where the length of the `Currency - other` field is 3
+- capitalise them, to catch that pesky Swiss Franc (Sfr)
+- copy them to the `Currency` column in the same rows
+
+## Pandas can run `str` functions on string columns
+
+Finding the length of a string can be done efficiently with Pandas `str` package. To make a Series containing all the lengths:
+
+```{python}
+other_currency_len = survey_data["Currency - other"].str.len()
+```
+
+We can turn `curr_lengths` into a boolean mask like this:
+
+```{python}
+other_currency_len == 3
+```
+
+:::::: challenge
+
+Use boolean masking to find the values for `Currency` corresponding to answers to `Currency - other` that are exactly 3 characters long.
+
+As a simple but incomplete sanity check, we know they should all be "Other"!
+
+::: solution
+
+```{python}
+survey_data.loc[other_currency_len == 3, "Currency"]
+```
+
+::::::
+
+Can you figure out, or guess, how to make those elements all upper case?
+
+::: solution
+
+Use the function `str.upper()`:
+
+```{python}
+survey_data.loc[other_currency_len == 3, "Currency - other"].str.upper()
+```
+
+:::
+
+Finally, use those values to replace the original values in the `Currency` column.
+
+::: solution
+
+We have to make sure that we add the modified values to the right column: 
+
+```{python}
+survey_data.loc[other_currency_len == 3, "Currency"] = survey_data.loc[other_currency_len == 3, "Currency - other"].str.upper()
+```
+
+:::
+
+::::::::
+
+
+If we did those last few steps correctly, we should have far fewer "Other" values:
+
+```{python}
+survey_data.loc[survey_data["Currency"] == "Other", "Currency - other"].value_counts()
+```
+
+Good. The last few we'll have to do manually. Let's assume that "Rupees" also refers to Indian rupees (and not Mauritius, Nepal, Pakistan, Sri Lanka, or any of the other countries with a currency called Rupees).
+
+
+:::::: challenge 
+
+Can you use what you've learned so far to fix the remaining values in the `Currency` column, based on the answers in the `Currency - other` column?
+
+::: hint
+
+You need to locate a single value, and set it to the desired value. First think about how to find the row you're interested in. Then which column you want. Then pass both into `loc[]`
+
+::::::
+
+::: solution
+
+Here's the first one:
+
+```{python}
+survey_data.loc[survey_data["Currency - other"] == "DKK (danish crowns)", "Currency"] = "DKK"
+```
+
+::::::
+
+::: solution
+
+Here are the other two:
+
+```{python}
+survey_data.loc[survey_data["Currency - other"] == "INR Indian Rupee", "Currency"] = "INR"
+survey_data.loc[survey_data["Currency - other"] == "Rupees", "Currency"] = "INR"
+```
+
+::::::
+
+::::::::
+
+OK, time to do the conversions. The U.K. government publishes average annual GBP exchange rates on its website. You can find the data from March 2025 in the file `data/average_csv_2025-3.csv`.
+
+```{python}
+# Read the FX-rate file (average 2025 exchange rates)
+gbp_conversions = pd.read_csv("data/average_csv_2025-3.csv", index_col="Country")
+gbp_conversions.head()
+gbp_conversions.columns
+```
+Let's get this ready to map values from any currency into GBP:
+- we're only interested in two columns: `Currency Code` and `Sterling value of Currency Unit £`
+- we can give these shorter names to save ourselves some typing
+- we want to look up values using the currency code, so we should set that as the index, and then it's only one column that we're interested in
+
+```{python}
+gbp_map = gbp_conversions.loc[:, ["Currency Code", "Sterling value of Currency Unit £"]]
+gbp_map = gbp_map.rename(columns={"Currency Code": "Currency", "Sterling value of Currency Unit £": "Exchange rate"})
+gbp_map = gbp_map.set_index("Currency")["Exchange rate"]
+gbp_map
+```
+
+## Check which values occur in a Series with `isin()`
+
+Let's check that all our currency codes appear in the exchange rate data. 
+
+```{python}
+survey_data["Currency"].isin(gbp_map.index).mean()
+```
+
+Only 95%! Let's find the ones that are missing. We'll need to use a logical operator for negation, `~`. This turns True to False and False to True. 
+
+```{python}
+survey_data.loc[~survey_data["Currency"].isin(gbp_map.index), "Currency"].value_counts()
+```
+That makes sense! The U.K. Government data doesn't include a GBP-GBP exchange rate (we can probably work that one out in our  heads).
+
+Let's add it manually to make our calculations easier
+
+```{python}
+gbp_map.loc["GBP"] = 1
+```
+
+We can use these conversions to put every salary in GBP. We’ll also need to add any additional compensation to get the total.
+
+## Use `map()` to efficiently apply a function to every element
+
+First let's convert the salary and additional compensation columns. We can try to use `gbp_map` to get the exchange rates based on currency codes
+
+```{python}
+survey_data["Currency"].map(gbp_map)
+```
+
+Uh oh! There's a problem. Can you guess what's happened here? It's not obvious, but the error message gives a clue.
+
+::: spoiler
+
+The exchange rates data contains some duplicate currencies, because some countries use the same currency (e.g. Bhutan uses INR). That means we have some duplciate values in the index, and Pandas doesn't know which one we want - it doesn't matter to Pandas that they're the same!
+
+You can check this with
+
+```{python}
+gbp_map.index.value_counts()
+```
+
+::::::
+
+## Remove duplicate values with `drop_duplicates()` or `duplicated()`
+
+As usual Pandas has a function that can help us here: `drop_duplicates()`. We need to remove duplicates from the _index_, not the values - otherwise we'd be removing currencies with the same rate, not necessarily the same code. 
+
+We could use `drop_duplicates()` on the index, but we have no good way to map that back to the values. 
+We can also use the `duplicated()` function on the index to find labels that are duplicated, and then use that to filter the DataFrame.
+
+```{python}
+gbp_map = gbp_map[~gbp_map.index.duplicated(keep='first')]
+```
+
+There's that negation operator again. We want to include labels that aren't duplicated, so we use `~` to negate the boolean mask returned by `duplicated()`. We also told duplicated to ignore the first occurrence of each label with `keep='first'`.
+
+```{python}
+gbp_map.index.value_counts()
+```
+That's better!
+
+Now we can use `map()` to convert the currency values to GBP:
+
+```{python}
+survey_data["Currency"].map(gbp_map)
+```
+
+We can add new columns to our DataFrame containing the converted amounts. When we're adding columns we should use `loc[]`:
+
+```{python}
+survey_data.loc[:, "Annual salary GBP"] = survey_data["Annual salary"] * survey_data["Currency"].map(gbp_map)
+survey_data.loc[:, "Additional monetary compensation GBP"] = survey_data["Additional monetary compensation"] * survey_data.loc[:, "Currency"].map(gbp_map)
+survey_data.loc[:, "Total GBP"] = survey_data["Annual salary GBP"] + survey_data["Additional monetary compensation GBP"]
+```
+
+
+Now we're finally ready to plot the distribution we're interested in: a histogram of total compensation in GBP.
+
+```{python}
+import matplotlib.pyplot as plt
+
+plt.figure(figsize=(8,5))
+plt.hist(survey_data["Total GBP"], bins=50, edgecolor='black')
+plt.show()
+```
+
+Ah. Looks like almost all the values are condensed into a single band, but the axis range is huge, because someone claims to earn around £800 million.
+
+Let's have a quick look at the stats. Explore the values with describe:
+
+```{python}
+survey_data["Total GBP"].describe()
+```
+:::::: challenge
+
+Can you pull out the row containing the maximum value of `Total GBP` and print it as a column?
+
+::: hint
+
+You can use `survey_data["Total GBP"].max()` to find the maximum value, and then use `loc[]` to select the row with that value.
+
+::::::
+
+::: hint
+
+Use `T` to flip the orientation from a row to a column
+
+::::::
+
+::: solution
+
+```{python}
+survey_data.loc[survey_data["Total GBP"] == survey_data["Total GBP"].max()].T
+```
+
+::::::
+
+::::::::
+
+## Remove outliers
+
+A property and construction program manager for a hospitality and events company on a salary of $1 billion seems unlikely to me. How does it compare to the next few largest values?
+
+```{python}
+# get the highest five values in Total GBP
+survey_data.sort_values("Total GBP", ascending=False).head(15)
+```
+The max is more than 10 times the next largest value. I think we can safely delete at least the largest row, and maybe anything else over, say, £1 million. 
+
+```{python}
+survey_data = survey_data[survey_data["Total GBP"] < 1e6]
+```
+
+::: callout
+
+Survey data, particularly when collected online, is notoriously noisy. Some people are stupid, some peopel make mistakes, and some just like to mess with surveys. As a results, there is usually a reasonable percentage of responses that can't be trusted. If you're lucky, these are obvious.
+
+This is sometimes know as the "Lizardman Factor" or "Lizardman's constant", named after a 2012 survey that found that 4% of people believed that shape-shifting reptilian people have taken on human form and now control our world.
+
+:::
+
+Let's check the distribution again, now that we've removed the outliers:
+
+```{python}
+plt.figure(figsize=(8,5))
+plt.hist(survey_data["Total GBP"], bins=50, edgecolor='black')
+plt.show()
+```
+
+That's better! We can see a more reasonable distribution of salaries, with a long thiin tail towards the top end.
+
+
+## Compare salaries by country using `groupby()`
+
+Let's look at the average salary by country. We'll use `groupby()` to group the data by country, and then calculate the mean of the total compensation for each group.
+
+```{python}
+country_salary = survey_data.groupby("Country")["Total GBP"].mean().sort_values(ascending=False)
+country_salary
+```
+We can plot this as a bar chart to make it easier to see the differences:
+
+```{python}
+plt.figure(figsize=(10,10), layout="constrained")
+country_salary.plot(kind='barh')
+plt.yticks(fontsize=4)
+plt.layout()
+plt.show()
+
+```
+
+We can see that a lot of the countries have been entered manually, so the data is messy. We won't clean these up now. Note that in a rigorous analysis you would want to normalise for cost of living, purchasing-power parity (PPP), and so on.
+
+
+## Use `groupby()` to perform calculations on groups of data
+
+Let's move onto our next question:
+- Do unionised jobs earn more or less than non-unionised?
+
+```{python}
+union_salary = survey_data.groupby("Unionized?")["Total GBP"].mean()
+union_salary
+```
+At first glance, the unionised jobs earn less Let's look in more detail with a box plot.
+
+```{python}
+# plot a box-and-whisker diagram of the total compensation by union status
+plt.figure(figsize=(6,4))
+
+survey_data.boxplot(
+  by="Unionized?",
+  column="Total GBP",
+)
+plt.show()
+
+```
+That seems to hold up. We could run some statistical tests to figure out for sure, but let's move on.
+
+## Use `OrdinalEncoder()` for features that have an implicit order
+
+Our next question was:
+- Does salary go up with age, years of experience, and education level? 
+
+Salary is a numeric variable, but age, years of experience, and education level are all categorical variables with an implicit order. We can use the `OrdinalEncoder` from scikit-learn to convert these into numeric values that we can use in our analysis.
+
+OrdinalEncoder is slightly more complicated than the LabelEncoder we saw on Day 1. We want to specify the order of our categories to respect the underlying order, so we have to manually define the categories based on what we know about the data:
+
+```{python}
+ordinal_cols = ["Age", "Years of experience", "Years in field", "Highest level of education"]
+for col in ordinal_cols:
+    print(f"{col}:\n{survey_data[col].value_counts()}\n")
+```
+
+- The categories for the two "Years..." columns are the same. 
+- The Education columns accepts free text, so it has lots of rare answers as well as the 7 default options. Let's ignore all but the top 7
+
+```{python}
+age_category = ["under 18", "18-24", "25-34", "35-44", "45-54", "55-64", "65 or over"]
+
+experience_category = [
+    "1 year or less", 
+    "2-4 years", 
+    "5-7 years", 
+    "8-10 years", 
+    "11-20 years", 
+    "21-30 years", 
+    "31-40 years", 
+    "41 years or more",
+]
+
+education_category = [
+    "Less than secondary",
+    "High school / secondary",
+    "Some college",
+    "Bachelor's degree",
+    "Master's degree",
+    "Professional degree (JD, MD, etc.)",
+    "Doctorate",
+]
+```
+
+We can then create an OrdinalEncoder with these categories:
+
+```{python}
+from sklearn.preprocessing import OrdinalEncoder
+
+ordinal_encoder = OrdinalEncoder(categories=[age_category, experience_category, experience_category, education_category])
+```
+
+Now we can use this encoder to transform the ordinal columns in our DataFrame. We'll apply it to the columns `age`, `years_experience`, and `highest_level_of_education`, and save this data in a new dataframe. We'll also add the numeric data columns. And let's not forget to ignore the rows that contain the less common education answers!
+
+```{python}
+ordinal_cols = ["Age", "Years of experience", "Years in field", "Highest level of education"]
+
+survey_data_standard_education = survey_data[survey_data["Highest level of education"].isin(education_category)]
+
+survey_data_encoded = survey_data_standard_education[["Annual salary GBP", "Additional monetary compensation GBP", "Total GBP"]].copy()
+survey_data_encoded[ordinal_cols] = ordinal_encoder.fit_transform(survey_data_standard_education[ordinal_cols])
+```
+
+## Calculate correlations with `DataFrame.corr()`
+
+Let's calculate the correlations and see the relationships between these variables. We can calculate the correlation matrix with `corr()`, and visualise the results in a heatmap with `imshow()`:
+
+```{python}
+# Calculate the correlation matrix
+correlation_matrix = survey_data_encoded.corr()
+
+fig, ax = plt.subplots(figsize=(10, 8), layout="constrained")
+heatmap = ax.imshow(correlation_matrix, cmap='coolwarm')
+
+ax.set_xticks(range(len(correlation_matrix.columns)))
+ax.set_yticks(range(len(correlation_matrix.columns)))
+
+ax.set_xticklabels(correlation_matrix.columns, rotation=45, ha='right')
+ax.set_yticklabels(correlation_matrix.columns)
+
+fig.colorbar(heatmap, ax=ax, orientation='vertical', label='Correlation Coefficient')
+
+plt.show()
+```
+
+This shows some interesting patterns. What do you notice?
+
+::: spoiler
+
+- The strongest correlation is between `Annual salary GBP` and `Total GBP` 
+- `Additional monetary compensation GBP` is correlated with `Total GBP`, but its contribution is weaker than the salary
+- `Annual salary` and `Additional monetary compensation GBP` are at best weakly correlated with each other
+- The time fields, Age, Years of experience, and Years in field, form a cluster 
+- There appears to be no relationship between any of the time factors and the compensation factors
+- Education level is not correlated with anything
+
+::::::
+
+Now let's plot the relationships between these variables. 
+
+```{python}
+# Use matplotlib to plot Total compensation GBP against the other columns in survey_data_encoded
+import matplotlib.pyplot as plt
+
+fig, axs = plt.subplots(2, 3, figsize=(20, 10), layout="constrained")
+
+
+def scatter_plot(ax, x_col, y_col, title):
+    ax.scatter(survey_data_encoded[x_col], survey_data_encoded[y_col], alpha=0.5)
+    ax.set_xlabel(x_col.replace("_", " ").title())
+    ax.set_ylabel(y_col.replace("_", " ").title())
+    ax.set_title(title)
+    
+scatter_plot(axs[0, 0], "Age", "Total GBP", "Total compensation vs. Age")
+scatter_plot(axs[0, 1], "Years of experience", "Total GBP", "Total compensation vs. Years of experience")
+scatter_plot(axs[0, 2], "Years in field", "Total GBP", "Total compensation vs. Years in field")
+scatter_plot(axs[1, 0], "Highest level of education", "Total GBP", "Total compensation vs. Education level")
+scatter_plot(axs[1, 1], "Additional monetary compensation GBP", "Annual salary GBP", "Additional compensation vs. Annual salary")
+scatter_plot(axs[1, 2], "Additional monetary compensation GBP", "Total GBP", "Total compensation vs. Annual salary")
+
+plt.show()
+```
+
+Looking again at the relationship between salary and additional income, we can see that there is more structure than we might have thought at first. It looks like there are two trends: people with the highest incomes are less likely to have additional income; and as additional income goes up, salary increases slightly. We can't tell any of this from the correlation alone. 
+
+
+::: callout
+
+Correlations and summary statistics are useful and powerful, but they can be misleading. 
+
+This is Anscombe's quartet, a set of four datasets that have identical mean, variance, correlation and regression, but resoundingly varied structure.
+
+![Correlation can be misleading](fig/Anscombes_quartet_3.svg){alt='Image of Anscombe's quartet, showing four datasets with the same correlation but very different structures'}
+Attribution: Schutz(label using subscripts): Avenue - Anscombe.svg, CC BY-SA 3.0, https://commons.wikimedia.org/w/index.php?curid=9838454
+
+![And this is the Datasaurus Dozen!](fig/datasaurus_dozen.png){alt='Image of the Datasaurus Dozen, a set of 12 datasets with the same summary statistics but very, very different structures!'}
+:::
+
+## Use PCA to visualise more complex structures
+
+Principal-components analysis (PCA) lets us project many variables onto a 2-D plane while preserving as much variance as possible.
+
+```{python}
+from sklearn.preprocessing import StandardScaler
+from sklearn.decomposition import PCA
+
+features = [
+    "Age",
+    "Years of experience",
+    "Years in field",
+    "Highest level of education",
+    "Total GBP",
+]
+
+X = survey_data_encoded[features]
+X_scaled = StandardScaler().fit_transform(X)
+
+# PCA
+pca = PCA(n_components=2)
+components = pca.fit_transform(X_scaled)
+
+# Plot
+plt.figure(figsize=(6,5))
+scatter = plt.scatter(
+    components[:,0], components[:,1],
+    c=survey_data_encoded["Total GBP"], cmap="viridis", alpha=0.5
+)
+plt.colorbar(scatter, label="Compensation (GBP)")
+plt.xlabel("PC 1 (" + str(round(pca.explained_variance_ratio_[0]*100,1)) + "% var)")
+plt.ylabel("PC 2 (" + str(round(pca.explained_variance_ratio_[1]*100,1)) + "% var)")
+plt.title("PCA of salary & ordinal variables")
+plt.tight_layout()
+plt.show()
+```
+
+This plot shows the first two principal components of the data, with points coloured by total compensation. The axes represent the directions of maximum variance in the data.
+
+We can try to understand what those directions are like this:
+
+```{python}
+pca.components_
+```
+
+The first component consists mostly of the time-based factors. The second component contains stronger contributions from education and total compensation.
+
+::::::::::::::::::::::::::::::::::::: keypoints 
+
+- Pandas is a powerful library for data manipulation and analysis.
+- DataFrames are two-dimensional, labelled data containers that can contain mixed data types
+- Series are one-dimensional, labelled data containers that can only contain a single data type
+- `loc[]` can be used to select combinations of rows and columns from a DataFrame
+- Use `loc[]` to access data by label, or use boolean masking to select data based on logical conditions
+- Use `astype()` to change the data type of a column
+- Use `isna()` to find missing values, and `fillna()` to fill them
+- Use `dropna()` to remove rows or columns with missing values
+- Use `value_counts()` to count occurrences of categorical variables
+- Use `groupby()` to perform calculations on groups of data
+- Use `map()` to apply a function to every element in a Series
+- Use `OrdinalEncoder()` to convert categorical variables with an implicit order into numeric values
+- Use `corr()` to calculate correlations between variables - but don't rely on correlations alone!
+- Use PCA to visualise complex structures in high-dimensional data
+
+::::::::::::::::::::::::::::::::::::::::::::::::
+

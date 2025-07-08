@@ -36,7 +36,7 @@ use_condaenv("AISS-2024")
 
 {% include links.md %}
 
-First things first, let's import `pandas`. 
+First things first! Let's import `pandas`. 
 
 ```python
 import pandas as pd
@@ -50,9 +50,9 @@ On top of all the usual Python object types (like `str`, `int` and `float`), `pa
 
 A `Series` is a 1-dimensional container, similar to a list, with some extra functionality. A `DataFrame` is essentially a collection of `Series`. You can think of a `DataFrame` as a table (like in Microsoft Excel or a SQL database), with `Series` for columns. 
 
-![A Series is a 1-D labelled array](../fig/01_table_series.svg) 
+![A Series is a 1-D labelled array](./fig/01_table_series.svg) 
 
-![A DataFrame is a 2-D labelled array](../fig/01_table_dataframe.svg)
+![A DataFrame is a 2-D labelled array](./fig/01_table_dataframe.svg)
 
 > ## Pandas has two main objects
 > 
