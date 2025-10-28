@@ -270,7 +270,7 @@
       </div>
       <hr></nav><main id="main-content" class="main-content"><div class="container lesson-content">
         <h1>Data Exploration</h1>
-        <p>Last updated on 2025-09-23 |
+        <p>Last updated on 2025-10-28 |
 
         <a href="https://github.com/charliejharrison/AISS-2025-content/edit/main/episodes_archive/02-data-exploration.Rmd" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 
@@ -647,7 +647,7 @@ numbers?</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
   <h4 class="accordion-header" id="headingSolution1"> Show me the solution </h4>
 </button>
-<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
+<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
 <div class="accordion-body">
 <p>You get the whole <code>Series</code></p>
 <div class="codewrapper sourceCode" id="cb33">
@@ -861,7 +861,7 @@ columns have labels. Let’s combine our <code>Series</code> into a single
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="output" tabindex="0"><code>NameError: name 'numbers' is not defined</code></pre>
+<pre class="output" tabindex="0"><code>NameError: name 'numbers' is not defined. Did you forget to import 'numbers'</code></pre>
 </div>
 <p>We can easily join these Series together, because they share a lot of
 index labels. Pandas does a pretty good job of lining up the data, and
@@ -900,7 +900,7 @@ get back a whole row:</p>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="output" tabindex="0"><code>NameError: name 'numbers' is not defined</code></pre>
+<pre class="output" tabindex="0"><code>NameError: name 'numbers' is not defined. Did you forget to import 'numbers'</code></pre>
 </div>
 <p>The output here is a <code>Series</code> containing all the data from
 the row at index value 1. The index labels for this new
@@ -917,7 +917,7 @@ containing multiple rows:</p>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="output" tabindex="0"><code>NameError: name 'numbers' is not defined</code></pre>
+<pre class="output" tabindex="0"><code>NameError: name 'numbers' is not defined. Did you forget to import 'numbers'</code></pre>
 </div>
 <p>If we take a slice of a <code>DataFrame</code> (using a colon
 <code>:</code> like before), we’ll get back another DataFrame:</p>
@@ -929,7 +929,7 @@ containing multiple rows:</p>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="output" tabindex="0"><code>NameError: name 'numbers' is not defined</code></pre>
+<pre class="output" tabindex="0"><code>NameError: name 'numbers' is not defined. Did you forget to import 'numbers'</code></pre>
 </div>
 <p>In these examples we’re specifying the row, and Pandas assumes that
 we want every column. What if we don’t?</p>
@@ -951,7 +951,7 @@ need to use, for example:</p>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="output" tabindex="0"><code>NameError: name 'numbers' is not defined</code></pre>
+<pre class="output" tabindex="0"><code>NameError: name 'numbers' is not defined. Did you forget to import 'numbers'</code></pre>
 </div>
 <div id="callout9" class="callout">
 <div class="callout-square">
@@ -976,7 +976,7 @@ above, you’ll remember that a slice with no endpoints returns the whole
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="output" tabindex="0"><code>NameError: name 'numbers' is not defined</code></pre>
+<pre class="output" tabindex="0"><code>NameError: name 'numbers' is not defined. Did you forget to import 'numbers'</code></pre>
 </div>
 <div id="challenge2" class="callout challenge">
 <div class="callout-square">
@@ -996,7 +996,7 @@ corresponding ordinals?</p>
 <button class="accordion-button hint-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseHint1" aria-expanded="false" aria-controls="collapseHint1">
   <h4 class="accordion-header" id="headingHint1"> Give me a hint </h4>
 </button>
-<div id="collapseHint1" class="accordion-collapse collapse" data-bs-parent="#accordionHint1" aria-labelledby="headingHint1">
+<div id="collapseHint1" class="accordion-collapse collapse" aria-labelledby="headingHint1" data-bs-parent="#accordionHint1">
 <div class="accordion-body">
 <p>Remember that slicing with <code>loc</code> includes both the start
 and stop position in an index.</p>
@@ -1009,7 +1009,7 @@ and stop position in an index.</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution2" aria-expanded="false" aria-controls="collapseSolution2">
   <h4 class="accordion-header" id="headingSolution2"> Show me the solution </h4>
 </button>
-<div id="collapseSolution2" class="accordion-collapse collapse" data-bs-parent="#accordionSolution2" aria-labelledby="headingSolution2">
+<div id="collapseSolution2" class="accordion-collapse collapse" aria-labelledby="headingSolution2" data-bs-parent="#accordionSolution2">
 <div class="accordion-body">
 <div class="codewrapper sourceCode" id="cb67">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -1019,7 +1019,7 @@ and stop position in an index.</p>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="output" tabindex="0"><code>NameError: name 'numbers' is not defined</code></pre>
+<pre class="output" tabindex="0"><code>NameError: name 'numbers' is not defined. Did you forget to import 'numbers'</code></pre>
 </div>
 </div>
 </div>
@@ -1053,7 +1053,7 @@ the missing value, and one without the column.</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution3" aria-expanded="false" aria-controls="collapseSolution3">
   <h4 class="accordion-header" id="headingSolution3"> Show me the solution </h4>
 </button>
-<div id="collapseSolution3" class="accordion-collapse collapse" data-bs-parent="#accordionSolution3" aria-labelledby="headingSolution3">
+<div id="collapseSolution3" class="accordion-collapse collapse" aria-labelledby="headingSolution3" data-bs-parent="#accordionSolution3">
 <div class="accordion-body">
 <div class="codewrapper sourceCode" id="cb69">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -1063,7 +1063,7 @@ the missing value, and one without the column.</p>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="output" tabindex="0"><code>NameError: name 'numbers' is not defined</code></pre>
+<pre class="output" tabindex="0"><code>NameError: name 'numbers' is not defined. Did you forget to import 'numbers'</code></pre>
 </div>
 <div class="codewrapper sourceCode" id="cb71">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -1073,7 +1073,7 @@ the missing value, and one without the column.</p>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="output" tabindex="0"><code>NameError: name 'numbers' is not defined</code></pre>
+<pre class="output" tabindex="0"><code>NameError: name 'numbers' is not defined. Did you forget to import 'numbers'</code></pre>
 </div>
 <p>If you used your past knowledge from working with numpy arrays you
 might have tried</p>
@@ -1085,7 +1085,7 @@ might have tried</p>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="output" tabindex="0"><code>NameError: name 'numbers' is not defined</code></pre>
+<pre class="output" tabindex="0"><code>NameError: name 'numbers' is not defined. Did you forget to import 'numbers'</code></pre>
 </div>
 <p>These two are equivalent. Pandas provides the names as an alternative
 that might be easier to remember.</p>
@@ -1283,7 +1283,7 @@ year?</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution4" aria-expanded="false" aria-controls="collapseSolution4">
   <h4 class="accordion-header" id="headingSolution4"> Show me the solution </h4>
 </button>
-<div id="collapseSolution4" class="accordion-collapse collapse" data-bs-parent="#accordionSolution4" aria-labelledby="headingSolution4">
+<div id="collapseSolution4" class="accordion-collapse collapse" aria-labelledby="headingSolution4" data-bs-parent="#accordionSolution4">
 <div class="accordion-body">
 <p>First take the transpose with <code>T</code>, then use
 <code>describe()</code>:</p>
@@ -1322,7 +1322,7 @@ statistics.</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution5" aria-expanded="false" aria-controls="collapseSolution5">
   <h4 class="accordion-header" id="headingSolution5"> Show me the solution </h4>
 </button>
-<div id="collapseSolution5" class="accordion-collapse collapse" data-bs-parent="#accordionSolution5" aria-labelledby="headingSolution5">
+<div id="collapseSolution5" class="accordion-collapse collapse" aria-labelledby="headingSolution5" data-bs-parent="#accordionSolution5">
 <div class="accordion-body">
 <p>To read in a CSV, we use <code>pd.read_csv</code> and pass the
 filename <code>'data/gapminder_gdp_americas.csv'</code> to it. We also
@@ -1372,7 +1372,7 @@ method.</p>
 <button class="accordion-button hint-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseHint2" aria-expanded="false" aria-controls="collapseHint2">
   <h4 class="accordion-header" id="headingHint2"> Give me a hint </h4>
 </button>
-<div id="collapseHint2" class="accordion-collapse collapse" data-bs-parent="#accordionHint2" aria-labelledby="headingHint2">
+<div id="collapseHint2" class="accordion-collapse collapse" aria-labelledby="headingHint2" data-bs-parent="#accordionHint2">
 <div class="accordion-body">
 <p>You can view the documentation about a function by using
 <code>help(data_americas.head)</code>, or in Jupyters by typing out the
@@ -1386,7 +1386,7 @@ function and pressing Shift+Tab.</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution6" aria-expanded="false" aria-controls="collapseSolution6">
   <h4 class="accordion-header" id="headingSolution6"> Show me the solution </h4>
 </button>
-<div id="collapseSolution6" class="accordion-collapse collapse" data-bs-parent="#accordionSolution6" aria-labelledby="headingSolution6">
+<div id="collapseSolution6" class="accordion-collapse collapse" aria-labelledby="headingSolution6" data-bs-parent="#accordionSolution6">
 <div class="accordion-body">
 <p>The function <code>data_americas.head()</code> prints the first few
 rows of the DataFrame. We can specify the number of rows we wish to see
@@ -1426,7 +1426,7 @@ rows.</p>
 <button class="accordion-button hint-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseHint3" aria-expanded="false" aria-controls="collapseHint3">
   <h4 class="accordion-header" id="headingHint3"> Give me a hint </h4>
 </button>
-<div id="collapseHint3" class="accordion-collapse collapse" data-bs-parent="#accordionHint3" aria-labelledby="headingHint3">
+<div id="collapseHint3" class="accordion-collapse collapse" aria-labelledby="headingHint3" data-bs-parent="#accordionHint3">
 <div class="accordion-body">
 <p>Remember that you can switch the orientation of a Dataframe…</p>
 </div>
@@ -1438,7 +1438,7 @@ rows.</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution7" aria-expanded="false" aria-controls="collapseSolution7">
   <h4 class="accordion-header" id="headingSolution7"> Show me the solution </h4>
 </button>
-<div id="collapseSolution7" class="accordion-collapse collapse" data-bs-parent="#accordionSolution7" aria-labelledby="headingSolution7">
+<div id="collapseSolution7" class="accordion-collapse collapse" aria-labelledby="headingSolution7" data-bs-parent="#accordionSolution7">
 <div class="accordion-body">
 <p>We need to flip the DataFrame using <code>T</code>, then use
 <code>tail()</code>. If you think you might use this a few times, and
@@ -1570,8 +1570,8 @@ any links that you are not going to use.
   "url": "https://charliejharrison.github.io/AISS-2025-content/02-data-exploration.html",
   "identifier": "https://charliejharrison.github.io/AISS-2025-content/02-data-exploration.html",
   "dateCreated": "2025-07-03",
-  "dateModified": "2025-09-23",
-  "datePublished": "2025-10-21"
+  "dateModified": "2025-10-28",
+  "datePublished": "2025-10-28"
 }
 
   </script><script>
