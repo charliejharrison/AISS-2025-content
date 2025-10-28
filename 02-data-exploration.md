@@ -416,7 +416,7 @@ print(numbers)
 ```
 
 ``` output
-NameError: name 'numbers' is not defined
+NameError: name 'numbers' is not defined. Did you forget to import 'numbers'
 ```
 
 We can easily join these Series together, because they share a lot of index labels. Pandas does a pretty good job of lining up the data, and each of our `Series` is now a column in `numbers`. We used a dict to pass in column labels. Note that the data types are not printed. 
@@ -439,7 +439,7 @@ print(numbers.loc[1])
 ```
 
 ``` output
-NameError: name 'numbers' is not defined
+NameError: name 'numbers' is not defined. Did you forget to import 'numbers'
 ```
 
 The output here is a `Series` containing all the data from the row at index value 1. The index labels for this new `Series` correspond to the column labels from the `DataFrame`. The row has a `dtype`, which is object, because we have a mix of strings and numbers. 
@@ -452,7 +452,7 @@ numbers.loc[[1, 3]]
 ```
 
 ``` output
-NameError: name 'numbers' is not defined
+NameError: name 'numbers' is not defined. Did you forget to import 'numbers'
 ```
 
 If we take a slice of a `DataFrame` (using a colon `:` like before), we'll get back another DataFrame:
@@ -463,7 +463,7 @@ numbers[1:3]
 ```
 
 ``` output
-NameError: name 'numbers' is not defined
+NameError: name 'numbers' is not defined. Did you forget to import 'numbers'
 ```
 
 In these examples we're specifying the row, and Pandas assumes that we want every column. What if we don't?
@@ -478,7 +478,7 @@ numbers.loc[2, 'evens']
 ```
 
 ``` output
-NameError: name 'numbers' is not defined
+NameError: name 'numbers' is not defined. Did you forget to import 'numbers'
 ```
 
 ::: callout
@@ -495,7 +495,7 @@ numbers.loc[:, 'integers']
 ```
 
 ``` output
-NameError: name 'numbers' is not defined
+NameError: name 'numbers' is not defined. Did you forget to import 'numbers'
 ```
 
 :::::: challenge
@@ -516,7 +516,7 @@ numbers.loc[1:3, ['integers', 'ordinals']]
 ```
 
 ``` output
-NameError: name 'numbers' is not defined
+NameError: name 'numbers' is not defined. Did you forget to import 'numbers'
 ```
 ::::::
 
@@ -538,7 +538,7 @@ numbers_clean_rows = numbers.dropna()
 ```
 
 ``` output
-NameError: name 'numbers' is not defined
+NameError: name 'numbers' is not defined. Did you forget to import 'numbers'
 ```
 
 ``` python
@@ -546,7 +546,7 @@ numbers_clean_cols = numbers.dropna(axis='columns')
 ```
 
 ``` output
-NameError: name 'numbers' is not defined
+NameError: name 'numbers' is not defined. Did you forget to import 'numbers'
 ```
 If you used your past knowledge from working with numpy arrays you might have tried
 
@@ -556,7 +556,7 @@ numbers_clean_cols = numbers.dropna(axis=1)
 ```
 
 ``` output
-NameError: name 'numbers' is not defined
+NameError: name 'numbers' is not defined. Did you forget to import 'numbers'
 ```
 
 These two are equivalent. Pandas provides the names as an alternative that might be easier to remember.
