@@ -1,6 +1,6 @@
 {
   "R": {
-    "Version": "4.5.1",
+    "Version": "4.5.2",
     "Repositories": [
       {
         "Name": "carpentries",
@@ -958,7 +958,7 @@
     },
     "reticulate": {
       "Package": "reticulate",
-      "Version": "1.44.0",
+      "Version": "1.44.1",
       "Source": "Repository",
       "Type": "Package",
       "Title": "Interface to 'Python'",
