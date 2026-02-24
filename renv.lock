@@ -962,7 +962,7 @@
     },
     "reticulate": {
       "Package": "reticulate",
-      "Version": "1.44.1",
+      "Version": "1.45.0",
       "Source": "Repository",
       "Type": "Package",
       "Title": "Interface to 'Python'",
