@@ -6,21 +6,27 @@
 <title>AISS 2025 Content from Charlie: All in One View</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <script src="../assets/themetoggle.js"></script><link rel="stylesheet" type="text/css" href="../assets/styles.css">
-<script src="../assets/scripts.js" type="text/javascript"></script><!-- mathjax --><script type="text/x-mathjax-config">
-    MathJax.Hub.Config({
-      config: ["MMLorHTML.js"],
-      jax: ["input/TeX","input/MathML","output/HTML-CSS","output/NativeMML", "output/PreviewHTML"],
-      extensions: ["tex2jax.js","mml2jax.js","MathMenu.js","MathZoom.js", "fast-preview.js", "AssistiveMML.js", "a11y/accessibility-menu.js"],
-      TeX: {
-        extensions: ["AMSmath.js","AMSsymbols.js","noErrors.js","noUndefined.js"]
-      },
-      tex2jax: {
-        inlineMath: [['\\(', '\\)']],
-        displayMath: [ ['$$','$$'], ['\\[', '\\]'] ],
-        processEscapes: true
-      }
-    });
-    </script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><!-- Responsive Favicon for The Carpentries --><link rel="apple-touch-icon" sizes="180x180" href="../favicons/incubator/apple-touch-icon.png">
+<script src="../assets/scripts.js" type="text/javascript"></script><!-- mathjax --><!-- NOTE: https://docs.mathjax.org/en/latest/output/mathml.html#mathml-support --><!-- Changes from V2 to V4: https://mathjax.github.io/MathJax-demos-web/convert-configuration/convert-configuration.html
+        Jax output/NativeMML is not yet implemented
+        Jax output/PreviewHTML is not yet implemented
+        Extension fast-preview is not yet implemented (but may be in a future release)
+    --><script>
+    window.MathJax = {
+        tex: {
+            inlineMath: [['\\(', '\\)']],
+            displayMath: [ ['$$','$$'], ['\\[', '\\]'] ],
+            processEscapes: true,
+            packages: ['base', 'ams', 'noerrors', 'noundefined']
+        },
+        options: {
+            ignoreHtmlClass: 'tex2jax_ignore',
+            processHtmlClass: 'tex2jax_process'
+        },
+        loader: {
+            load: ['a11y/assistive-mml', '[tex]/noerrors']
+        }
+    };
+    </script><script defer src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script><!-- Responsive Favicon for The Carpentries --><link rel="apple-touch-icon" sizes="180x180" href="../favicons/incubator/apple-touch-icon.png">
 <link rel="icon" type="image/png" sizes="32x32" href="../favicons/incubator/favicon-32x32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="../favicons/incubator/favicon-16x16.png">
 <link rel="manifest" href="../favicons/incubator/site.webmanifest">
@@ -47,8 +53,8 @@
       </div>
     </div>
     <div class="selector-container">
-      <div id="theme-selector">
-        <li class="nav-item dropdown" id="theme-button-list">
+      <menu class="theme-selector" id="theme-selector-menu">
+<li class="nav-item dropdown theme-button-list" id="theme-button-list-menu">
           <button class="btn btn-link nav-link px-0 px-lg-2 dropdown-toggle d-flex align-items-center" id="bd-theme" type="button" aria-expanded="false" data-bs-toggle="dropdown" data-bs-display="static" aria-label="Toggle theme (auto)">
             <svg class="bi my-1 theme-icon-active"><use href="#circle-half"></use></svg><i data-feather="chevron-down"></i>
           </button>
@@ -73,10 +79,8 @@
             </li>
           </ul>
 </li>
-      </div>
-
-
-      <div class="dropdown" id="instructor-dropdown">
+    </menu>
+<div class="dropdown" id="instructor-dropdown">
         <button class="btn btn-secondary dropdown-toggle bordered-button" type="button" id="dropdownMenu1" data-bs-toggle="dropdown" aria-expanded="false">
           <i aria-hidden="true" class="icon" data-feather="eye"></i> Instructor View <i data-feather="chevron-down"></i>
         </button>
@@ -142,29 +146,18 @@
     <a id="search-button" class="btn btn-primary" href="../instructor/aio.html" role="button" aria-label="Search the All In One page">Search the All In One page</a>
   </div>
 <!--/div.container-fluid -->
-</nav><div class="col-md-12 mobile-title">
-  AISS 2025 Content from Charlie
-</div>
-
-<aside class="col-md-12 lesson-progress"><div style="width: %" class="percentage">
-    %
-  </div>
-  <div class="progress incubator">
-    <div class="progress-bar incubator" role="progressbar" style="width: %" aria-valuenow="" aria-label="Lesson Progress" aria-valuemin="0" aria-valuemax="100">
-    </div>
-  </div>
-</aside><div class="container">
+</nav><div class="container">
       <div class="row">
         <!-- START: inst/pkgdown/templates/navbar.html -->
 <div id="sidebar-col" class="col-lg-4">
   <div id="sidebar" class="sidebar">
-      <nav aria-labelledby="flush-headingEleven"><button role="button" aria-label="close menu" alt="close menu" aria-expanded="true" aria-controls="sidebar" class="collapse-toggle" data-collapse="Collapse " data-episodes="Episodes ">
+      <nav aria-labelledby="flush-collapse-chapters-toggle"><button role="button" aria-label="Collapse" alt="Collapse" aria-expanded="true" aria-controls="sidebar" class="collapse-toggle" data-collapse="Collapse " data-episodes="Episodes ">
           <i class="search-icon" data-feather="x" role="img"></i>
         </button>
         <div class="sidebar-inner">
           <div class="row mobile-row" id="theme-row-mobile">
-            <div class="col" id="theme-selector">
-              <li class="nav-item dropdown" id="theme-button-list">
+            <menu class="col theme-selector" id="theme-selector-sidebar">
+<li class="nav-item dropdown theme-button-list" id="theme-button-list-sidebar">
                 <button class="btn btn-link nav-link px-0 px-lg-2 dropdown-toggle d-flex align-items-center" id="bd-theme" type="button" aria-expanded="false" data-bs-toggle="dropdown" data-bs-display="static" aria-label="Toggle theme (auto)">
                   <svg class="bi my-1 theme-icon-active"><use href="#circle-half"></use></svg><span class="d-lg-none ms-1" id="bd-theme-text">Toggle Theme</span>
                 </button>
@@ -189,19 +182,19 @@
                   </li>
                 </ul>
 </li>
-            </div>
-          </div>
+            </menu>
+</div>
           <div class="row mobile-row">
             <div class="col">
               <div class="sidenav-view-selector">
-                <div class="accordion accordion-flush" id="accordionFlush9">
+                <div class="accordion accordion-flush" id="accordion-instructor-toggle">
                   <div class="accordion-item">
-                    <h2 class="accordion-header" id="flush-headingNine">
-                      <button class="accordion-button collapsed" id="instructor" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseNine" aria-expanded="false" aria-controls="flush-collapseNine">
+                    <h2 class="accordion-header" id="flush-heading-instructor-toggle">
+                      <button class="accordion-button collapsed" id="instructor" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapse-instructor-toggle" aria-expanded="false" aria-controls="flush-collapse-instructor-toggle">
                         <i id="eye" aria-hidden="true" class="icon" data-feather="eye"></i> Instructor View
                       </button>
                     </h2>
-                    <div id="flush-collapseNine" class="accordion-collapse collapse" aria-labelledby="flush-headingNine" data-bs-parent="#accordionFlush2">
+                    <div id="flush-collapse-instructor-toggle" class="accordion-collapse collapse" data-bs-parent="#accordion-instructor-toggle">
                       <div class="accordion-body">
                         <a href="../aio.html">Learner View</a>
                       </div>
@@ -219,15 +212,15 @@
 </div>
 <!--/div.mobile-row -->
 
-          <div class="accordion accordion-flush" id="accordionFlush11">
+          <div class="accordion accordion-flush" id="accordion-chapters-toggle">
             <div class="accordion-item">
 
-              <button id="chapters" class="accordion-button show" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseEleven" aria-expanded="false" aria-controls="flush-collapseEleven">
-                <h2 class="accordion-header chapters" id="flush-headingEleven">
+              <button id="chapters" class="accordion-button show" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapse-chapters-toggle" aria-expanded="false" aria-controls="flush-collapse-chapters-toggle">
+                <h2 class="accordion-header chapters" id="flush-heading-chapters-toggle">
                   EPISODES
                 </h2>
               </button>
-              <div id="flush-collapseEleven" class="accordion-collapse show collapse" aria-labelledby="flush-headingEleven" data-bs-parent="#accordionFlush11">
+              <div id="flush-collapse-chapters-toggle" class="accordion-collapse show collapse" data-bs-parent="#accordion-chapters-toggle">
 
                 <div class="accordion-body">
                   <div class="accordion accordion-flush" id="accordionFlush1">
@@ -259,14 +252,14 @@
             </div>
 
             <hr class="half-width">
-<div class="accordion accordion-flush lesson-resources" id="accordionFlush12">
+<div class="accordion accordion-flush lesson-resources" id="accordion-resources-toggle">
               <div class="accordion-item">
-                <h2 class="accordion-header" id="flush-headingTwelve">
-                  <button class="accordion-button collapsed" id="lesson-resources" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseTwelve" aria-expanded="false" aria-controls="flush-collapseTwelve">
+                <h2 class="accordion-header" id="flush-heading-resources-toggle">
+                  <button class="accordion-button collapsed" id="lesson-resources" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapse-resources-toggle" aria-expanded="false" aria-controls="flush-collapse-resources-toggle">
                     RESOURCES
                   </button>
                 </h2>
-                <div id="flush-collapseTwelve" class="accordion-collapse collapse" aria-labelledby="flush-headingTwelve" data-bs-parent="#accordionFlush12">
+                <div id="flush-collapse-resources-toggle" class="accordion-collapse collapse" data-bs-parent="#accordion-resources-toggle">
                   <div class="accordion-body">
                     <ul>
 <li>
@@ -307,11 +300,11 @@
         <!-- START: inst/pkgdown/templates/content-extra.html -->
   <div class="col-xl-8 col-lg-12 primary-content">
     <main id="main-content" class="main-content"><div class="container lesson-content">
-        
+        <h1>All in One View</h1>
         
 <section id="aio-02-data-exploration-and-preprocessing"><p>Content from <a href="02-data-exploration-and-preprocessing.html">Data exploration and Preprocessing</a></p>
 <hr>
-<p>Last updated on 2026-04-14 |
+<p>Last updated on 2026-04-21 |
 
         <a href="https://github.com/charliejharrison/AISS-2025-content/edit/main/episodes/02-data-exploration-and-preprocessing.Rmd" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 <p>Estimated time: <i aria-hidden="true" data-feather="clock"></i> 120 minutes</p>
@@ -372,7 +365,7 @@ Have a look at the website and browse the questions, then read in the <a href=".
 <div class="codewrapper sourceCode" id="cb2">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" tabindex="-1" aria-label="code-block-2-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span></code></pre>
 </div>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -382,9 +375,9 @@ Have a look at the website and browse the questions, then read in the <a href=".
 <div class="codewrapper sourceCode" id="cb4">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="co"># Read the raw salary-survey responses</span></span>
-<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a>survey_path <span class="op">=</span> <span class="st">"data/AAM_salary_survey_2025_responses.csv"</span></span>
-<span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a>survey_data <span class="op">=</span> pd.read_csv(survey_path)</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" tabindex="-1" aria-label="code-block-4-1"></a><span class="co"># Read the raw salary-survey responses</span></span>
+<span id="cb4-2"><a href="#cb4-2" tabindex="-1" aria-label="code-block-4-2"></a>survey_path <span class="op">=</span> <span class="st">"data/AAM_salary_survey_2025_responses.csv"</span></span>
+<span id="cb4-3"><a href="#cb4-3" tabindex="-1" aria-label="code-block-4-3"></a>survey_data <span class="op">=</span> pd.read_csv(survey_path)</span></code></pre>
 </div>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -396,8 +389,8 @@ label. The labels are stored in an index.</p>
 <div class="codewrapper sourceCode" id="cb6">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a><span class="co"># print the column labels</span></span>
-<span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a><span class="bu">print</span>(survey_data.columns)</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" tabindex="-1" aria-label="code-block-6-1"></a><span class="co"># print the column labels</span></span>
+<span id="cb6-2"><a href="#cb6-2" tabindex="-1" aria-label="code-block-6-2"></a><span class="bu">print</span>(survey_data.columns)</span></code></pre>
 </div>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -407,8 +400,8 @@ label. The labels are stored in an index.</p>
 <div class="codewrapper sourceCode" id="cb8">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a><span class="co"># Show the first few lines</span></span>
-<span id="cb8-2"><a href="#cb8-2" tabindex="-1"></a>survey_data.head()</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" tabindex="-1" aria-label="code-block-8-1"></a><span class="co"># Show the first few lines</span></span>
+<span id="cb8-2"><a href="#cb8-2" tabindex="-1" aria-label="code-block-8-2"></a>survey_data.head()</span></code></pre>
 </div>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -433,8 +426,8 @@ too, but a Series can only contain a single data type.</p>
 <div class="codewrapper sourceCode" id="cb10">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" tabindex="-1"></a><span class="co"># List the column headings and their inferred dtypes</span></span>
-<span id="cb10-2"><a href="#cb10-2" tabindex="-1"></a>survey_data.dtypes</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" tabindex="-1" aria-label="code-block-10-1"></a><span class="co"># List the column headings and their inferred dtypes</span></span>
+<span id="cb10-2"><a href="#cb10-2" tabindex="-1" aria-label="code-block-10-2"></a>survey_data.dtypes</span></code></pre>
 </div>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -455,7 +448,7 @@ from this series using the function <code>loc[]</code></p>
 <div class="codewrapper sourceCode" id="cb12">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" tabindex="-1"></a>survey_data.dtypes.loc[<span class="st">"Age"</span>]</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" tabindex="-1" aria-label="code-block-12-1"></a>survey_data.dtypes.loc[<span class="st">"Age"</span>]</span></code></pre>
 </div>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -486,7 +479,7 @@ name.</p>
 <div class="codewrapper sourceCode" id="cb14">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" tabindex="-1"></a>survey_data[<span class="st">"Industry"</span>]</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" tabindex="-1" aria-label="code-block-14-1"></a>survey_data[<span class="st">"Industry"</span>]</span></code></pre>
 </div>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -497,7 +490,7 @@ name.</p>
 <div class="codewrapper sourceCode" id="cb16">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" tabindex="-1"></a>survey_data.loc[:, <span class="st">"Industry"</span>]</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" tabindex="-1" aria-label="code-block-16-1"></a>survey_data.loc[:, <span class="st">"Industry"</span>]</span></code></pre>
 </div>
 <p>Used on a DataFrame, <code>loc[]</code> takes two arguments - the
 first one is the rows you want and the second one is the columns. Just
@@ -513,7 +506,7 @@ calling <code>astype()</code>, with the desired type as an argument.</p>
 <div class="codewrapper sourceCode" id="cb17">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" tabindex="-1"></a>survey_data[<span class="st">"Industry"</span>].astype(<span class="st">"string"</span>)</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" tabindex="-1" aria-label="code-block-17-1"></a>survey_data[<span class="st">"Industry"</span>].astype(<span class="st">"string"</span>)</span></code></pre>
 </div>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -532,11 +525,11 @@ dictionary:</p>
 <div class="codewrapper sourceCode" id="cb19">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" tabindex="-1"></a>dtypes_dict <span class="op">=</span> {}</span>
-<span id="cb19-2"><a href="#cb19-2" tabindex="-1"></a></span>
-<span id="cb19-3"><a href="#cb19-3" tabindex="-1"></a><span class="co"># loop through the columns with dtype object and add them to a dictionary</span></span>
-<span id="cb19-4"><a href="#cb19-4" tabindex="-1"></a><span class="cf">for</span> column_name <span class="kw">in</span> survey_data.dtypes[survey_data.dtypes <span class="op">==</span> <span class="bu">object</span>].index:</span>
-<span id="cb19-5"><a href="#cb19-5" tabindex="-1"></a>  dtypes_dict[column_name] <span class="op">=</span> <span class="st">"string"</span></span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" tabindex="-1" aria-label="code-block-19-1"></a>dtypes_dict <span class="op">=</span> {}</span>
+<span id="cb19-2"><a href="#cb19-2" tabindex="-1" aria-label="code-block-19-2"></a></span>
+<span id="cb19-3"><a href="#cb19-3" tabindex="-1" aria-label="code-block-19-3"></a><span class="co"># loop through the columns with dtype object and add them to a dictionary</span></span>
+<span id="cb19-4"><a href="#cb19-4" tabindex="-1" aria-label="code-block-19-4"></a><span class="cf">for</span> column_name <span class="kw">in</span> survey_data.dtypes[survey_data.dtypes <span class="op">==</span> <span class="bu">object</span>].index:</span>
+<span id="cb19-5"><a href="#cb19-5" tabindex="-1" aria-label="code-block-19-5"></a>  dtypes_dict[column_name] <span class="op">=</span> <span class="st">"string"</span></span></code></pre>
 </div>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -546,8 +539,8 @@ dictionary:</p>
 <div class="codewrapper sourceCode" id="cb21">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" tabindex="-1"></a>  </span>
-<span id="cb21-2"><a href="#cb21-2" tabindex="-1"></a>dtypes_dict</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" tabindex="-1" aria-label="code-block-21-1"></a>  </span>
+<span id="cb21-2"><a href="#cb21-2" tabindex="-1" aria-label="code-block-21-2"></a>dtypes_dict</span></code></pre>
 </div>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -559,7 +552,7 @@ that we need to save the results.</p>
 <div class="codewrapper sourceCode" id="cb23">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" tabindex="-1"></a>survey_data <span class="op">=</span> survey_data.astype(dtypes_dict)</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" tabindex="-1" aria-label="code-block-23-1"></a>survey_data <span class="op">=</span> survey_data.astype(dtypes_dict)</span></code></pre>
 </div>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -569,7 +562,7 @@ that we need to save the results.</p>
 <div class="codewrapper sourceCode" id="cb25">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" tabindex="-1"></a>survey_data.dtypes</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" tabindex="-1" aria-label="code-block-25-1"></a>survey_data.dtypes</span></code></pre>
 </div>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -621,8 +614,8 @@ them up in each column, and sort the results as follows:</p>
 <div class="codewrapper sourceCode" id="cb27">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" tabindex="-1"></a><span class="co"># Count missing values per column</span></span>
-<span id="cb27-2"><a href="#cb27-2" tabindex="-1"></a>survey_data.isna().<span class="bu">sum</span>().sort_values(ascending<span class="op">=</span><span class="va">False</span>)</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" tabindex="-1" aria-label="code-block-27-1"></a><span class="co"># Count missing values per column</span></span>
+<span id="cb27-2"><a href="#cb27-2" tabindex="-1" aria-label="code-block-27-2"></a>survey_data.isna().<span class="bu">sum</span>().sort_values(ascending<span class="op">=</span><span class="va">False</span>)</span></code></pre>
 </div>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -686,7 +679,7 @@ missing values with 0. We can also change the type to be
 <div class="codewrapper sourceCode" id="cb29">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" tabindex="-1"></a>survey_data[<span class="st">"Additional monetary compensation"</span>] <span class="op">=</span> survey_data[<span class="st">"Additional monetary compensation"</span>].fillna(<span class="dv">0</span>).astype(<span class="st">"int"</span>)</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" tabindex="-1" aria-label="code-block-29-1"></a>survey_data[<span class="st">"Additional monetary compensation"</span>] <span class="op">=</span> survey_data[<span class="st">"Additional monetary compensation"</span>].fillna(<span class="dv">0</span>).astype(<span class="st">"int"</span>)</span></code></pre>
 </div>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -722,7 +715,7 @@ rows that have missing values in the <code>Unionized?</code> column.</p>
 <div class="codewrapper sourceCode" id="cb31">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" tabindex="-1"></a>survey_data <span class="op">=</span> survey_data.dropna(subset<span class="op">=</span>[<span class="st">"Unionized?"</span>], axis<span class="op">=</span><span class="st">"rows"</span>)</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" tabindex="-1" aria-label="code-block-31-1"></a>survey_data <span class="op">=</span> survey_data.dropna(subset<span class="op">=</span>[<span class="st">"Unionized?"</span>], axis<span class="op">=</span><span class="st">"rows"</span>)</span></code></pre>
 </div>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -759,7 +752,7 @@ surprise:</p>
 <div class="codewrapper sourceCode" id="cb33">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1" tabindex="-1"></a>survey_data[<span class="st">"Country"</span>].value_counts().head()</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1" tabindex="-1" aria-label="code-block-33-1"></a>survey_data[<span class="st">"Country"</span>].value_counts().head()</span></code></pre>
 </div>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -770,7 +763,7 @@ surprise:</p>
 <div class="codewrapper sourceCode" id="cb35">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb35-1"><a href="#cb35-1" tabindex="-1"></a>survey_data[<span class="st">"Age"</span>].value_counts()</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb35-1"><a href="#cb35-1" tabindex="-1" aria-label="code-block-35-1"></a>survey_data[<span class="st">"Age"</span>].value_counts()</span></code></pre>
 </div>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -785,7 +778,7 @@ got.</p>
 <div class="codewrapper sourceCode" id="cb37">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb37-1"><a href="#cb37-1" tabindex="-1"></a>survey_data[<span class="st">"Currency"</span>].value_counts()</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb37-1"><a href="#cb37-1" tabindex="-1" aria-label="code-block-37-1"></a>survey_data[<span class="st">"Currency"</span>].value_counts()</span></code></pre>
 </div>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -807,7 +800,7 @@ we create a mask:</p>
 <div class="codewrapper sourceCode" id="cb39">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb39-1"><a href="#cb39-1" tabindex="-1"></a>survey_data[<span class="st">"Currency"</span>] <span class="op">==</span> <span class="st">"Other"</span></span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb39-1"><a href="#cb39-1" tabindex="-1" aria-label="code-block-39-1"></a>survey_data[<span class="st">"Currency"</span>] <span class="op">==</span> <span class="st">"Other"</span></span></code></pre>
 </div>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -823,7 +816,7 @@ we want:</p>
 <div class="codewrapper sourceCode" id="cb41">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb41-1"><a href="#cb41-1" tabindex="-1"></a>survey_data.loc[survey_data[<span class="st">"Currency"</span>] <span class="op">==</span> <span class="st">"Other"</span>]</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb41-1"><a href="#cb41-1" tabindex="-1" aria-label="code-block-41-1"></a>survey_data.loc[survey_data[<span class="st">"Currency"</span>] <span class="op">==</span> <span class="st">"Other"</span>]</span></code></pre>
 </div>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -837,7 +830,7 @@ count the values like before:</p>
 <div class="codewrapper sourceCode" id="cb43">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb43-1"><a href="#cb43-1" tabindex="-1"></a>survey_data.loc[survey_data[<span class="st">"Currency"</span>] <span class="op">==</span> <span class="st">"Other"</span>, <span class="st">"Currency - other"</span>].value_counts()</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb43-1"><a href="#cb43-1" tabindex="-1" aria-label="code-block-43-1"></a>survey_data.loc[survey_data[<span class="st">"Currency"</span>] <span class="op">==</span> <span class="st">"Other"</span>, <span class="st">"Currency - other"</span>].value_counts()</span></code></pre>
 </div>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -866,7 +859,7 @@ lengths:</p>
 <div class="codewrapper sourceCode" id="cb45">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb45-1"><a href="#cb45-1" tabindex="-1"></a>other_currency_len <span class="op">=</span> survey_data[<span class="st">"Currency - other"</span>].<span class="bu">str</span>.<span class="bu">len</span>()</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb45-1"><a href="#cb45-1" tabindex="-1" aria-label="code-block-45-1"></a>other_currency_len <span class="op">=</span> survey_data[<span class="st">"Currency - other"</span>].<span class="bu">str</span>.<span class="bu">len</span>()</span></code></pre>
 </div>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -878,7 +871,7 @@ this:</p>
 <div class="codewrapper sourceCode" id="cb47">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb47-1"><a href="#cb47-1" tabindex="-1"></a>other_currency_len <span class="op">==</span> <span class="dv">3</span></span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb47-1"><a href="#cb47-1" tabindex="-1" aria-label="code-block-47-1"></a>other_currency_len <span class="op">==</span> <span class="dv">3</span></span></code></pre>
 </div>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -911,7 +904,7 @@ exactly 3 characters long.</p>
 <div class="codewrapper sourceCode" id="cb49">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb49-1"><a href="#cb49-1" tabindex="-1"></a>survey_data.loc[other_currency_len <span class="op">==</span> <span class="dv">3</span>, <span class="st">"Currency"</span>]</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb49-1"><a href="#cb49-1" tabindex="-1" aria-label="code-block-49-1"></a>survey_data.loc[other_currency_len <span class="op">==</span> <span class="dv">3</span>, <span class="st">"Currency"</span>]</span></code></pre>
 </div>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -947,7 +940,7 @@ case?</p>
 <div class="codewrapper sourceCode" id="cb51">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb51-1"><a href="#cb51-1" tabindex="-1"></a>survey_data.loc[other_currency_len <span class="op">==</span> <span class="dv">3</span>, <span class="st">"Currency - other"</span>].<span class="bu">str</span>.upper()</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb51-1"><a href="#cb51-1" tabindex="-1" aria-label="code-block-51-1"></a>survey_data.loc[other_currency_len <span class="op">==</span> <span class="dv">3</span>, <span class="st">"Currency - other"</span>].<span class="bu">str</span>.upper()</span></code></pre>
 </div>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -984,7 +977,7 @@ column:</p>
 <div class="codewrapper sourceCode" id="cb53">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb53-1"><a href="#cb53-1" tabindex="-1"></a>survey_data.loc[other_currency_len <span class="op">==</span> <span class="dv">3</span>, <span class="st">"Currency"</span>] <span class="op">=</span> survey_data.loc[other_currency_len <span class="op">==</span> <span class="dv">3</span>, <span class="st">"Currency - other"</span>].<span class="bu">str</span>.upper()</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb53-1"><a href="#cb53-1" tabindex="-1" aria-label="code-block-53-1"></a>survey_data.loc[other_currency_len <span class="op">==</span> <span class="dv">3</span>, <span class="st">"Currency"</span>] <span class="op">=</span> survey_data.loc[other_currency_len <span class="op">==</span> <span class="dv">3</span>, <span class="st">"Currency - other"</span>].<span class="bu">str</span>.upper()</span></code></pre>
 </div>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -1000,7 +993,7 @@ column:</p>
 <div class="codewrapper sourceCode" id="cb55">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb55-1"><a href="#cb55-1" tabindex="-1"></a>survey_data.loc[survey_data[<span class="st">"Currency"</span>] <span class="op">==</span> <span class="st">"Other"</span>, <span class="st">"Currency - other"</span>].value_counts()</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb55-1"><a href="#cb55-1" tabindex="-1" aria-label="code-block-55-1"></a>survey_data.loc[survey_data[<span class="st">"Currency"</span>] <span class="op">==</span> <span class="st">"Other"</span>, <span class="st">"Currency - other"</span>].value_counts()</span></code></pre>
 </div>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -1050,7 +1043,7 @@ column you want. Then pass both into <code>loc[]</code></p>
 <div class="codewrapper sourceCode" id="cb57">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb57-1"><a href="#cb57-1" tabindex="-1"></a>survey_data.loc[survey_data[<span class="st">"Currency - other"</span>] <span class="op">==</span> <span class="st">"DKK (danish crowns)"</span>, <span class="st">"Currency"</span>] <span class="op">=</span> <span class="st">"DKK"</span></span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb57-1"><a href="#cb57-1" tabindex="-1" aria-label="code-block-57-1"></a>survey_data.loc[survey_data[<span class="st">"Currency - other"</span>] <span class="op">==</span> <span class="st">"DKK (danish crowns)"</span>, <span class="st">"Currency"</span>] <span class="op">=</span> <span class="st">"DKK"</span></span></code></pre>
 </div>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -1072,7 +1065,7 @@ column you want. Then pass both into <code>loc[]</code></p>
 <div class="codewrapper sourceCode" id="cb59">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb59-1"><a href="#cb59-1" tabindex="-1"></a>survey_data.loc[survey_data[<span class="st">"Currency - other"</span>] <span class="op">==</span> <span class="st">"INR Indian Rupee"</span>, <span class="st">"Currency"</span>] <span class="op">=</span> <span class="st">"INR"</span></span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb59-1"><a href="#cb59-1" tabindex="-1" aria-label="code-block-59-1"></a>survey_data.loc[survey_data[<span class="st">"Currency - other"</span>] <span class="op">==</span> <span class="st">"INR Indian Rupee"</span>, <span class="st">"Currency"</span>] <span class="op">=</span> <span class="st">"INR"</span></span></code></pre>
 </div>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -1082,7 +1075,7 @@ column you want. Then pass both into <code>loc[]</code></p>
 <div class="codewrapper sourceCode" id="cb61">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb61-1"><a href="#cb61-1" tabindex="-1"></a>survey_data.loc[survey_data[<span class="st">"Currency - other"</span>] <span class="op">==</span> <span class="st">"Rupees"</span>, <span class="st">"Currency"</span>] <span class="op">=</span> <span class="st">"INR"</span></span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb61-1"><a href="#cb61-1" tabindex="-1" aria-label="code-block-61-1"></a>survey_data.loc[survey_data[<span class="st">"Currency - other"</span>] <span class="op">==</span> <span class="st">"Rupees"</span>, <span class="st">"Currency"</span>] <span class="op">=</span> <span class="st">"INR"</span></span></code></pre>
 </div>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -1099,8 +1092,8 @@ March 2025 in the file <code>data/average_csv_2025-3.csv</code>.</p>
 <div class="codewrapper sourceCode" id="cb63">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb63-1"><a href="#cb63-1" tabindex="-1"></a><span class="co"># Read the FX-rate file (average 2025 exchange rates)</span></span>
-<span id="cb63-2"><a href="#cb63-2" tabindex="-1"></a>gbp_conversions <span class="op">=</span> pd.read_csv(<span class="st">"data/average_csv_2025-3.csv"</span>, index_col<span class="op">=</span><span class="st">"Country"</span>)</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb63-1"><a href="#cb63-1" tabindex="-1" aria-label="code-block-63-1"></a><span class="co"># Read the FX-rate file (average 2025 exchange rates)</span></span>
+<span id="cb63-2"><a href="#cb63-2" tabindex="-1" aria-label="code-block-63-2"></a>gbp_conversions <span class="op">=</span> pd.read_csv(<span class="st">"data/average_csv_2025-3.csv"</span>, index_col<span class="op">=</span><span class="st">"Country"</span>)</span></code></pre>
 </div>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -1110,7 +1103,7 @@ March 2025 in the file <code>data/average_csv_2025-3.csv</code>.</p>
 <div class="codewrapper sourceCode" id="cb65">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb65-1"><a href="#cb65-1" tabindex="-1"></a>gbp_conversions.head()</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb65-1"><a href="#cb65-1" tabindex="-1" aria-label="code-block-65-1"></a>gbp_conversions.head()</span></code></pre>
 </div>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -1120,7 +1113,7 @@ March 2025 in the file <code>data/average_csv_2025-3.csv</code>.</p>
 <div class="codewrapper sourceCode" id="cb67">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb67-1"><a href="#cb67-1" tabindex="-1"></a>gbp_conversions.columns</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb67-1"><a href="#cb67-1" tabindex="-1" aria-label="code-block-67-1"></a>gbp_conversions.columns</span></code></pre>
 </div>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -1136,7 +1129,7 @@ it’s only one column that we’re interested in</p>
 <div class="codewrapper sourceCode" id="cb69">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb69-1"><a href="#cb69-1" tabindex="-1"></a>gbp_map <span class="op">=</span> gbp_conversions.loc[:, [<span class="st">"Currency Code"</span>, <span class="st">"Sterling value of Currency Unit £"</span>]]</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb69-1"><a href="#cb69-1" tabindex="-1" aria-label="code-block-69-1"></a>gbp_map <span class="op">=</span> gbp_conversions.loc[:, [<span class="st">"Currency Code"</span>, <span class="st">"Sterling value of Currency Unit £"</span>]]</span></code></pre>
 </div>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -1146,7 +1139,7 @@ it’s only one column that we’re interested in</p>
 <div class="codewrapper sourceCode" id="cb71">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb71-1"><a href="#cb71-1" tabindex="-1"></a>gbp_map <span class="op">=</span> gbp_map.rename(columns<span class="op">=</span>{<span class="st">"Currency Code"</span>: <span class="st">"Currency"</span>, <span class="st">"Sterling value of Currency Unit £"</span>: <span class="st">"Exchange rate"</span>})</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb71-1"><a href="#cb71-1" tabindex="-1" aria-label="code-block-71-1"></a>gbp_map <span class="op">=</span> gbp_map.rename(columns<span class="op">=</span>{<span class="st">"Currency Code"</span>: <span class="st">"Currency"</span>, <span class="st">"Sterling value of Currency Unit £"</span>: <span class="st">"Exchange rate"</span>})</span></code></pre>
 </div>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -1156,7 +1149,7 @@ it’s only one column that we’re interested in</p>
 <div class="codewrapper sourceCode" id="cb73">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb73-1"><a href="#cb73-1" tabindex="-1"></a>gbp_map <span class="op">=</span> gbp_map.set_index(<span class="st">"Currency"</span>)[<span class="st">"Exchange rate"</span>]</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb73-1"><a href="#cb73-1" tabindex="-1" aria-label="code-block-73-1"></a>gbp_map <span class="op">=</span> gbp_map.set_index(<span class="st">"Currency"</span>)[<span class="st">"Exchange rate"</span>]</span></code></pre>
 </div>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -1166,7 +1159,7 @@ it’s only one column that we’re interested in</p>
 <div class="codewrapper sourceCode" id="cb75">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb75-1"><a href="#cb75-1" tabindex="-1"></a>gbp_map</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb75-1"><a href="#cb75-1" tabindex="-1" aria-label="code-block-75-1"></a>gbp_map</span></code></pre>
 </div>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -1182,7 +1175,7 @@ data.</p>
 <div class="codewrapper sourceCode" id="cb77">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb77-1"><a href="#cb77-1" tabindex="-1"></a>survey_data[<span class="st">"Currency"</span>].isin(gbp_map.index).mean()</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb77-1"><a href="#cb77-1" tabindex="-1" aria-label="code-block-77-1"></a>survey_data[<span class="st">"Currency"</span>].isin(gbp_map.index).mean()</span></code></pre>
 </div>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -1195,7 +1188,7 @@ and False to True.</p>
 <div class="codewrapper sourceCode" id="cb79">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb79-1"><a href="#cb79-1" tabindex="-1"></a>survey_data.loc[<span class="op">~</span>survey_data[<span class="st">"Currency"</span>].isin(gbp_map.index), <span class="st">"Currency"</span>].value_counts()</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb79-1"><a href="#cb79-1" tabindex="-1" aria-label="code-block-79-1"></a>survey_data.loc[<span class="op">~</span>survey_data[<span class="st">"Currency"</span>].isin(gbp_map.index), <span class="st">"Currency"</span>].value_counts()</span></code></pre>
 </div>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -1208,7 +1201,7 @@ exchange rate (we can probably work that one out in our heads).</p>
 <div class="codewrapper sourceCode" id="cb81">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb81-1"><a href="#cb81-1" tabindex="-1"></a>gbp_map.loc[<span class="st">"GBP"</span>] <span class="op">=</span> <span class="dv">1</span></span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb81-1"><a href="#cb81-1" tabindex="-1" aria-label="code-block-81-1"></a>gbp_map.loc[<span class="st">"GBP"</span>] <span class="op">=</span> <span class="dv">1</span></span></code></pre>
 </div>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -1227,7 +1220,7 @@ on currency codes</p>
 <div class="codewrapper sourceCode" id="cb83">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb83-1"><a href="#cb83-1" tabindex="-1"></a>survey_data[<span class="st">"Currency"</span>].<span class="bu">map</span>(gbp_map)</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb83-1"><a href="#cb83-1" tabindex="-1" aria-label="code-block-83-1"></a>survey_data[<span class="st">"Currency"</span>].<span class="bu">map</span>(gbp_map)</span></code></pre>
 </div>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -1252,7 +1245,7 @@ same!</p>
 <div class="codewrapper sourceCode" id="cb85">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb85-1"><a href="#cb85-1" tabindex="-1"></a>gbp_map.index.value_counts()</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb85-1"><a href="#cb85-1" tabindex="-1" aria-label="code-block-85-1"></a>gbp_map.index.value_counts()</span></code></pre>
 </div>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -1279,7 +1272,7 @@ duplicated, and then use that to filter the DataFrame.</p>
 <div class="codewrapper sourceCode" id="cb87">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb87-1"><a href="#cb87-1" tabindex="-1"></a>gbp_map <span class="op">=</span> gbp_map[<span class="op">~</span>gbp_map.index.duplicated(keep<span class="op">=</span><span class="st">'first'</span>)]</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb87-1"><a href="#cb87-1" tabindex="-1" aria-label="code-block-87-1"></a>gbp_map <span class="op">=</span> gbp_map[<span class="op">~</span>gbp_map.index.duplicated(keep<span class="op">=</span><span class="st">'first'</span>)]</span></code></pre>
 </div>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -1293,7 +1286,7 @@ the first occurrence of each label with <code>keep='first'</code>.</p>
 <div class="codewrapper sourceCode" id="cb89">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb89-1"><a href="#cb89-1" tabindex="-1"></a>gbp_map.index.value_counts()</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb89-1"><a href="#cb89-1" tabindex="-1" aria-label="code-block-89-1"></a>gbp_map.index.value_counts()</span></code></pre>
 </div>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -1306,7 +1299,7 @@ GBP:</p>
 <div class="codewrapper sourceCode" id="cb91">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb91-1"><a href="#cb91-1" tabindex="-1"></a>survey_data[<span class="st">"Currency"</span>].<span class="bu">map</span>(gbp_map)</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb91-1"><a href="#cb91-1" tabindex="-1" aria-label="code-block-91-1"></a>survey_data[<span class="st">"Currency"</span>].<span class="bu">map</span>(gbp_map)</span></code></pre>
 </div>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -1318,7 +1311,7 @@ amounts. When we’re adding columns we should use <code>loc[]</code>:</p>
 <div class="codewrapper sourceCode" id="cb93">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb93-1"><a href="#cb93-1" tabindex="-1"></a>survey_data.loc[:, <span class="st">"Annual salary GBP"</span>] <span class="op">=</span> survey_data[<span class="st">"Annual salary"</span>] <span class="op">*</span> survey_data[<span class="st">"Currency"</span>].<span class="bu">map</span>(gbp_map)</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb93-1"><a href="#cb93-1" tabindex="-1" aria-label="code-block-93-1"></a>survey_data.loc[:, <span class="st">"Annual salary GBP"</span>] <span class="op">=</span> survey_data[<span class="st">"Annual salary"</span>] <span class="op">*</span> survey_data[<span class="st">"Currency"</span>].<span class="bu">map</span>(gbp_map)</span></code></pre>
 </div>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -1328,7 +1321,7 @@ amounts. When we’re adding columns we should use <code>loc[]</code>:</p>
 <div class="codewrapper sourceCode" id="cb95">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb95-1"><a href="#cb95-1" tabindex="-1"></a>survey_data.loc[:, <span class="st">"Additional monetary compensation GBP"</span>] <span class="op">=</span> survey_data[<span class="st">"Additional monetary compensation"</span>] <span class="op">*</span> survey_data.loc[:, <span class="st">"Currency"</span>].<span class="bu">map</span>(gbp_map)</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb95-1"><a href="#cb95-1" tabindex="-1" aria-label="code-block-95-1"></a>survey_data.loc[:, <span class="st">"Additional monetary compensation GBP"</span>] <span class="op">=</span> survey_data[<span class="st">"Additional monetary compensation"</span>] <span class="op">*</span> survey_data.loc[:, <span class="st">"Currency"</span>].<span class="bu">map</span>(gbp_map)</span></code></pre>
 </div>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -1338,7 +1331,7 @@ amounts. When we’re adding columns we should use <code>loc[]</code>:</p>
 <div class="codewrapper sourceCode" id="cb97">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb97-1"><a href="#cb97-1" tabindex="-1"></a>survey_data.loc[:, <span class="st">"Total GBP"</span>] <span class="op">=</span> survey_data[<span class="st">"Annual salary GBP"</span>] <span class="op">+</span> survey_data[<span class="st">"Additional monetary compensation GBP"</span>]</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb97-1"><a href="#cb97-1" tabindex="-1" aria-label="code-block-97-1"></a>survey_data.loc[:, <span class="st">"Total GBP"</span>] <span class="op">=</span> survey_data[<span class="st">"Annual salary GBP"</span>] <span class="op">+</span> survey_data[<span class="st">"Additional monetary compensation GBP"</span>]</span></code></pre>
 </div>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -1350,7 +1343,7 @@ a histogram of total compensation in GBP.</p>
 <div class="codewrapper sourceCode" id="cb99">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb99-1"><a href="#cb99-1" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb99-1"><a href="#cb99-1" tabindex="-1" aria-label="code-block-99-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span></code></pre>
 </div>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -1360,7 +1353,7 @@ a histogram of total compensation in GBP.</p>
 <div class="codewrapper sourceCode" id="cb101">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb101-1"><a href="#cb101-1" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">8</span>,<span class="dv">5</span>))</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb101-1"><a href="#cb101-1" tabindex="-1" aria-label="code-block-101-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">8</span>,<span class="dv">5</span>))</span></code></pre>
 </div>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -1370,7 +1363,7 @@ a histogram of total compensation in GBP.</p>
 <div class="codewrapper sourceCode" id="cb103">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb103-1"><a href="#cb103-1" tabindex="-1"></a>plt.hist(survey_data[<span class="st">"Total GBP"</span>], bins<span class="op">=</span><span class="dv">50</span>, edgecolor<span class="op">=</span><span class="st">'black'</span>)</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb103-1"><a href="#cb103-1" tabindex="-1" aria-label="code-block-103-1"></a>plt.hist(survey_data[<span class="st">"Total GBP"</span>], bins<span class="op">=</span><span class="dv">50</span>, edgecolor<span class="op">=</span><span class="st">'black'</span>)</span></code></pre>
 </div>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -1380,7 +1373,7 @@ a histogram of total compensation in GBP.</p>
 <div class="codewrapper sourceCode" id="cb105">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb105-1"><a href="#cb105-1" tabindex="-1"></a>plt.show()</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb105-1"><a href="#cb105-1" tabindex="-1" aria-label="code-block-105-1"></a>plt.show()</span></code></pre>
 </div>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -1395,7 +1388,7 @@ describe:</p>
 <div class="codewrapper sourceCode" id="cb107">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb107-1"><a href="#cb107-1" tabindex="-1"></a>survey_data[<span class="st">"Total GBP"</span>].describe()</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb107-1"><a href="#cb107-1" tabindex="-1" aria-label="code-block-107-1"></a>survey_data[<span class="st">"Total GBP"</span>].describe()</span></code></pre>
 </div>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -1451,7 +1444,7 @@ that value.</p>
 <div class="codewrapper sourceCode" id="cb109">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb109-1"><a href="#cb109-1" tabindex="-1"></a>survey_data.loc[survey_data[<span class="st">"Total GBP"</span>] <span class="op">==</span> survey_data[<span class="st">"Total GBP"</span>].<span class="bu">max</span>()].T</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb109-1"><a href="#cb109-1" tabindex="-1" aria-label="code-block-109-1"></a>survey_data.loc[survey_data[<span class="st">"Total GBP"</span>] <span class="op">==</span> survey_data[<span class="st">"Total GBP"</span>].<span class="bu">max</span>()].T</span></code></pre>
 </div>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -1471,8 +1464,8 @@ it compare to the next few largest values?</p>
 <div class="codewrapper sourceCode" id="cb111">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb111-1"><a href="#cb111-1" tabindex="-1"></a><span class="co"># get the highest five values in Total GBP</span></span>
-<span id="cb111-2"><a href="#cb111-2" tabindex="-1"></a>survey_data.sort_values(<span class="st">"Total GBP"</span>, ascending<span class="op">=</span><span class="va">False</span>).head(<span class="dv">15</span>)</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb111-1"><a href="#cb111-1" tabindex="-1" aria-label="code-block-111-1"></a><span class="co"># get the highest five values in Total GBP</span></span>
+<span id="cb111-2"><a href="#cb111-2" tabindex="-1" aria-label="code-block-111-2"></a>survey_data.sort_values(<span class="st">"Total GBP"</span>, ascending<span class="op">=</span><span class="va">False</span>).head(<span class="dv">15</span>)</span></code></pre>
 </div>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -1485,7 +1478,7 @@ say, £1 million.</p>
 <div class="codewrapper sourceCode" id="cb113">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb113-1"><a href="#cb113-1" tabindex="-1"></a>survey_data <span class="op">=</span> survey_data[survey_data[<span class="st">"Total GBP"</span>] <span class="op">&lt;</span> <span class="fl">1e6</span>]</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb113-1"><a href="#cb113-1" tabindex="-1" aria-label="code-block-113-1"></a>survey_data <span class="op">=</span> survey_data[survey_data[<span class="st">"Total GBP"</span>] <span class="op">&lt;</span> <span class="fl">1e6</span>]</span></code></pre>
 </div>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -1516,7 +1509,7 @@ outliers:</p>
 <div class="codewrapper sourceCode" id="cb115">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb115-1"><a href="#cb115-1" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">8</span>,<span class="dv">5</span>))</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb115-1"><a href="#cb115-1" tabindex="-1" aria-label="code-block-115-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">8</span>,<span class="dv">5</span>))</span></code></pre>
 </div>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -1526,7 +1519,7 @@ outliers:</p>
 <div class="codewrapper sourceCode" id="cb117">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb117-1"><a href="#cb117-1" tabindex="-1"></a>plt.hist(survey_data[<span class="st">"Total GBP"</span>], bins<span class="op">=</span><span class="dv">50</span>, edgecolor<span class="op">=</span><span class="st">'black'</span>)</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb117-1"><a href="#cb117-1" tabindex="-1" aria-label="code-block-117-1"></a>plt.hist(survey_data[<span class="st">"Total GBP"</span>], bins<span class="op">=</span><span class="dv">50</span>, edgecolor<span class="op">=</span><span class="st">'black'</span>)</span></code></pre>
 </div>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -1536,7 +1529,7 @@ outliers:</p>
 <div class="codewrapper sourceCode" id="cb119">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb119-1"><a href="#cb119-1" tabindex="-1"></a>plt.show()</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb119-1"><a href="#cb119-1" tabindex="-1" aria-label="code-block-119-1"></a>plt.show()</span></code></pre>
 </div>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -1555,7 +1548,7 @@ the mean of the total compensation for each group.</p>
 <div class="codewrapper sourceCode" id="cb121">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb121-1"><a href="#cb121-1" tabindex="-1"></a>country_salary <span class="op">=</span> survey_data.groupby(<span class="st">"Country"</span>)[<span class="st">"Total GBP"</span>].mean().sort_values(ascending<span class="op">=</span><span class="va">False</span>)</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb121-1"><a href="#cb121-1" tabindex="-1" aria-label="code-block-121-1"></a>country_salary <span class="op">=</span> survey_data.groupby(<span class="st">"Country"</span>)[<span class="st">"Total GBP"</span>].mean().sort_values(ascending<span class="op">=</span><span class="va">False</span>)</span></code></pre>
 </div>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -1565,7 +1558,7 @@ the mean of the total compensation for each group.</p>
 <div class="codewrapper sourceCode" id="cb123">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb123-1"><a href="#cb123-1" tabindex="-1"></a>country_salary</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb123-1"><a href="#cb123-1" tabindex="-1" aria-label="code-block-123-1"></a>country_salary</span></code></pre>
 </div>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -1577,7 +1570,7 @@ differences:</p>
 <div class="codewrapper sourceCode" id="cb125">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb125-1"><a href="#cb125-1" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">10</span>,<span class="dv">10</span>), layout<span class="op">=</span><span class="st">"constrained"</span>)</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb125-1"><a href="#cb125-1" tabindex="-1" aria-label="code-block-125-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">10</span>,<span class="dv">10</span>), layout<span class="op">=</span><span class="st">"constrained"</span>)</span></code></pre>
 </div>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -1587,7 +1580,7 @@ differences:</p>
 <div class="codewrapper sourceCode" id="cb127">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb127-1"><a href="#cb127-1" tabindex="-1"></a>country_salary.plot(kind<span class="op">=</span><span class="st">'barh'</span>)</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb127-1"><a href="#cb127-1" tabindex="-1" aria-label="code-block-127-1"></a>country_salary.plot(kind<span class="op">=</span><span class="st">'barh'</span>)</span></code></pre>
 </div>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -1597,7 +1590,7 @@ differences:</p>
 <div class="codewrapper sourceCode" id="cb129">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb129-1"><a href="#cb129-1" tabindex="-1"></a>plt.yticks(fontsize<span class="op">=</span><span class="dv">4</span>)</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb129-1"><a href="#cb129-1" tabindex="-1" aria-label="code-block-129-1"></a>plt.yticks(fontsize<span class="op">=</span><span class="dv">4</span>)</span></code></pre>
 </div>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -1607,7 +1600,7 @@ differences:</p>
 <div class="codewrapper sourceCode" id="cb131">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb131-1"><a href="#cb131-1" tabindex="-1"></a>plt.layout()</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb131-1"><a href="#cb131-1" tabindex="-1" aria-label="code-block-131-1"></a>plt.layout()</span></code></pre>
 </div>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -1617,7 +1610,7 @@ differences:</p>
 <div class="codewrapper sourceCode" id="cb133">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb133-1"><a href="#cb133-1" tabindex="-1"></a>plt.show()</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb133-1"><a href="#cb133-1" tabindex="-1" aria-label="code-block-133-1"></a>plt.show()</span></code></pre>
 </div>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -1637,7 +1630,7 @@ less than non-unionised?</p>
 <div class="codewrapper sourceCode" id="cb135">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb135-1"><a href="#cb135-1" tabindex="-1"></a>union_salary <span class="op">=</span> survey_data.groupby(<span class="st">"Unionized?"</span>)[<span class="st">"Total GBP"</span>].mean()</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb135-1"><a href="#cb135-1" tabindex="-1" aria-label="code-block-135-1"></a>union_salary <span class="op">=</span> survey_data.groupby(<span class="st">"Unionized?"</span>)[<span class="st">"Total GBP"</span>].mean()</span></code></pre>
 </div>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -1647,7 +1640,7 @@ less than non-unionised?</p>
 <div class="codewrapper sourceCode" id="cb137">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb137-1"><a href="#cb137-1" tabindex="-1"></a>union_salary</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb137-1"><a href="#cb137-1" tabindex="-1" aria-label="code-block-137-1"></a>union_salary</span></code></pre>
 </div>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -1659,8 +1652,8 @@ detail with a box plot.</p>
 <div class="codewrapper sourceCode" id="cb139">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb139-1"><a href="#cb139-1" tabindex="-1"></a><span class="co"># plot a box-and-whisker diagram of the total compensation by union status</span></span>
-<span id="cb139-2"><a href="#cb139-2" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">6</span>,<span class="dv">4</span>))</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb139-1"><a href="#cb139-1" tabindex="-1" aria-label="code-block-139-1"></a><span class="co"># plot a box-and-whisker diagram of the total compensation by union status</span></span>
+<span id="cb139-2"><a href="#cb139-2" tabindex="-1" aria-label="code-block-139-2"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">6</span>,<span class="dv">4</span>))</span></code></pre>
 </div>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -1670,10 +1663,10 @@ detail with a box plot.</p>
 <div class="codewrapper sourceCode" id="cb141">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb141-1"><a href="#cb141-1" tabindex="-1"></a>survey_data.boxplot(</span>
-<span id="cb141-2"><a href="#cb141-2" tabindex="-1"></a>  by<span class="op">=</span><span class="st">"Unionized?"</span>,</span>
-<span id="cb141-3"><a href="#cb141-3" tabindex="-1"></a>  column<span class="op">=</span><span class="st">"Total GBP"</span>,</span>
-<span id="cb141-4"><a href="#cb141-4" tabindex="-1"></a>)</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb141-1"><a href="#cb141-1" tabindex="-1" aria-label="code-block-141-1"></a>survey_data.boxplot(</span>
+<span id="cb141-2"><a href="#cb141-2" tabindex="-1" aria-label="code-block-141-2"></a>  by<span class="op">=</span><span class="st">"Unionized?"</span>,</span>
+<span id="cb141-3"><a href="#cb141-3" tabindex="-1" aria-label="code-block-141-3"></a>  column<span class="op">=</span><span class="st">"Total GBP"</span>,</span>
+<span id="cb141-4"><a href="#cb141-4" tabindex="-1" aria-label="code-block-141-4"></a>)</span></code></pre>
 </div>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -1683,7 +1676,7 @@ detail with a box plot.</p>
 <div class="codewrapper sourceCode" id="cb143">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb143-1"><a href="#cb143-1" tabindex="-1"></a>plt.show()</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb143-1"><a href="#cb143-1" tabindex="-1" aria-label="code-block-143-1"></a>plt.show()</span></code></pre>
 </div>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -1709,9 +1702,9 @@ on what we know about the data:</p>
 <div class="codewrapper sourceCode" id="cb145">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb145-1"><a href="#cb145-1" tabindex="-1"></a>ordinal_cols <span class="op">=</span> [<span class="st">"Age"</span>, <span class="st">"Years of experience"</span>, <span class="st">"Years in field"</span>, <span class="st">"Highest level of education"</span>]</span>
-<span id="cb145-2"><a href="#cb145-2" tabindex="-1"></a><span class="cf">for</span> col <span class="kw">in</span> ordinal_cols:</span>
-<span id="cb145-3"><a href="#cb145-3" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>col<span class="sc">}</span><span class="ss">:</span><span class="ch">\n</span><span class="sc">{</span>survey_data[col]<span class="sc">.</span>value_counts()<span class="sc">}</span><span class="ch">\n</span><span class="ss">"</span>)</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb145-1"><a href="#cb145-1" tabindex="-1" aria-label="code-block-145-1"></a>ordinal_cols <span class="op">=</span> [<span class="st">"Age"</span>, <span class="st">"Years of experience"</span>, <span class="st">"Years in field"</span>, <span class="st">"Highest level of education"</span>]</span>
+<span id="cb145-2"><a href="#cb145-2" tabindex="-1" aria-label="code-block-145-2"></a><span class="cf">for</span> col <span class="kw">in</span> ordinal_cols:</span>
+<span id="cb145-3"><a href="#cb145-3" tabindex="-1" aria-label="code-block-145-3"></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>col<span class="sc">}</span><span class="ss">:</span><span class="ch">\n</span><span class="sc">{</span>survey_data[col]<span class="sc">.</span>value_counts()<span class="sc">}</span><span class="ch">\n</span><span class="ss">"</span>)</span></code></pre>
 </div>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -1727,34 +1720,34 @@ answers as well as the 7 default options. Let’s ignore all but the top
 <div class="codewrapper sourceCode" id="cb147">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb147-1"><a href="#cb147-1" tabindex="-1"></a>age_category <span class="op">=</span> [<span class="st">"under 18"</span>, <span class="st">"18-24"</span>, <span class="st">"25-34"</span>, <span class="st">"35-44"</span>, <span class="st">"45-54"</span>, <span class="st">"55-64"</span>, <span class="st">"65 or over"</span>]</span>
-<span id="cb147-2"><a href="#cb147-2" tabindex="-1"></a></span>
-<span id="cb147-3"><a href="#cb147-3" tabindex="-1"></a>experience_category <span class="op">=</span> [</span>
-<span id="cb147-4"><a href="#cb147-4" tabindex="-1"></a>    <span class="st">"1 year or less"</span>, </span>
-<span id="cb147-5"><a href="#cb147-5" tabindex="-1"></a>    <span class="st">"2-4 years"</span>, </span>
-<span id="cb147-6"><a href="#cb147-6" tabindex="-1"></a>    <span class="st">"5-7 years"</span>, </span>
-<span id="cb147-7"><a href="#cb147-7" tabindex="-1"></a>    <span class="st">"8-10 years"</span>, </span>
-<span id="cb147-8"><a href="#cb147-8" tabindex="-1"></a>    <span class="st">"11-20 years"</span>, </span>
-<span id="cb147-9"><a href="#cb147-9" tabindex="-1"></a>    <span class="st">"21-30 years"</span>, </span>
-<span id="cb147-10"><a href="#cb147-10" tabindex="-1"></a>    <span class="st">"31-40 years"</span>, </span>
-<span id="cb147-11"><a href="#cb147-11" tabindex="-1"></a>    <span class="st">"41 years or more"</span>,</span>
-<span id="cb147-12"><a href="#cb147-12" tabindex="-1"></a>]</span>
-<span id="cb147-13"><a href="#cb147-13" tabindex="-1"></a></span>
-<span id="cb147-14"><a href="#cb147-14" tabindex="-1"></a>education_category <span class="op">=</span> [</span>
-<span id="cb147-15"><a href="#cb147-15" tabindex="-1"></a>    <span class="st">"Less than secondary"</span>,</span>
-<span id="cb147-16"><a href="#cb147-16" tabindex="-1"></a>    <span class="st">"High school / secondary"</span>,</span>
-<span id="cb147-17"><a href="#cb147-17" tabindex="-1"></a>    <span class="st">"Some college"</span>,</span>
-<span id="cb147-18"><a href="#cb147-18" tabindex="-1"></a>    <span class="st">"Bachelor's degree"</span>,</span>
-<span id="cb147-19"><a href="#cb147-19" tabindex="-1"></a>    <span class="st">"Master's degree"</span>,</span>
-<span id="cb147-20"><a href="#cb147-20" tabindex="-1"></a>    <span class="st">"Professional degree (JD, MD, etc.)"</span>,</span>
-<span id="cb147-21"><a href="#cb147-21" tabindex="-1"></a>    <span class="st">"Doctorate"</span>,</span>
-<span id="cb147-22"><a href="#cb147-22" tabindex="-1"></a>]</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb147-1"><a href="#cb147-1" tabindex="-1" aria-label="code-block-147-1"></a>age_category <span class="op">=</span> [<span class="st">"under 18"</span>, <span class="st">"18-24"</span>, <span class="st">"25-34"</span>, <span class="st">"35-44"</span>, <span class="st">"45-54"</span>, <span class="st">"55-64"</span>, <span class="st">"65 or over"</span>]</span>
+<span id="cb147-2"><a href="#cb147-2" tabindex="-1" aria-label="code-block-147-2"></a></span>
+<span id="cb147-3"><a href="#cb147-3" tabindex="-1" aria-label="code-block-147-3"></a>experience_category <span class="op">=</span> [</span>
+<span id="cb147-4"><a href="#cb147-4" tabindex="-1" aria-label="code-block-147-4"></a>    <span class="st">"1 year or less"</span>, </span>
+<span id="cb147-5"><a href="#cb147-5" tabindex="-1" aria-label="code-block-147-5"></a>    <span class="st">"2-4 years"</span>, </span>
+<span id="cb147-6"><a href="#cb147-6" tabindex="-1" aria-label="code-block-147-6"></a>    <span class="st">"5-7 years"</span>, </span>
+<span id="cb147-7"><a href="#cb147-7" tabindex="-1" aria-label="code-block-147-7"></a>    <span class="st">"8-10 years"</span>, </span>
+<span id="cb147-8"><a href="#cb147-8" tabindex="-1" aria-label="code-block-147-8"></a>    <span class="st">"11-20 years"</span>, </span>
+<span id="cb147-9"><a href="#cb147-9" tabindex="-1" aria-label="code-block-147-9"></a>    <span class="st">"21-30 years"</span>, </span>
+<span id="cb147-10"><a href="#cb147-10" tabindex="-1" aria-label="code-block-147-10"></a>    <span class="st">"31-40 years"</span>, </span>
+<span id="cb147-11"><a href="#cb147-11" tabindex="-1" aria-label="code-block-147-11"></a>    <span class="st">"41 years or more"</span>,</span>
+<span id="cb147-12"><a href="#cb147-12" tabindex="-1" aria-label="code-block-147-12"></a>]</span>
+<span id="cb147-13"><a href="#cb147-13" tabindex="-1" aria-label="code-block-147-13"></a></span>
+<span id="cb147-14"><a href="#cb147-14" tabindex="-1" aria-label="code-block-147-14"></a>education_category <span class="op">=</span> [</span>
+<span id="cb147-15"><a href="#cb147-15" tabindex="-1" aria-label="code-block-147-15"></a>    <span class="st">"Less than secondary"</span>,</span>
+<span id="cb147-16"><a href="#cb147-16" tabindex="-1" aria-label="code-block-147-16"></a>    <span class="st">"High school / secondary"</span>,</span>
+<span id="cb147-17"><a href="#cb147-17" tabindex="-1" aria-label="code-block-147-17"></a>    <span class="st">"Some college"</span>,</span>
+<span id="cb147-18"><a href="#cb147-18" tabindex="-1" aria-label="code-block-147-18"></a>    <span class="st">"Bachelor's degree"</span>,</span>
+<span id="cb147-19"><a href="#cb147-19" tabindex="-1" aria-label="code-block-147-19"></a>    <span class="st">"Master's degree"</span>,</span>
+<span id="cb147-20"><a href="#cb147-20" tabindex="-1" aria-label="code-block-147-20"></a>    <span class="st">"Professional degree (JD, MD, etc.)"</span>,</span>
+<span id="cb147-21"><a href="#cb147-21" tabindex="-1" aria-label="code-block-147-21"></a>    <span class="st">"Doctorate"</span>,</span>
+<span id="cb147-22"><a href="#cb147-22" tabindex="-1" aria-label="code-block-147-22"></a>]</span></code></pre>
 </div>
 <p>We can then create an OrdinalEncoder with these categories:</p>
 <div class="codewrapper sourceCode" id="cb148">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb148-1"><a href="#cb148-1" tabindex="-1"></a><span class="im">from</span> sklearn.preprocessing <span class="im">import</span> OrdinalEncoder</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb148-1"><a href="#cb148-1" tabindex="-1" aria-label="code-block-148-1"></a><span class="im">from</span> sklearn.preprocessing <span class="im">import</span> OrdinalEncoder</span></code></pre>
 </div>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -1764,7 +1757,7 @@ answers as well as the 7 default options. Let’s ignore all but the top
 <div class="codewrapper sourceCode" id="cb150">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb150-1"><a href="#cb150-1" tabindex="-1"></a>ordinal_encoder <span class="op">=</span> OrdinalEncoder(categories<span class="op">=</span>[age_category, experience_category, experience_category, education_category])</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb150-1"><a href="#cb150-1" tabindex="-1" aria-label="code-block-150-1"></a>ordinal_encoder <span class="op">=</span> OrdinalEncoder(categories<span class="op">=</span>[age_category, experience_category, experience_category, education_category])</span></code></pre>
 </div>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -1780,9 +1773,9 @@ to ignore the rows that contain the less common education answers!</p>
 <div class="codewrapper sourceCode" id="cb152">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb152-1"><a href="#cb152-1" tabindex="-1"></a>ordinal_cols <span class="op">=</span> [<span class="st">"Age"</span>, <span class="st">"Years of experience"</span>, <span class="st">"Years in field"</span>, <span class="st">"Highest level of education"</span>]</span>
-<span id="cb152-2"><a href="#cb152-2" tabindex="-1"></a></span>
-<span id="cb152-3"><a href="#cb152-3" tabindex="-1"></a>survey_data_standard_education <span class="op">=</span> survey_data[survey_data[<span class="st">"Highest level of education"</span>].isin(education_category)]</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb152-1"><a href="#cb152-1" tabindex="-1" aria-label="code-block-152-1"></a>ordinal_cols <span class="op">=</span> [<span class="st">"Age"</span>, <span class="st">"Years of experience"</span>, <span class="st">"Years in field"</span>, <span class="st">"Highest level of education"</span>]</span>
+<span id="cb152-2"><a href="#cb152-2" tabindex="-1" aria-label="code-block-152-2"></a></span>
+<span id="cb152-3"><a href="#cb152-3" tabindex="-1" aria-label="code-block-152-3"></a>survey_data_standard_education <span class="op">=</span> survey_data[survey_data[<span class="st">"Highest level of education"</span>].isin(education_category)]</span></code></pre>
 </div>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -1792,7 +1785,7 @@ to ignore the rows that contain the less common education answers!</p>
 <div class="codewrapper sourceCode" id="cb154">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb154-1"><a href="#cb154-1" tabindex="-1"></a>survey_data_encoded <span class="op">=</span> survey_data_standard_education[[<span class="st">"Annual salary GBP"</span>, <span class="st">"Additional monetary compensation GBP"</span>, <span class="st">"Total GBP"</span>]].copy()</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb154-1"><a href="#cb154-1" tabindex="-1" aria-label="code-block-154-1"></a>survey_data_encoded <span class="op">=</span> survey_data_standard_education[[<span class="st">"Annual salary GBP"</span>, <span class="st">"Additional monetary compensation GBP"</span>, <span class="st">"Total GBP"</span>]].copy()</span></code></pre>
 </div>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -1802,7 +1795,7 @@ to ignore the rows that contain the less common education answers!</p>
 <div class="codewrapper sourceCode" id="cb156">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb156-1"><a href="#cb156-1" tabindex="-1"></a>survey_data_encoded[ordinal_cols] <span class="op">=</span> ordinal_encoder.fit_transform(survey_data_standard_education[ordinal_cols])</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb156-1"><a href="#cb156-1" tabindex="-1" aria-label="code-block-156-1"></a>survey_data_encoded[ordinal_cols] <span class="op">=</span> ordinal_encoder.fit_transform(survey_data_standard_education[ordinal_cols])</span></code></pre>
 </div>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -1820,8 +1813,8 @@ these variables. We can calculate the correlation matrix with
 <div class="codewrapper sourceCode" id="cb158">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb158-1"><a href="#cb158-1" tabindex="-1"></a><span class="co"># Calculate the correlation matrix</span></span>
-<span id="cb158-2"><a href="#cb158-2" tabindex="-1"></a>correlation_matrix <span class="op">=</span> survey_data_encoded.corr()</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb158-1"><a href="#cb158-1" tabindex="-1" aria-label="code-block-158-1"></a><span class="co"># Calculate the correlation matrix</span></span>
+<span id="cb158-2"><a href="#cb158-2" tabindex="-1" aria-label="code-block-158-2"></a>correlation_matrix <span class="op">=</span> survey_data_encoded.corr()</span></code></pre>
 </div>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -1831,7 +1824,7 @@ these variables. We can calculate the correlation matrix with
 <div class="codewrapper sourceCode" id="cb160">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb160-1"><a href="#cb160-1" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">8</span>), layout<span class="op">=</span><span class="st">"constrained"</span>)</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb160-1"><a href="#cb160-1" tabindex="-1" aria-label="code-block-160-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">8</span>), layout<span class="op">=</span><span class="st">"constrained"</span>)</span></code></pre>
 </div>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -1841,7 +1834,7 @@ these variables. We can calculate the correlation matrix with
 <div class="codewrapper sourceCode" id="cb162">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb162-1"><a href="#cb162-1" tabindex="-1"></a>heatmap <span class="op">=</span> ax.imshow(correlation_matrix, cmap<span class="op">=</span><span class="st">'coolwarm'</span>)</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb162-1"><a href="#cb162-1" tabindex="-1" aria-label="code-block-162-1"></a>heatmap <span class="op">=</span> ax.imshow(correlation_matrix, cmap<span class="op">=</span><span class="st">'coolwarm'</span>)</span></code></pre>
 </div>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -1851,7 +1844,7 @@ these variables. We can calculate the correlation matrix with
 <div class="codewrapper sourceCode" id="cb164">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb164-1"><a href="#cb164-1" tabindex="-1"></a>ax.set_xticks(<span class="bu">range</span>(<span class="bu">len</span>(correlation_matrix.columns)))</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb164-1"><a href="#cb164-1" tabindex="-1" aria-label="code-block-164-1"></a>ax.set_xticks(<span class="bu">range</span>(<span class="bu">len</span>(correlation_matrix.columns)))</span></code></pre>
 </div>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -1861,7 +1854,7 @@ these variables. We can calculate the correlation matrix with
 <div class="codewrapper sourceCode" id="cb166">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb166-1"><a href="#cb166-1" tabindex="-1"></a>ax.set_yticks(<span class="bu">range</span>(<span class="bu">len</span>(correlation_matrix.columns)))</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb166-1"><a href="#cb166-1" tabindex="-1" aria-label="code-block-166-1"></a>ax.set_yticks(<span class="bu">range</span>(<span class="bu">len</span>(correlation_matrix.columns)))</span></code></pre>
 </div>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -1871,7 +1864,7 @@ these variables. We can calculate the correlation matrix with
 <div class="codewrapper sourceCode" id="cb168">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb168-1"><a href="#cb168-1" tabindex="-1"></a>ax.set_xticklabels(correlation_matrix.columns, rotation<span class="op">=</span><span class="dv">45</span>, ha<span class="op">=</span><span class="st">'right'</span>)</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb168-1"><a href="#cb168-1" tabindex="-1" aria-label="code-block-168-1"></a>ax.set_xticklabels(correlation_matrix.columns, rotation<span class="op">=</span><span class="dv">45</span>, ha<span class="op">=</span><span class="st">'right'</span>)</span></code></pre>
 </div>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -1881,7 +1874,7 @@ these variables. We can calculate the correlation matrix with
 <div class="codewrapper sourceCode" id="cb170">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb170-1"><a href="#cb170-1" tabindex="-1"></a>ax.set_yticklabels(correlation_matrix.columns)</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb170-1"><a href="#cb170-1" tabindex="-1" aria-label="code-block-170-1"></a>ax.set_yticklabels(correlation_matrix.columns)</span></code></pre>
 </div>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -1891,7 +1884,7 @@ these variables. We can calculate the correlation matrix with
 <div class="codewrapper sourceCode" id="cb172">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb172-1"><a href="#cb172-1" tabindex="-1"></a>fig.colorbar(heatmap, ax<span class="op">=</span>ax, orientation<span class="op">=</span><span class="st">'vertical'</span>, label<span class="op">=</span><span class="st">'Correlation Coefficient'</span>)</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb172-1"><a href="#cb172-1" tabindex="-1" aria-label="code-block-172-1"></a>fig.colorbar(heatmap, ax<span class="op">=</span>ax, orientation<span class="op">=</span><span class="st">'vertical'</span>, label<span class="op">=</span><span class="st">'Correlation Coefficient'</span>)</span></code></pre>
 </div>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -1901,7 +1894,7 @@ these variables. We can calculate the correlation matrix with
 <div class="codewrapper sourceCode" id="cb174">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb174-1"><a href="#cb174-1" tabindex="-1"></a>plt.show()</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb174-1"><a href="#cb174-1" tabindex="-1" aria-label="code-block-174-1"></a>plt.show()</span></code></pre>
 </div>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -1942,8 +1935,8 @@ and the compensation factors</li>
 <div class="codewrapper sourceCode" id="cb176">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb176-1"><a href="#cb176-1" tabindex="-1"></a><span class="co"># Use matplotlib to plot Total compensation GBP against the other columns in survey_data_encoded</span></span>
-<span id="cb176-2"><a href="#cb176-2" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb176-1"><a href="#cb176-1" tabindex="-1" aria-label="code-block-176-1"></a><span class="co"># Use matplotlib to plot Total compensation GBP against the other columns in survey_data_encoded</span></span>
+<span id="cb176-2"><a href="#cb176-2" tabindex="-1" aria-label="code-block-176-2"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span></code></pre>
 </div>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -1953,7 +1946,7 @@ and the compensation factors</li>
 <div class="codewrapper sourceCode" id="cb178">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb178-1"><a href="#cb178-1" tabindex="-1"></a>fig, axs <span class="op">=</span> plt.subplots(<span class="dv">2</span>, <span class="dv">3</span>, figsize<span class="op">=</span>(<span class="dv">20</span>, <span class="dv">10</span>), layout<span class="op">=</span><span class="st">"constrained"</span>)</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb178-1"><a href="#cb178-1" tabindex="-1" aria-label="code-block-178-1"></a>fig, axs <span class="op">=</span> plt.subplots(<span class="dv">2</span>, <span class="dv">3</span>, figsize<span class="op">=</span>(<span class="dv">20</span>, <span class="dv">10</span>), layout<span class="op">=</span><span class="st">"constrained"</span>)</span></code></pre>
 </div>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -1963,13 +1956,13 @@ and the compensation factors</li>
 <div class="codewrapper sourceCode" id="cb180">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb180-1"><a href="#cb180-1" tabindex="-1"></a><span class="kw">def</span> scatter_plot(ax, x_col, y_col, title):</span>
-<span id="cb180-2"><a href="#cb180-2" tabindex="-1"></a>    ax.scatter(survey_data_encoded[x_col], survey_data_encoded[y_col], alpha<span class="op">=</span><span class="fl">0.5</span>)</span>
-<span id="cb180-3"><a href="#cb180-3" tabindex="-1"></a>    ax.set_xlabel(x_col.replace(<span class="st">"_"</span>, <span class="st">" "</span>).title())</span>
-<span id="cb180-4"><a href="#cb180-4" tabindex="-1"></a>    ax.set_ylabel(y_col.replace(<span class="st">"_"</span>, <span class="st">" "</span>).title())</span>
-<span id="cb180-5"><a href="#cb180-5" tabindex="-1"></a>    ax.set_title(title)</span>
-<span id="cb180-6"><a href="#cb180-6" tabindex="-1"></a>    </span>
-<span id="cb180-7"><a href="#cb180-7" tabindex="-1"></a>scatter_plot(axs[<span class="dv">0</span>, <span class="dv">0</span>], <span class="st">"Age"</span>, <span class="st">"Total GBP"</span>, <span class="st">"Total compensation vs. Age"</span>)</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb180-1"><a href="#cb180-1" tabindex="-1" aria-label="code-block-180-1"></a><span class="kw">def</span> scatter_plot(ax, x_col, y_col, title):</span>
+<span id="cb180-2"><a href="#cb180-2" tabindex="-1" aria-label="code-block-180-2"></a>    ax.scatter(survey_data_encoded[x_col], survey_data_encoded[y_col], alpha<span class="op">=</span><span class="fl">0.5</span>)</span>
+<span id="cb180-3"><a href="#cb180-3" tabindex="-1" aria-label="code-block-180-3"></a>    ax.set_xlabel(x_col.replace(<span class="st">"_"</span>, <span class="st">" "</span>).title())</span>
+<span id="cb180-4"><a href="#cb180-4" tabindex="-1" aria-label="code-block-180-4"></a>    ax.set_ylabel(y_col.replace(<span class="st">"_"</span>, <span class="st">" "</span>).title())</span>
+<span id="cb180-5"><a href="#cb180-5" tabindex="-1" aria-label="code-block-180-5"></a>    ax.set_title(title)</span>
+<span id="cb180-6"><a href="#cb180-6" tabindex="-1" aria-label="code-block-180-6"></a>    </span>
+<span id="cb180-7"><a href="#cb180-7" tabindex="-1" aria-label="code-block-180-7"></a>scatter_plot(axs[<span class="dv">0</span>, <span class="dv">0</span>], <span class="st">"Age"</span>, <span class="st">"Total GBP"</span>, <span class="st">"Total compensation vs. Age"</span>)</span></code></pre>
 </div>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -1979,7 +1972,7 @@ and the compensation factors</li>
 <div class="codewrapper sourceCode" id="cb182">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb182-1"><a href="#cb182-1" tabindex="-1"></a>scatter_plot(axs[<span class="dv">0</span>, <span class="dv">1</span>], <span class="st">"Years of experience"</span>, <span class="st">"Total GBP"</span>, <span class="st">"Total compensation vs. Years of experience"</span>)</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb182-1"><a href="#cb182-1" tabindex="-1" aria-label="code-block-182-1"></a>scatter_plot(axs[<span class="dv">0</span>, <span class="dv">1</span>], <span class="st">"Years of experience"</span>, <span class="st">"Total GBP"</span>, <span class="st">"Total compensation vs. Years of experience"</span>)</span></code></pre>
 </div>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -1989,7 +1982,7 @@ and the compensation factors</li>
 <div class="codewrapper sourceCode" id="cb184">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb184-1"><a href="#cb184-1" tabindex="-1"></a>scatter_plot(axs[<span class="dv">0</span>, <span class="dv">2</span>], <span class="st">"Years in field"</span>, <span class="st">"Total GBP"</span>, <span class="st">"Total compensation vs. Years in field"</span>)</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb184-1"><a href="#cb184-1" tabindex="-1" aria-label="code-block-184-1"></a>scatter_plot(axs[<span class="dv">0</span>, <span class="dv">2</span>], <span class="st">"Years in field"</span>, <span class="st">"Total GBP"</span>, <span class="st">"Total compensation vs. Years in field"</span>)</span></code></pre>
 </div>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -1999,7 +1992,7 @@ and the compensation factors</li>
 <div class="codewrapper sourceCode" id="cb186">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb186-1"><a href="#cb186-1" tabindex="-1"></a>scatter_plot(axs[<span class="dv">1</span>, <span class="dv">0</span>], <span class="st">"Highest level of education"</span>, <span class="st">"Total GBP"</span>, <span class="st">"Total compensation vs. Education level"</span>)</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb186-1"><a href="#cb186-1" tabindex="-1" aria-label="code-block-186-1"></a>scatter_plot(axs[<span class="dv">1</span>, <span class="dv">0</span>], <span class="st">"Highest level of education"</span>, <span class="st">"Total GBP"</span>, <span class="st">"Total compensation vs. Education level"</span>)</span></code></pre>
 </div>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -2009,7 +2002,7 @@ and the compensation factors</li>
 <div class="codewrapper sourceCode" id="cb188">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb188-1"><a href="#cb188-1" tabindex="-1"></a>scatter_plot(axs[<span class="dv">1</span>, <span class="dv">1</span>], <span class="st">"Additional monetary compensation GBP"</span>, <span class="st">"Annual salary GBP"</span>, <span class="st">"Additional compensation vs. Annual salary"</span>)</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb188-1"><a href="#cb188-1" tabindex="-1" aria-label="code-block-188-1"></a>scatter_plot(axs[<span class="dv">1</span>, <span class="dv">1</span>], <span class="st">"Additional monetary compensation GBP"</span>, <span class="st">"Annual salary GBP"</span>, <span class="st">"Additional compensation vs. Annual salary"</span>)</span></code></pre>
 </div>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -2019,7 +2012,7 @@ and the compensation factors</li>
 <div class="codewrapper sourceCode" id="cb190">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb190-1"><a href="#cb190-1" tabindex="-1"></a>scatter_plot(axs[<span class="dv">1</span>, <span class="dv">2</span>], <span class="st">"Additional monetary compensation GBP"</span>, <span class="st">"Total GBP"</span>, <span class="st">"Total compensation vs. Annual salary"</span>)</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb190-1"><a href="#cb190-1" tabindex="-1" aria-label="code-block-190-1"></a>scatter_plot(axs[<span class="dv">1</span>, <span class="dv">2</span>], <span class="st">"Additional monetary compensation GBP"</span>, <span class="st">"Total GBP"</span>, <span class="st">"Total compensation vs. Annual salary"</span>)</span></code></pre>
 </div>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -2029,7 +2022,7 @@ and the compensation factors</li>
 <div class="codewrapper sourceCode" id="cb192">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb192-1"><a href="#cb192-1" tabindex="-1"></a>plt.show()</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb192-1"><a href="#cb192-1" tabindex="-1" aria-label="code-block-192-1"></a>plt.show()</span></code></pre>
 </div>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -2071,7 +2064,7 @@ onto a 2-D plane while preserving as much variance as possible.</p>
 <div class="codewrapper sourceCode" id="cb194">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb194-1"><a href="#cb194-1" tabindex="-1"></a><span class="im">from</span> sklearn.preprocessing <span class="im">import</span> StandardScaler</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb194-1"><a href="#cb194-1" tabindex="-1" aria-label="code-block-194-1"></a><span class="im">from</span> sklearn.preprocessing <span class="im">import</span> StandardScaler</span></code></pre>
 </div>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -2081,7 +2074,7 @@ onto a 2-D plane while preserving as much variance as possible.</p>
 <div class="codewrapper sourceCode" id="cb196">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb196-1"><a href="#cb196-1" tabindex="-1"></a><span class="im">from</span> sklearn.decomposition <span class="im">import</span> PCA</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb196-1"><a href="#cb196-1" tabindex="-1" aria-label="code-block-196-1"></a><span class="im">from</span> sklearn.decomposition <span class="im">import</span> PCA</span></code></pre>
 </div>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -2091,15 +2084,15 @@ onto a 2-D plane while preserving as much variance as possible.</p>
 <div class="codewrapper sourceCode" id="cb198">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb198-1"><a href="#cb198-1" tabindex="-1"></a>features <span class="op">=</span> [</span>
-<span id="cb198-2"><a href="#cb198-2" tabindex="-1"></a>    <span class="st">"Age"</span>,</span>
-<span id="cb198-3"><a href="#cb198-3" tabindex="-1"></a>    <span class="st">"Years of experience"</span>,</span>
-<span id="cb198-4"><a href="#cb198-4" tabindex="-1"></a>    <span class="st">"Years in field"</span>,</span>
-<span id="cb198-5"><a href="#cb198-5" tabindex="-1"></a>    <span class="st">"Highest level of education"</span>,</span>
-<span id="cb198-6"><a href="#cb198-6" tabindex="-1"></a>    <span class="st">"Total GBP"</span>,</span>
-<span id="cb198-7"><a href="#cb198-7" tabindex="-1"></a>]</span>
-<span id="cb198-8"><a href="#cb198-8" tabindex="-1"></a></span>
-<span id="cb198-9"><a href="#cb198-9" tabindex="-1"></a>X <span class="op">=</span> survey_data_encoded[features]</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb198-1"><a href="#cb198-1" tabindex="-1" aria-label="code-block-198-1"></a>features <span class="op">=</span> [</span>
+<span id="cb198-2"><a href="#cb198-2" tabindex="-1" aria-label="code-block-198-2"></a>    <span class="st">"Age"</span>,</span>
+<span id="cb198-3"><a href="#cb198-3" tabindex="-1" aria-label="code-block-198-3"></a>    <span class="st">"Years of experience"</span>,</span>
+<span id="cb198-4"><a href="#cb198-4" tabindex="-1" aria-label="code-block-198-4"></a>    <span class="st">"Years in field"</span>,</span>
+<span id="cb198-5"><a href="#cb198-5" tabindex="-1" aria-label="code-block-198-5"></a>    <span class="st">"Highest level of education"</span>,</span>
+<span id="cb198-6"><a href="#cb198-6" tabindex="-1" aria-label="code-block-198-6"></a>    <span class="st">"Total GBP"</span>,</span>
+<span id="cb198-7"><a href="#cb198-7" tabindex="-1" aria-label="code-block-198-7"></a>]</span>
+<span id="cb198-8"><a href="#cb198-8" tabindex="-1" aria-label="code-block-198-8"></a></span>
+<span id="cb198-9"><a href="#cb198-9" tabindex="-1" aria-label="code-block-198-9"></a>X <span class="op">=</span> survey_data_encoded[features]</span></code></pre>
 </div>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -2109,7 +2102,7 @@ onto a 2-D plane while preserving as much variance as possible.</p>
 <div class="codewrapper sourceCode" id="cb200">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb200-1"><a href="#cb200-1" tabindex="-1"></a>X_scaled <span class="op">=</span> StandardScaler().fit_transform(X)</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb200-1"><a href="#cb200-1" tabindex="-1" aria-label="code-block-200-1"></a>X_scaled <span class="op">=</span> StandardScaler().fit_transform(X)</span></code></pre>
 </div>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -2119,8 +2112,8 @@ onto a 2-D plane while preserving as much variance as possible.</p>
 <div class="codewrapper sourceCode" id="cb202">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb202-1"><a href="#cb202-1" tabindex="-1"></a><span class="co"># PCA</span></span>
-<span id="cb202-2"><a href="#cb202-2" tabindex="-1"></a>pca <span class="op">=</span> PCA(n_components<span class="op">=</span><span class="dv">2</span>)</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb202-1"><a href="#cb202-1" tabindex="-1" aria-label="code-block-202-1"></a><span class="co"># PCA</span></span>
+<span id="cb202-2"><a href="#cb202-2" tabindex="-1" aria-label="code-block-202-2"></a>pca <span class="op">=</span> PCA(n_components<span class="op">=</span><span class="dv">2</span>)</span></code></pre>
 </div>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -2130,7 +2123,7 @@ onto a 2-D plane while preserving as much variance as possible.</p>
 <div class="codewrapper sourceCode" id="cb204">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb204-1"><a href="#cb204-1" tabindex="-1"></a>components <span class="op">=</span> pca.fit_transform(X_scaled)</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb204-1"><a href="#cb204-1" tabindex="-1" aria-label="code-block-204-1"></a>components <span class="op">=</span> pca.fit_transform(X_scaled)</span></code></pre>
 </div>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -2140,8 +2133,8 @@ onto a 2-D plane while preserving as much variance as possible.</p>
 <div class="codewrapper sourceCode" id="cb206">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb206-1"><a href="#cb206-1" tabindex="-1"></a><span class="co"># Plot</span></span>
-<span id="cb206-2"><a href="#cb206-2" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">6</span>,<span class="dv">5</span>))</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb206-1"><a href="#cb206-1" tabindex="-1" aria-label="code-block-206-1"></a><span class="co"># Plot</span></span>
+<span id="cb206-2"><a href="#cb206-2" tabindex="-1" aria-label="code-block-206-2"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">6</span>,<span class="dv">5</span>))</span></code></pre>
 </div>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -2151,10 +2144,10 @@ onto a 2-D plane while preserving as much variance as possible.</p>
 <div class="codewrapper sourceCode" id="cb208">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb208-1"><a href="#cb208-1" tabindex="-1"></a>scatter <span class="op">=</span> plt.scatter(</span>
-<span id="cb208-2"><a href="#cb208-2" tabindex="-1"></a>    components[:,<span class="dv">0</span>], components[:,<span class="dv">1</span>],</span>
-<span id="cb208-3"><a href="#cb208-3" tabindex="-1"></a>    c<span class="op">=</span>survey_data_encoded[<span class="st">"Total GBP"</span>], cmap<span class="op">=</span><span class="st">"viridis"</span>, alpha<span class="op">=</span><span class="fl">0.5</span></span>
-<span id="cb208-4"><a href="#cb208-4" tabindex="-1"></a>)</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb208-1"><a href="#cb208-1" tabindex="-1" aria-label="code-block-208-1"></a>scatter <span class="op">=</span> plt.scatter(</span>
+<span id="cb208-2"><a href="#cb208-2" tabindex="-1" aria-label="code-block-208-2"></a>    components[:,<span class="dv">0</span>], components[:,<span class="dv">1</span>],</span>
+<span id="cb208-3"><a href="#cb208-3" tabindex="-1" aria-label="code-block-208-3"></a>    c<span class="op">=</span>survey_data_encoded[<span class="st">"Total GBP"</span>], cmap<span class="op">=</span><span class="st">"viridis"</span>, alpha<span class="op">=</span><span class="fl">0.5</span></span>
+<span id="cb208-4"><a href="#cb208-4" tabindex="-1" aria-label="code-block-208-4"></a>)</span></code></pre>
 </div>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -2164,7 +2157,7 @@ onto a 2-D plane while preserving as much variance as possible.</p>
 <div class="codewrapper sourceCode" id="cb210">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb210-1"><a href="#cb210-1" tabindex="-1"></a>plt.colorbar(scatter, label<span class="op">=</span><span class="st">"Compensation (GBP)"</span>)</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb210-1"><a href="#cb210-1" tabindex="-1" aria-label="code-block-210-1"></a>plt.colorbar(scatter, label<span class="op">=</span><span class="st">"Compensation (GBP)"</span>)</span></code></pre>
 </div>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -2174,7 +2167,7 @@ onto a 2-D plane while preserving as much variance as possible.</p>
 <div class="codewrapper sourceCode" id="cb212">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb212-1"><a href="#cb212-1" tabindex="-1"></a>plt.xlabel(<span class="st">"PC 1 ("</span> <span class="op">+</span> <span class="bu">str</span>(<span class="bu">round</span>(pca.explained_variance_ratio_[<span class="dv">0</span>]<span class="op">*</span><span class="dv">100</span>,<span class="dv">1</span>)) <span class="op">+</span> <span class="st">"% var)"</span>)</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb212-1"><a href="#cb212-1" tabindex="-1" aria-label="code-block-212-1"></a>plt.xlabel(<span class="st">"PC 1 ("</span> <span class="op">+</span> <span class="bu">str</span>(<span class="bu">round</span>(pca.explained_variance_ratio_[<span class="dv">0</span>]<span class="op">*</span><span class="dv">100</span>,<span class="dv">1</span>)) <span class="op">+</span> <span class="st">"% var)"</span>)</span></code></pre>
 </div>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -2184,7 +2177,7 @@ onto a 2-D plane while preserving as much variance as possible.</p>
 <div class="codewrapper sourceCode" id="cb214">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb214-1"><a href="#cb214-1" tabindex="-1"></a>plt.ylabel(<span class="st">"PC 2 ("</span> <span class="op">+</span> <span class="bu">str</span>(<span class="bu">round</span>(pca.explained_variance_ratio_[<span class="dv">1</span>]<span class="op">*</span><span class="dv">100</span>,<span class="dv">1</span>)) <span class="op">+</span> <span class="st">"% var)"</span>)</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb214-1"><a href="#cb214-1" tabindex="-1" aria-label="code-block-214-1"></a>plt.ylabel(<span class="st">"PC 2 ("</span> <span class="op">+</span> <span class="bu">str</span>(<span class="bu">round</span>(pca.explained_variance_ratio_[<span class="dv">1</span>]<span class="op">*</span><span class="dv">100</span>,<span class="dv">1</span>)) <span class="op">+</span> <span class="st">"% var)"</span>)</span></code></pre>
 </div>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -2194,7 +2187,7 @@ onto a 2-D plane while preserving as much variance as possible.</p>
 <div class="codewrapper sourceCode" id="cb216">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb216-1"><a href="#cb216-1" tabindex="-1"></a>plt.title(<span class="st">"PCA of salary &amp; ordinal variables"</span>)</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb216-1"><a href="#cb216-1" tabindex="-1" aria-label="code-block-216-1"></a>plt.title(<span class="st">"PCA of salary &amp; ordinal variables"</span>)</span></code></pre>
 </div>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -2204,7 +2197,7 @@ onto a 2-D plane while preserving as much variance as possible.</p>
 <div class="codewrapper sourceCode" id="cb218">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb218-1"><a href="#cb218-1" tabindex="-1"></a>plt.tight_layout()</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb218-1"><a href="#cb218-1" tabindex="-1" aria-label="code-block-218-1"></a>plt.tight_layout()</span></code></pre>
 </div>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -2214,7 +2207,7 @@ onto a 2-D plane while preserving as much variance as possible.</p>
 <div class="codewrapper sourceCode" id="cb220">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb220-1"><a href="#cb220-1" tabindex="-1"></a>plt.show()</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb220-1"><a href="#cb220-1" tabindex="-1" aria-label="code-block-220-1"></a>plt.show()</span></code></pre>
 </div>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -2228,7 +2221,7 @@ of maximum variance in the data.</p>
 <div class="codewrapper sourceCode" id="cb222">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb222-1"><a href="#cb222-1" tabindex="-1"></a>pca.components_</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb222-1"><a href="#cb222-1" tabindex="-1" aria-label="code-block-222-1"></a>pca.components_</span></code></pre>
 </div>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -2316,7 +2309,7 @@ Says. Forbes, 2016</a><a href="#fnref1" class="footnote-back">↩︎</a></p></li
         <p>Materials licensed under <a href="LICENSE.html">CC-BY 4.0</a> by the authors</p>
 
         <p>Template licensed under <a href="https://creativecommons.org/licenses/by-sa/4.0/" class="external-link">CC-BY 4.0</a> by <a href="https://carpentries.org/" class="external-link">The Carpentries</a></p>
-        <p>Built with <a href="https://github.com/carpentries/sandpaper/tree/0.20.0" class="external-link">sandpaper (0.20.0)</a>, <a href="https://github.com/carpentries/pegboard/tree/0.7.9" class="external-link">pegboard (0.7.9)</a>, and <a href="https://github.com/carpentries/varnish/tree/1.0.9" class="external-link">varnish (1.0.9)</a></p>
+        <p>Built with <a href="https://github.com/carpentries/sandpaper/tree/0.20.1" class="external-link">sandpaper (0.20.1)</a>, <a href="https://github.com/carpentries/pegboard/tree/0.7.9" class="external-link">pegboard (0.7.9)</a>, and <a href="https://github.com/carpentries/varnish/tree/1.1.0" class="external-link">varnish (1.1.0)</a></p>
 		</div>
 		</footer>
 </div> <!-- / div.container -->
@@ -2339,8 +2332,8 @@ Says. Forbes, 2016</a><a href="#fnref1" class="footnote-back">↩︎</a></p></li
   "url": "https://charliejharrison.github.io/AISS-2025-content/instructor/aio.html",
   "identifier": "https://charliejharrison.github.io/AISS-2025-content/instructor/aio.html",
   "dateCreated": "2025-07-03",
-  "dateModified": "2026-04-14",
-  "datePublished": "2026-04-14"
+  "dateModified": "2026-04-21",
+  "datePublished": "2026-04-21"
 }
 
   </script><script>
